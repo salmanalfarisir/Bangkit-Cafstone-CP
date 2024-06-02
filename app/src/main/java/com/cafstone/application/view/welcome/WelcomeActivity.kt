@@ -5,13 +5,24 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.cafstone.application.BuildConfig
 import com.cafstone.application.databinding.ActivityWelcomeBinding
 import com.cafstone.application.view.login.LoginActivity
 import com.cafstone.application.view.signup.SignupActivity
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.api.net.SearchByTextRequest
+import com.google.android.libraries.places.api.net.SearchByTextResponse
+import java.util.Arrays
+
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
@@ -25,7 +36,6 @@ class WelcomeActivity : AppCompatActivity() {
         setupAction()
         playAnimation()
     }
-
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -48,6 +58,11 @@ class WelcomeActivity : AppCompatActivity() {
         binding.signupButton.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
+
+                if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
+        }
+
     }
 
     private fun playAnimation() {
