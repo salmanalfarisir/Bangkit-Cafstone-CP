@@ -16,9 +16,6 @@ material = "1.12.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 retrofit = "2.9.0"
-playservicemaps = "18.2.0"
-places = "3.4.0"
-glide = "4.16.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -27,11 +24,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleLivedataKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-play-service-maps = {module = "com.google.android.gms:play-services-maps", version.ref = "playservicemaps"}
-libraries-places = {module = "com.google.android.libraries.places:places", version.ref = "places"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
-glide-compiler = {module="com.github.bumptech.glide:compiler", version.ref = "glide"}
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
