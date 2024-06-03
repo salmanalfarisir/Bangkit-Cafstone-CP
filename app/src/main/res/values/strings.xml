@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Cafstone</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Login</string>
+    <string name="message_welcome_page">Sambutlah Setiap Langkahmu dengan \n Aroma Baru, Setiap Tawa dengan Rasa \n Bahagia, dan Setiap Kesempatan dengan \n Kesempurnaan Kuliner</string>
+    <string name="title_welcome_page">Join And \n Explore With Us</string>
+    <string name="title_signup_page">Welcome! \n Create your New Account</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="title_login_page">Sudah siap untuk upgrade skill?</string>
+    <string name="name">Name</string>
+    <string name="passwordconfirm">Password Confirm</string>
+    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="greeting">Halo %1$s,</string>
+    <string name="logout">Keluar</string>
+    <string name="login_cafstone_title">Cafstone</string>
+    <string name="subtitle_title">Welcome Back! \n Glad To See You, Again!</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="login_or">or</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="create_new">Create New</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="hint_password_confirm">Password Confirm</string>
+    <string name="already_have_an_account">Already Have an Account?</string>
+    <string name="title_activity_onboarding">OnboardingActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="welcome_to2">Harmonizing with Flavor, \nCloser with Distance</string>
+    <string name="welcome_to3">Exploring culinary \ndelights</string>
+
+    <string name="onboarding_text1">Explore Cafes and Restaurants around you,\naccording to your preferences.</string>
+    <string name="onboarding_text2">Experience Perfection in Every Corner of \nthe City with Cafstone Comfort in Your Hand.</string>
+    <string name="onboarding_text3">Explore the Delights of the Culinary \nWorld. Comfort in your hand.</string>
+    <string name="skip">Skip</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+</resources>
