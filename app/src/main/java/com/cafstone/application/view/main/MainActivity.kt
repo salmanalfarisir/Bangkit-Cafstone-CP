@@ -93,7 +93,10 @@ class MainActivity : AppCompatActivity() {
                 val places = response.places
                 for (place in places) {
                     val photoUrl = place.photoMetadatas?.firstOrNull()?.let { photoMetadata ->
-                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.MAPS_API_KEY}"
+                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
+                    }
+                    if (photoUrl != null) {
+                        Log.d(TAG,photoUrl)
                     }
                     placesList.add(
                         AdapterModel(

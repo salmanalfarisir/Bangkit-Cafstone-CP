@@ -31,6 +31,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "BASE_URL", "\"AIzaSyCW41Di4DUM8s-Akb0Bqgl6ozpPhPmTYIA\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -73,6 +74,7 @@ dependencies {
 
 
     implementation(libs.glide)
+    implementation(libs.coil)
     annotationProcessor(libs.glide.compiler)
     implementation(libs.play.service.maps)
     implementation(libs.libraries.places)

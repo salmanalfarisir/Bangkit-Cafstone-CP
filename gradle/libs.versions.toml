@@ -19,6 +19,7 @@ retrofit = "2.9.0"
 playservicemaps = "18.2.0"
 places = "3.4.0"
 glide = "4.16.0"
+coil = "2.6.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -30,6 +31,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 play-service-maps = {module = "com.google.android.gms:play-services-maps", version.ref = "playservicemaps"}
 libraries-places = {module = "com.google.android.libraries.places:places", version.ref = "places"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = {module="com.github.bumptech.glide:compiler", version.ref = "glide"}
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
