@@ -8,17 +8,17 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsets
-import android.view.WindowManager
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.cafstone.application.BuildConfig
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboarding.FirstOBActivity
+import com.cafstone.application.view.search.SearchViewActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.CircularBounds
@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        enableEdgeToEdge()
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -50,7 +49,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.rvReview.layoutManager = LinearLayoutManager(this)
+        binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
+
         adapter = PlacesAdapter(placesList)
         binding.rvReview.adapter = adapter
 
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         setupView()
         setupAction()
     }
-
 
     @SuppressLint("NotifyDataSetChanged")
     fun searchText(text: String) {
@@ -96,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                         "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
                     }
                     if (photoUrl != null) {
-                        Log.d(TAG,photoUrl)
+                        Log.d(TAG, photoUrl)
                     }
                     placesList.add(
                         AdapterModel(
@@ -129,21 +128,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
-        @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.show(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+            supportActionBar?.hide()
         }
-        supportActionBar?.hide()
     }
 
     private fun setupAction() {
         binding.logoutButton.setOnClickListener {
             viewModel.logout()
+        }
+        binding.searchBar.setOnClickListener {
+            startActivity(Intent(this, SearchViewActivity::class.java))
+            finish()
         }
     }
 }
