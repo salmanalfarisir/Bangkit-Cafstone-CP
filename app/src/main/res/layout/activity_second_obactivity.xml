@@ -145,7 +145,7 @@
                     android:id="@+id/next_button"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/button_circle"
+                    android:background="@drawable/btn_onboarding"
                     android:drawableEnd="@drawable/ep__arrow_right_bold"
                     android:paddingEnd="9dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"

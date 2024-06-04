@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_linear"
+    app:layoutDescription="@xml/activity_third_obactivity_scene"
     tools:context=".view.onboarding.ThirdOBActivity">
 
     <TextView
@@ -56,7 +57,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
@@ -103,7 +103,6 @@
                     app:layout_constraintTop_toTopOf="@+id/textView4">
 
 
-
                     <View
                         android:id="@+id/divider2"
                         android:layout_width="14dp"
@@ -132,8 +131,8 @@
                         android:id="@+id/mainDivider"
                         android:layout_width="25dp"
                         android:layout_height="7dp"
-                        android:background="@drawable/corner"
                         android:layout_marginStart="5dp"
+                        android:background="@drawable/corner"
                         android:backgroundTint="@color/primary_color"
                         app:layout_constraintBottom_toBottomOf="@+id/textView4"
                         app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -146,7 +145,7 @@
                     android:id="@+id/next_button"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/button_circle"
+                    android:background="@drawable/btn_onboarding"
                     android:drawableEnd="@drawable/ep__arrow_right_bold"
                     android:paddingEnd="9dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -178,4 +177,4 @@
 
     </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
