@@ -39,4 +39,6 @@
     <string name="onboarding_text3">Explore the Delights of the Culinary \nWorld. Comfort in your hand.</string>
     <string name="skip">Skip</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="lokasi">Lokasi</string>
+    <string name="mau_kemana_nih">Mau kemana nih? ...</string>
 </resources>
