@@ -35,7 +35,11 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var binding: ActivityMainBinding
     private val placesList = mutableListOf<AdapterModel>()
+    private val placesList1 = mutableListOf<AdapterModel>()
+    private val placesList2 = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
+    private lateinit var adapter1: PlacesAdapter
+    private lateinit var adapter2: PlacesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,18 +54,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
+        binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
+        binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
 
         adapter = PlacesAdapter(placesList)
         binding.rvReview.adapter = adapter
+        adapter1 = PlacesAdapter(placesList1)
+        binding.rvReview1.adapter = adapter1
+        adapter2 = PlacesAdapter(placesList2)
+        binding.rvReview2.adapter = adapter2
+
 
         // Initialize the SDK
-        searchText("Cafe Viral Jakarta")
+        searchText("Cafe Yang Sedang Banyak Dikunjungi",1,1)
+        searchText("Cafe Fancy",2,2)
+        searchText("Cafe Ternyaman",0,0)
         setupView()
         setupAction()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun searchText(text: String) {
+    fun searchText(text: String,p : Int,a : Int) {
         if (!Places.isInitialized()) {
             Log.d(TAG, "Token : " + BuildConfig.MAPS_API_KEY)
             Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
@@ -86,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             SearchByTextRequest.builder(text, placeFields)
                 .setLocationBias(CircularBounds.newInstance(searchCenter, 0.0)).build()
 
+
         // Call PlacesClient.searchByText() to perform the search
         placesClient.searchByText(searchByTextRequest)
             .addOnSuccessListener { response: SearchByTextResponse ->
@@ -97,34 +111,58 @@ class MainActivity : AppCompatActivity() {
                     if (photoUrl != null) {
                         Log.d(TAG, photoUrl)
                     }
-                    placesList.add(
-                        AdapterModel(
-                            place.id!!,
-                            place.name!!,
-                            place.address!!,
-                            photoUrl
+
+                    if (p == 0)
+                    {
+                        Log.d(TAG,"0")
+                        placesList.add(
+                            AdapterModel(
+                                place.id!!,
+                                place.name!!,
+                                place.address!!,
+                                photoUrl
+                            )
                         )
-                    )
+                    }else if (p == 1)
+                    {
+                        Log.d(TAG,"1")
+                        placesList1.add(
+                            AdapterModel(
+                                place.id!!,
+                                place.name!!,
+                                place.address!!,
+                                photoUrl
+                            )
+                        )
+                    }else if (p == 2){
+                        Log.d(TAG,"2")
+                        placesList2.add(
+                            AdapterModel(
+                                place.id!!,
+                                place.name!!,
+                                place.address!!,
+                                photoUrl
+                            )
+                        )
+                    }
+
                 }
-                adapter.notifyDataSetChanged()
+                if (a == 0)
+                {
+                    Log.d(TAG,a.toString())
+                    adapter.notifyDataSetChanged()
+                }else if (a == 1)
+                {
+                    Log.d(TAG,a.toString())
+                    adapter1.notifyDataSetChanged()
+                }else if (a == 2){
+                    Log.d(TAG,a.toString())
+                    adapter2.notifyDataSetChanged()
+                }
             }
             .addOnFailureListener { exception: Exception ->
                 Log.e(TAG, "Place not found: ${exception.message}")
             }
-    }
-
-    fun fetchPhotoUrl(placesClient: PlacesClient, photoMetadata: PhotoMetadata): Bitmap? {
-        val photoRequest = FetchPhotoRequest.builder(photoMetadata)
-            .setMaxWidth(200) // Set the desired width
-            .setMaxHeight(180) // Set the desired height
-            .build()
-        var photoBitmap: Bitmap? = null
-        placesClient.fetchPhoto(photoRequest).addOnSuccessListener { fetchPhotoResponse ->
-            photoBitmap = fetchPhotoResponse.bitmap
-        }.addOnFailureListener { exception ->
-            Log.e("Photo Fetch Error", "Error fetching photo: ${exception.message}")
-        }
-        return photoBitmap
     }
 
     private fun setupView() {
