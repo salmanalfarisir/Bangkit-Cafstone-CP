@@ -75,6 +75,7 @@ dependencies {
 
     implementation(libs.glide)
     implementation(libs.coil)
+    implementation(libs.androidx.viewpager2)
     annotationProcessor(libs.glide.compiler)
     implementation(libs.play.service.maps)
     implementation(libs.libraries.places)

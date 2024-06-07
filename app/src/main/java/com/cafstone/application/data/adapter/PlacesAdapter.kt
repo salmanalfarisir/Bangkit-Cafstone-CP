@@ -18,7 +18,7 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (id, name, desc, photo) = placesList[position]
+        val (id, name, desc, photo,_) = placesList[position]
         holder.placeNameTextView.text = name
         holder.placeDescTextView.text = desc
         photo?.let { url ->

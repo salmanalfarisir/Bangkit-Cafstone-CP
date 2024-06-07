@@ -43,4 +43,9 @@
     <string name="mau_kemana_nih">Mau kemana nih? ...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="destination_title">Destination Title With Image and Also Restaurant Type</string>
+    <string name="destination_image">Destination Image</string>
+    <string name="destination_address">Destination Address</string>
+    <string name="rating">rating</string>
+    <string name="rating_4_5">4.5</string>
 </resources>

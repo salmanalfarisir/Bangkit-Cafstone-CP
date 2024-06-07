@@ -174,7 +174,8 @@ class SearchViewActivity : AppCompatActivity() {
                                     place.id!!,
                                     place.name!!,
                                     place.address!!,
-                                    photoUrl
+                                    photoUrl,
+                                    place.rating
                                 )
                             )
                         }

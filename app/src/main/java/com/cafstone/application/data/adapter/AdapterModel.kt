@@ -8,5 +8,6 @@ data class AdapterModel(
     val id: String,
     val name: String,
     val desc: String,
-    val photo: String?
+    val photo: String?,
+    val rating:Double?
 ) : Parcelable

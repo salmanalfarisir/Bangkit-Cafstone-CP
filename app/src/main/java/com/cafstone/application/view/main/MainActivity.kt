@@ -23,9 +23,11 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.cafstone.application.BuildConfig
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
+import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.LocationSharedPreferences
 import com.cafstone.application.di.PlacesClientSingleton
+import com.cafstone.application.view.Onboard.OnboardingActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboarding.FirstOBActivity
 import com.cafstone.application.view.search.SearchViewActivity
@@ -55,9 +57,9 @@ class MainActivity : AppCompatActivity() {
     private val placesList = mutableListOf<AdapterModel>()
     private val placesList1 = mutableListOf<AdapterModel>()
     private val placesList2 = mutableListOf<AdapterModel>()
-    private lateinit var adapter: PlacesAdapter
-    private lateinit var adapter1: PlacesAdapter
-    private lateinit var adapter2: PlacesAdapter
+    private lateinit var adapter: PlacesAdapter2
+    private lateinit var adapter1: PlacesAdapter2
+    private lateinit var adapter2: PlacesAdapter2
 
 
     private val requestPermissionLauncher =
@@ -94,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
-                startActivity(Intent(this, FirstOBActivity::class.java))
+                startActivity(Intent(this, OnboardingActivity::class.java))
                 finish()
             }
         }
@@ -184,7 +186,8 @@ class MainActivity : AppCompatActivity() {
             Place.Field.NAME,
             Place.Field.ADDRESS,
             Place.Field.TYPES,
-            Place.Field.PHOTO_METADATAS
+            Place.Field.PHOTO_METADATAS,
+            Place.Field.RATING
         )
 
         // Define latitude and longitude coordinates of the search area
@@ -237,7 +240,8 @@ class MainActivity : AppCompatActivity() {
                                             place.id!!,
                                             place.name!!,
                                             place.address!!,
-                                            photoUrl
+                                            photoUrl,
+                                            place.rating
                                         )
                                     )
                                 }
@@ -248,7 +252,8 @@ class MainActivity : AppCompatActivity() {
                                             place.id!!,
                                             place.name!!,
                                             place.address!!,
-                                            photoUrl
+                                            photoUrl,
+                                            place.rating
                                         )
                                     )
                                 }
@@ -259,7 +264,8 @@ class MainActivity : AppCompatActivity() {
                                             place.id!!,
                                             place.name!!,
                                             place.address!!,
-                                            photoUrl
+                                            photoUrl,
+                                            place.rating
                                         )
                                     )
                                 }
@@ -300,11 +306,11 @@ class MainActivity : AppCompatActivity() {
             binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
 
-            adapter = PlacesAdapter(placesList)
+            adapter = PlacesAdapter2(placesList)
             binding.rvReview.adapter = adapter
-            adapter1 = PlacesAdapter(placesList1)
+            adapter1 = PlacesAdapter2(placesList1)
             binding.rvReview1.adapter = adapter1
-            adapter2 = PlacesAdapter(placesList2)
+            adapter2 = PlacesAdapter2(placesList2)
             binding.rvReview2.adapter = adapter2
 
 

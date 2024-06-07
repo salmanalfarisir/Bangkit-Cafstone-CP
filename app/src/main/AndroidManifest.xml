@@ -17,6 +17,9 @@
         android:theme="@style/Base.Theme.Cafstone_Project"
         tools:targetApi="31">
         <activity
+            android:name=".view.Onboard.OnboardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.search.SearchViewActivity"
             android:exported="true"
             android:parentActivityName=".view.main.MainActivity" />
