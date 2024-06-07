@@ -1,4 +1,4 @@
-package com.cafstone.application.view.Onboard
+package com.cafstone.application.view.onboardingpage
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
