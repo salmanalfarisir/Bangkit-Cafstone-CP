@@ -1,11 +1,15 @@
 package com.cafstone.application.data
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.data.pref.UserPreference
 import com.cafstone.application.data.response.LoginResponse
 import com.cafstone.application.data.response.RegisterResponse
 import com.cafstone.application.data.retrofit.ApiService
+import com.cafstone.application.view.signup.UserRegisterModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.runBlocking
 
 class UserRepository private constructor(
     private val userPreference: UserPreference,
@@ -20,31 +24,44 @@ class UserRepository private constructor(
         return userPreference.getSession()
     }
 
+    fun getdata() : UserModel{
+        val data = runBlocking { userPreference.getdata() }
+        return data
+    }
     suspend fun logout() {
         userPreference.logout()
     }
 
-    suspend fun login(email: String, password: String): LoginResponse? {
-        return try {
+    suspend fun login(email: String, password: String): LoginResponse {
             val response = apiService.login(email, password)
-            if (!response.error) {
+            if (response.success) {
                 // Jika login berhasil dan token diterima, simpan token ke dalam DataStore
-                val user = UserModel(email, response.loginResult.token, true)
+                val user = UserModel(response.data.name,
+                    email,
+                    response.data.preferences.servesBeer,
+                    response.data.preferences.servesWine,
+                    response.data.preferences.servesCocktails,
+                    response.data.preferences.goodForChildren,
+                    response.data.preferences.goodForGroups,
+                    response.data.preferences.reservable,
+                    response.data.preferences.outdoorSeating,
+                    response.data.preferences.liveMusic,
+                    response.data.preferences.servesDessert,
+                    response.data.preferences.priceLevel,
+                    response.data.preferences.acceptsCreditCards,
+                    response.data.preferences.acceptsDebitCards,
+                    response.data.preferences.acceptsCashOnly,
+                    response.data.preferences.acceptsNfc,
+                    true)
+
+                Log.d(TAG,user.toString())
                 saveSession(user)
             }
-            response
-        } catch (e: Exception) {
-            null
-        }
+            return response
     }
 
-    suspend fun register(name: String, email: String, password: String): RegisterResponse? {
-        return try {
-            val response = apiService.register(name, email, password)
-            response
-        } catch (e: Exception) {
-            null
-        }
+    suspend fun register(user: UserRegisterModel): RegisterResponse {
+        return apiService.register(user.name,user.email,user.password,user.servesBeer,user.servesWine,user.servesCocktails,user.goodForChildren,user.goodForGroups,user.reservable,user.outdoorSeating,user.liveMusic,user.servesDessert,user.priceLevel,user.acceptsCreditCards,user.acceptsDebitCards,user.acceptsCashOnly,user.acceptsNfc)
     }
 
     companion object {

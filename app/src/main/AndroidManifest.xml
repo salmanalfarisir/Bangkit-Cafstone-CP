@@ -17,6 +17,15 @@
         android:theme="@style/Base.Theme.Cafstone_Project"
         tools:targetApi="31">
         <activity
+            android:name=".view.preferance.PreferanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.detail.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Nearby.NearbyActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.onboardingpage.OnboardingActivity"
             android:exported="false" />
         <activity

@@ -20,21 +20,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import com.cafstone.application.BuildConfig
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.databinding.ActivityMainBinding
-import com.cafstone.application.di.LocationSharedPreferences
 import com.cafstone.application.di.PlacesClientSingleton
-import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.ViewModelFactory
+import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.search.SearchViewActivity
 import com.cafstone.application.view.welcome.SplashScreenActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.CircularBounds
+import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.api.net.SearchByTextRequest
@@ -59,7 +57,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter1: PlacesAdapter2
     private lateinit var adapter2: PlacesAdapter2
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        viewModel.getSession().observe(this) { user ->
+            if (!user.isLogin) {
+                startActivity(Intent(this, OnboardingActivity::class.java))
+                finish()
+            }else{
+                locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                getMyLastLocation()
+                setupView()
+            }
+        }
+    }
+
+
+    //LOKASI START
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -87,23 +104,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        viewModel.getSession().observe(this) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(this, OnboardingActivity::class.java))
-                finish()
-            }
-        }
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getMyLastLocation()
-        setupView()
-    }
-
     private fun checkPermission(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
@@ -130,7 +130,6 @@ class MainActivity : AppCompatActivity() {
                 fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         currentLocation = location
-                        LocationSharedPreferences.saveOrUpdateLocation(this@MainActivity,location.latitude,location.longitude)
                         setupAction()
                     } else {
                         AlertDialog.Builder(this).apply {
@@ -156,6 +155,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+//LOKASI END
 
 
     private fun getCityNameFromCoordinates(latitude: Double, longitude: Double): String? {
@@ -168,13 +168,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //SEARCH TEXT
     @SuppressLint("NotifyDataSetChanged")
     fun searchText(text: String,p : Int,a : Int) {
-        if (!Places.isInitialized()) {
-            Log.d(TAG, "Token : " + BuildConfig.MAPS_API_KEY)
-            Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
-        }
-
         // Create a new PlacesClient instance
         placesClient = PlacesClientSingleton.getInstance(this)
 
@@ -196,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         // Use the builder to create a SearchByTextRequest object
         val searchByTextRequest: SearchByTextRequest =
             SearchByTextRequest.builder(text, placeFields)
+                .setMinRating(4.0)
                 .setLocationBias(CircularBounds.newInstance(searchCenter, 5000.0)).build()
 
         val includedTypes = listOf(
@@ -223,11 +220,10 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         if (i != 0) {
-                            val photoUrl = place.photoMetadatas?.firstOrNull()?.let { photoMetadata ->
-                                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
-                            }
-                            if (photoUrl != null) {
-                                Log.d(TAG, photoUrl)
+                            var photoUrl : PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty())
+                            {
+                                photoUrl = place.photoMetadatas?.get(0)
                             }
 
                             when (p) {
@@ -297,9 +293,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setupAction() {
-        currentLocation?.let {
-            binding.btnLocation.text = getCityNameFromCoordinates(it.latitude,it.longitude)
+        currentLocation?.let {lokasi->
+            Log.d(TAG,"lOKASI : "+lokasi.latitude+" + "+lokasi.longitude)
+            binding.btnLocation.text = getCityNameFromCoordinates(lokasi.latitude,lokasi.longitude)
             binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
@@ -311,11 +309,17 @@ class MainActivity : AppCompatActivity() {
             adapter2 = PlacesAdapter2(placesList2)
             binding.rvReview2.adapter = adapter2
 
-
             // Initialize the SDK
             searchText("Cafe Yang Sedang Banyak Dikunjungi",1,1)
             searchText("Cafe Fancy",2,2)
             searchText("Cafe Ternyaman",0,0)
+
+            binding.searchBar.setOnClickListener {
+                val intent = Intent(this, SearchViewActivity::class.java)
+                intent.putExtra(SearchViewActivity.LATITUDE, lokasi.latitude)
+                intent.putExtra(SearchViewActivity.LONGTITUDE,lokasi.longitude)
+                startActivity(intent)
+            }
             binding.progressBar.visibility= View.GONE
         }
         binding.btnLocation.setOnClickListener {
@@ -330,11 +334,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.logoutButton.setOnClickListener {
-            LocationSharedPreferences.clearLocation(this)
             viewModel.logout()
-        }
-        binding.searchBar.setOnClickListener {
-            startActivity(Intent(this, SearchViewActivity::class.java))
         }
     }
 }

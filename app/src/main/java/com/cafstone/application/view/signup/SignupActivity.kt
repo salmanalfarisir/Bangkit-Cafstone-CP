@@ -2,6 +2,7 @@ package com.cafstone.application.view.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -16,11 +17,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.databinding.ActivitySignupBinding
 import com.cafstone.application.view.ViewModelFactory
+import com.cafstone.application.view.preferance.PreferanceActivity
 
 class SignupActivity : AppCompatActivity() {
-    private val viewModel by viewModels<SignUpViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
     private lateinit var binding: ActivitySignupBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,42 +94,11 @@ class SignupActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
             if (email.isNotEmpty() && nama.isNotEmpty() && password.isNotEmpty()) {
                 if (binding.emailEditTextLayout.error == null && binding.passwordEditTextLayout.error == null) {
-                    viewModel.register(nama, email, password)
-                    viewModel.isLoading.observe(this) { ds ->
-                        showLoading(ds)
-                        if (ds == false) {
-                            viewModel.isStatus.observe(this@SignupActivity) { cs ->
-                                if (cs != null) {
-                                    if (!cs.error) {
-                                        Toast.makeText(
-                                            this, "Register Successfully", Toast.LENGTH_SHORT
-                                        ).show()
-                                        finish()
-                                    } else {
-                                        AlertDialog.Builder(this@SignupActivity).apply {
-                                            setTitle("Failed")
-                                            setMessage(cs.message)
-                                            setNegativeButton("Next") { dialog, _ ->
-                                                dialog.dismiss()
-                                            }
-                                            create()
-                                            show()
-                                        }
-                                    }
-                                } else {
-                                    AlertDialog.Builder(this@SignupActivity).apply {
-                                        setTitle("Failed")
-                                        setMessage("$email is already taken")
-                                        setNegativeButton("Next") { dialog, _ ->
-                                            dialog.dismiss()
-                                        }
-                                        create()
-                                        show()
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    val intent = Intent(this,PreferanceActivity::class.java)
+                    intent.putExtra(PreferanceActivity.NAME,nama)
+                    intent.putExtra(PreferanceActivity.EMAIL,email)
+                    intent.putExtra(PreferanceActivity.PASSWORD,password)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this, "Error Email or Password", Toast.LENGTH_SHORT)
                         .show()
