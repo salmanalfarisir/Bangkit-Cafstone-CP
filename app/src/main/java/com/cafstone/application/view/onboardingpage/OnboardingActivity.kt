@@ -36,5 +36,9 @@ class OnboardingActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+        binding.textView4.setOnClickListener {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

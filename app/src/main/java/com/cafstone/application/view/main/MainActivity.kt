@@ -20,11 +20,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import com.cafstone.application.BuildConfig
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.databinding.ActivityMainBinding
-import com.cafstone.application.di.LocationSharedPreferences
 import com.cafstone.application.di.PlacesClientSingleton
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
@@ -33,8 +31,8 @@ import com.cafstone.application.view.welcome.SplashScreenActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.CircularBounds
+import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.api.net.SearchByTextRequest
@@ -47,24 +45,38 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
-
     private var currentLocation: Location? = null
-
     private val placesList = mutableListOf<AdapterModel>()
     private val placesList1 = mutableListOf<AdapterModel>()
     private val placesList2 = mutableListOf<AdapterModel>()
-
     private lateinit var adapter: PlacesAdapter2
     private lateinit var adapter1: PlacesAdapter2
     private lateinit var adapter2: PlacesAdapter2
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        viewModel.getSession().observe(this) { user ->
+            if (!user.isLogin) {
+                startActivity(Intent(this, OnboardingActivity::class.java))
+                finish()
+            }else{
+                locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                getMyLastLocation()
+                setupView()
+            }
+        }
+    }
+
+
+    //LOKASI START
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -74,12 +86,10 @@ class MainActivity : AppCompatActivity() {
                     // Precise location access granted.
                     getMyLastLocation()
                 }
-
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     // Only approximate location access granted.
                     getMyLastLocation()
                 }
-
                 else -> {
                     // No location access granted.
                     AlertDialog.Builder(this).apply {
@@ -94,39 +104,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        viewModel.getSession().observe(this) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(this, OnboardingActivity::class.java))
-                finish()
-            }
-        }
-
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getMyLastLocation()
-        setupView()
-
-    }
-
     private fun checkPermission(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
             permission
         ) == PackageManager.PERMISSION_GRANTED
     }
-
     private fun getMyLastLocation() {
-        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+        if     (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
             checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-        ) {
+        ){
             val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            if (!isGpsEnabled) {
+            if (!isGpsEnabled)
+            {
                 AlertDialog.Builder(this).apply {
                     setTitle(title)
                     setMessage("Mohon Hidupkan GPS anda")
@@ -136,25 +126,18 @@ class MainActivity : AppCompatActivity() {
                     create()
                     show()
                 }
-            } else {
+            }else{
                 fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         currentLocation = location
-                        LocationSharedPreferences.saveOrUpdateLocation(
-                            this@MainActivity,
-                            location.latitude,
-                            location.longitude
-                        )
                         setupAction()
                     } else {
                         AlertDialog.Builder(this).apply {
                             setTitle(title)
                             setMessage("Gagal Mengambil Lokasi Coba Kembali")
                             setPositiveButton("OK") { _, _ ->
-                                val intent =
-                                    Intent(this@MainActivity, SplashScreenActivity::class.java)
-                                intent.flags =
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                val intent = Intent(this@MainActivity, SplashScreenActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                 startActivity(intent)
                             }
                             create()
@@ -172,6 +155,8 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+//LOKASI END
+
 
     private fun getCityNameFromCoordinates(latitude: Double, longitude: Double): String? {
         val geocoder = Geocoder(this.applicationContext, Locale.getDefault())
@@ -183,13 +168,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //SEARCH TEXT
     @SuppressLint("NotifyDataSetChanged")
-    fun searchText(text: String, p: Int, a: Int) {
-        if (!Places.isInitialized()) {
-            Log.d(TAG, "Token : " + BuildConfig.MAPS_API_KEY)
-            Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
-        }
-
+    fun searchText(text: String,p : Int,a : Int) {
         // Create a new PlacesClient instance
         placesClient = PlacesClientSingleton.getInstance(this)
 
@@ -206,11 +187,12 @@ class MainActivity : AppCompatActivity() {
         // Define latitude and longitude coordinates of the search area
         val lat = currentLocation?.latitude ?: 3.5629935
         val long = currentLocation?.longitude ?: 98.6529746
-        val searchCenter = LatLng(lat, long)
+        val searchCenter = LatLng(lat,long)
 
         // Use the builder to create a SearchByTextRequest object
         val searchByTextRequest: SearchByTextRequest =
             SearchByTextRequest.builder(text, placeFields)
+                .setMinRating(4.0)
                 .setLocationBias(CircularBounds.newInstance(searchCenter, 5000.0)).build()
 
         val includedTypes = listOf(
@@ -238,17 +220,15 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         if (i != 0) {
-                            val photoUrl =
-                                place.photoMetadatas?.firstOrNull()?.let { photoMetadata ->
-                                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
-                                }
-                            if (photoUrl != null) {
-                                Log.d(TAG, photoUrl)
+                            var photoUrl : PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty())
+                            {
+                                photoUrl = place.photoMetadatas?.get(0)
                             }
 
                             when (p) {
                                 0 -> {
-                                    Log.d(TAG, "0")
+                                    Log.d(TAG,"0")
                                     placesList.add(
                                         AdapterModel(
                                             place.id!!,
@@ -259,9 +239,8 @@ class MainActivity : AppCompatActivity() {
                                         )
                                     )
                                 }
-
                                 1 -> {
-                                    Log.d(TAG, "1")
+                                    Log.d(TAG,"1")
                                     placesList1.add(
                                         AdapterModel(
                                             place.id!!,
@@ -272,9 +251,8 @@ class MainActivity : AppCompatActivity() {
                                         )
                                     )
                                 }
-
                                 2 -> {
-                                    Log.d(TAG, "2")
+                                    Log.d(TAG,"2")
                                     placesList2.add(
                                         AdapterModel(
                                             place.id!!,
@@ -294,12 +272,10 @@ class MainActivity : AppCompatActivity() {
 
                         adapter.notifyDataSetChanged()
                     }
-
                     1 -> {
 
                         adapter1.notifyDataSetChanged()
                     }
-
                     2 -> {
                         adapter2.notifyDataSetChanged()
                     }
@@ -312,15 +288,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.apply {
-                show(WindowInsets.Type.statusBars())
-            }
+            window.insetsController?.show(WindowInsets.Type.statusBars())
+            supportActionBar?.hide()
         }
     }
 
+
     private fun setupAction() {
-        currentLocation?.let {
-            binding.btnLocation.text = getCityNameFromCoordinates(it.latitude, it.longitude)
+        currentLocation?.let {lokasi->
+            Log.d(TAG,"lOKASI : "+lokasi.latitude+" + "+lokasi.longitude)
+            binding.btnLocation.text = getCityNameFromCoordinates(lokasi.latitude,lokasi.longitude)
             binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
@@ -332,12 +309,18 @@ class MainActivity : AppCompatActivity() {
             adapter2 = PlacesAdapter2(placesList2)
             binding.rvReview2.adapter = adapter2
 
-
             // Initialize the SDK
-            searchText("Cafe Yang Sedang Banyak Dikunjungi", 1, 1)
-            searchText("Cafe Fancy", 2, 2)
-            searchText("Cafe Ternyaman", 0, 0)
-            binding.progressBar.visibility = View.GONE
+            searchText("Cafe Yang Sedang Banyak Dikunjungi",1,1)
+            searchText("Cafe Fancy",2,2)
+            searchText("Cafe Ternyaman",0,0)
+
+            binding.searchBar.setOnClickListener {
+                val intent = Intent(this, SearchViewActivity::class.java)
+                intent.putExtra(SearchViewActivity.LATITUDE, lokasi.latitude)
+                intent.putExtra(SearchViewActivity.LONGTITUDE,lokasi.longitude)
+                startActivity(intent)
+            }
+            binding.progressBar.visibility= View.GONE
         }
         binding.btnLocation.setOnClickListener {
             AlertDialog.Builder(this).apply {
@@ -351,11 +334,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.logoutButton.setOnClickListener {
-            LocationSharedPreferences.clearLocation(this)
             viewModel.logout()
-        }
-        binding.searchBar.setOnClickListener {
-            startActivity(Intent(this, SearchViewActivity::class.java))
         }
     }
 }

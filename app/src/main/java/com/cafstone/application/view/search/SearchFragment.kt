@@ -1,5 +1,6 @@
 package com.cafstone.application.view.search
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cafstone.application.BuildConfig
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
 import com.cafstone.application.databinding.FragmentSearchBinding
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.CircularBounds
+import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchByTextResponse
@@ -45,6 +46,7 @@ class SearchFragment : Fragment() {
             searchText(it,it.s)
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun updateSearchResults(newPlacesList: List<AdapterModel>) {
         placesList.clear()
         placesList.addAll(newPlacesList)
@@ -56,6 +58,7 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun searchText(activity: SearchViewActivity, text: String) {
         activity.showloading(true)
         placesList.clear()
@@ -67,12 +70,12 @@ class SearchFragment : Fragment() {
             Place.Field.NAME,
             Place.Field.ADDRESS,
             Place.Field.TYPES,
-            Place.Field.PHOTO_METADATAS
+            Place.Field.PHOTO_METADATAS,
+            Place.Field.RATING
         )
-        val currentLocation = activity.currentLocation
         // Define latitude and longitude coordinates of the search area
-        val lat = currentLocation?.latitude ?: 3.5629935
-        val long = currentLocation?.longitude ?: 98.6529746
+        val lat = activity.lat
+        val long = activity.long
         val searchCenter = LatLng(lat,long)
         // Use the builder to create a SearchByTextRequest object
         val searchByTextRequest: SearchByTextRequest =
@@ -104,11 +107,10 @@ class SearchFragment : Fragment() {
                             }
                         }
                         if (i != 0) {
-                            val photoUrl = place.photoMetadatas?.firstOrNull()?.let { photoMetadata ->
-                                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
-                            }
-                            if (photoUrl != null) {
-                                Log.d(ContentValues.TAG, photoUrl)
+                            var photoUrl : PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty())
+                            {
+                                photoUrl = place.photoMetadatas?.get(0)
                             }
 
                             Log.d(ContentValues.TAG,"0")

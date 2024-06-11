@@ -7,7 +7,7 @@ import com.cafstone.application.data.UserRepository
 import com.cafstone.application.di.Injection
 import com.cafstone.application.view.login.LoginViewModel
 import com.cafstone.application.view.main.MainViewModel
-import com.cafstone.application.view.signup.SignUpViewModel
+import com.cafstone.application.view.preferance.PreferanceViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -23,8 +23,8 @@ class ViewModelFactory(private val repository: UserRepository) :
                 LoginViewModel(repository) as T
             }
 
-            modelClass.isAssignableFrom(SignUpViewModel::class.java) -> {
-                SignUpViewModel(repository) as T
+            modelClass.isAssignableFrom(PreferanceViewModel::class.java) -> {
+                PreferanceViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
