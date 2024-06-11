@@ -26,7 +26,7 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>) :
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (_, name, desc, photo, rating) = placesList[position]
+        val (id, name, desc, photo, rating) = placesList[position]
         holder.placeNameTextView.text = name
         holder.placeDescTextView.text = desc
         photo?.let { url ->
@@ -36,19 +36,20 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>) :
                 .setMaxHeight(280)
                 .build()
 
-            placesClient.fetchResolvedPhotoUri(photoRequest).addOnSuccessListener { fetchResolvedPhotoUriResponse ->
-                val uri = fetchResolvedPhotoUriResponse.uri
-                val req : RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
-                Glide.with(holder.itemView.context)
-                    .load(uri)
-                    .apply(req)
-                    .into(holder.placeImageView)
-            }.addOnFailureListener { exception ->
-                if (exception is ApiException) {
-                    Log.e("MainActivity", "Place not found: ${exception.message}")
-                    holder.placeImageView.setImageResource(R.drawable.no_media_selected)
+            placesClient.fetchResolvedPhotoUri(photoRequest)
+                .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
+                    val uri = fetchResolvedPhotoUriResponse.uri
+                    val req: RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
+                    Glide.with(holder.itemView.context)
+                        .load(uri)
+                        .apply(req)
+                        .into(holder.placeImageView)
+                }.addOnFailureListener { exception ->
+                    if (exception is ApiException) {
+                        Log.e("MainActivity", "Place not found: ${exception.message}")
+                        holder.placeImageView.setImageResource(R.drawable.no_media_selected)
+                    }
                 }
-            }
         }
             ?: holder.placeImageView.setImageResource(R.drawable.no_media_selected)
         if (rating == null) {
@@ -58,9 +59,9 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>) :
             holder.ratingTextView.text = rating.toString()
         }
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
-            intentDetail.putExtra(DetailActivity.PLACE_ID,id)
+            intentDetail.putExtra(DetailActivity.PLACE_ID, id)
             holder.itemView.context.startActivity(intentDetail)
         }
     }

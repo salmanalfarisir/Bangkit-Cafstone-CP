@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="resto">Resto</string>
+    <string name="cafe_terdekat">Terdekat</string>
+    <string name="price">Harga</string>
+    <string name="low_price_string">Termurah</string>
+    <string name="resto_yang_lagi_viral">Cafe Yang Lagi Viral</string>
+    <string name="resto_mewah">Resto Mewah Buat Kamu</string>
+    <string name="icon_maps_terdekat">icon maps terdekat</string>
+    <string name="icon_harga_terendah">icon harga terendah</string>
+    <string name="icon_rating_jempolan">icon rating jempolan</string>
+</resources>

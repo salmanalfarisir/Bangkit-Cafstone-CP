@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:contentDescription="@string/icon_maps_terdekat"
-                            android:src="@drawable/maps_terdekat" />
+                            android:src="@drawable/icon_maps_terdekat" />
 
                         <TextView
                             android:layout_width="wrap_content"
