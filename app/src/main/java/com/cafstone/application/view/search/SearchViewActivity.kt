@@ -46,11 +46,11 @@ class SearchViewActivity : AppCompatActivity() {
 
         binding.progressBar.visibility = View.GONE
         val location = LocationSharedPreferences.getLocation(this)
-        if (location != null)
-        {
+        if (location != null) {
             currentLocation = location
             adapter = PlacesAdapter(placesList)
-            val fragment = fragmentManager.findFragmentByTag(SearchEmptyFragment::class.java.simpleName)
+            val fragment =
+                fragmentManager.findFragmentByTag(SearchEmptyFragment::class.java.simpleName)
             if (fragment !is SearchEmptyFragment) {
                 Log.d(
                     "MyFlexibleFragment",
@@ -58,7 +58,11 @@ class SearchViewActivity : AppCompatActivity() {
                 )
                 fragmentManager
                     .beginTransaction()
-                    .add(R.id.frame_container, emptyFragment, SearchEmptyFragment::class.java.simpleName)
+                    .add(
+                        R.id.frame_container,
+                        emptyFragment,
+                        SearchEmptyFragment::class.java.simpleName
+                    )
                     .commit()
             }
 
@@ -72,7 +76,8 @@ class SearchViewActivity : AppCompatActivity() {
             }
             placesClient = PlacesClientSingleton.getInstance(this)
 
-            binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            binding.searchView.setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     // Handle the query submission here
                     // Example: perform a search with the query
@@ -82,17 +87,18 @@ class SearchViewActivity : AppCompatActivity() {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     // Handle the text change here
                     // Example: update search suggestions
-                    if (newText.isNullOrEmpty() || newText.length < 3)
-                    {
-                        if(fragment !is SearchEmptyFragment)
-                        {
+                    if (newText.isNullOrEmpty() || newText.length < 3) {
+                        if (fragment !is SearchEmptyFragment) {
                             fragmentManager
                                 .beginTransaction()
-                                .replace(R.id.frame_container, emptyFragment, SearchEmptyFragment::class.java.simpleName)
+                                .replace(
+                                    R.id.frame_container,
+                                    emptyFragment,
+                                    SearchEmptyFragment::class.java.simpleName
+                                )
                                 .commit()
                         }
-                    }
-                    else{
+                    } else {
                         val lowertext = newText.lowercase(Locale.getDefault())
                         s = lowertext
                         searchText(lowertext)
@@ -100,7 +106,7 @@ class SearchViewActivity : AppCompatActivity() {
                     return true
                 }
             })
-        }else{
+        } else {
             finish()
         }
 
@@ -127,7 +133,7 @@ class SearchViewActivity : AppCompatActivity() {
 
         val lat = currentLocation?.latitude ?: 3.5629935
         val long = currentLocation?.longitude ?: 98.6529746
-        val searchCenter = LatLng(lat,long)
+        val searchCenter = LatLng(lat, long)
         // Define latitude and longitude coordinates of the search area
 
         // Use the builder to create a SearchByTextRequest object
@@ -161,14 +167,15 @@ class SearchViewActivity : AppCompatActivity() {
                             }
                         }
                         if (i != 0) {
-                            val photoUrl = place.photoMetadatas?.firstOrNull()?.let { photoMetadata ->
-                                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
-                            }
+                            val photoUrl =
+                                place.photoMetadatas?.firstOrNull()?.let { photoMetadata ->
+                                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoMetadata.zzb()}&key=${BuildConfig.BASE_URL}"
+                                }
                             if (photoUrl != null) {
                                 Log.d(TAG, photoUrl)
                             }
 
-                            Log.d(TAG,"0")
+                            Log.d(TAG, "0")
                             placesList.add(
                                 AdapterModel(
                                     place.id!!,
@@ -181,15 +188,19 @@ class SearchViewActivity : AppCompatActivity() {
                         }
                     }
                 }
-                val fragments = fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
-                if (fragments is SearchFragment)
-                {
+                val fragments =
+                    fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
+                if (fragments is SearchFragment) {
                     searchFragment.updateSearchResults(placesList)
-                }else{
-                    Log.d(TAG,"masuk awal")
+                } else {
+                    Log.d(TAG, "masuk awal")
                     fragmentManager
                         .beginTransaction()
-                        .replace(R.id.frame_container, searchFragment, SearchFragment::class.java.simpleName)
+                        .replace(
+                            R.id.frame_container,
+                            searchFragment,
+                            SearchFragment::class.java.simpleName
+                        )
                         .commit()
                 }
             }
@@ -199,10 +210,10 @@ class SearchViewActivity : AppCompatActivity() {
         showloading(false)
     }
 
-    fun showloading (loading : Boolean){
-        if (loading){
+    fun showloading(loading: Boolean) {
+        if (loading) {
             binding.progressBar.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.progressBar.visibility = View.GONE
         }
     }

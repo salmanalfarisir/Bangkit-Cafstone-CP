@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.cafstone.application.R
 
-class PlacesAdapter2(private val placesList: List<AdapterModel>): RecyclerView.Adapter<PlacesAdapter2.PlaceViewHolder>() {
+class PlacesAdapter2(private val placesList: List<AdapterModel>) :
+    RecyclerView.Adapter<PlacesAdapter2.PlaceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story2, parent, false)
@@ -17,7 +18,7 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>): RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (id, name, desc, photo,rating) = placesList[position]
+        val (_, name, desc, photo, rating) = placesList[position]
         holder.placeNameTextView.text = name
         holder.placeDescTextView.text = desc
         photo?.let { url ->
@@ -26,11 +27,10 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>): RecyclerView.A
                 .into(holder.placeImageView)
         }
             ?: holder.placeImageView.setImageResource(R.drawable.no_media_selected)
-        if (rating== null)
-        {
+        if (rating == null) {
             holder.ratingTextView.visibility = View.GONE
             holder.ratingImageView.visibility = View.GONE
-        }else{
+        } else {
             holder.ratingTextView.text = rating.toString()
         }
     }
@@ -44,6 +44,6 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>): RecyclerView.A
         val placeDescTextView: TextView = itemView.findViewById(R.id.story_description)
         val placeImageView: ImageView = itemView.findViewById(R.id.iv_item_photo)
         val ratingImageView: ImageView = itemView.findViewById(R.id.imageView2)
-        val ratingTextView: TextView = itemView.findViewById(R.id.ratingtextview)
+        val ratingTextView: TextView = itemView.findViewById(R.id.ratingTextView)
     }
 }
