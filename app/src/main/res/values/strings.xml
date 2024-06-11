@@ -48,4 +48,14 @@
     <string name="destination_address">Destination Address</string>
     <string name="rating">rating</string>
     <string name="rating_4_5">4.5</string>
+    <string name="cafe_terdekat">Terdekat</string>
+    <string name="resto">Resto</string>
+    <string name="rekomendasi_cafe_nyaman_untuk_anda">Rekomendasi Cafe Nyaman Untuk Anda</string>
+    <string name="resto_yang_lagi_viral">Resto yang lagi viral</string>
+    <string name="resto_mewah">Resto Mewah</string>
+    <string name="price">Harga</string>
+    <string name="low_price_string">Termurah</string>
+    <string name="icon_maps_terdekat">icon maps terdekat</string>
+    <string name="icon_rating_jempolan">icon rating jempolan</string>
+    <string name="icon_harga_terendah">icon harga terendah</string>
 </resources>
