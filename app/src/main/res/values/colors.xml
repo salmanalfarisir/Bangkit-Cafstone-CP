@@ -7,6 +7,9 @@
     <color name="blue_55">#3385ff</color>
     <color name="blue_85">#b3d1ff</color>
 
+    <color name="button_no">#d5d8f7</color>
+    <color name="button_yes">#bfc4f5</color>
+
     <color name="primary_color">#4361EE</color>
     <color name="black_text">#2A2A2A</color>
     <color name="light_black_text">#9E9E9E</color>

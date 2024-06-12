@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cafstone.application.data.UserRepository
+import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.data.response.ErrorResponse
 import com.cafstone.application.view.signup.UserRegisterModel
 import com.google.gson.Gson
@@ -33,7 +34,26 @@ class PreferanceViewModel(private val userRepository: UserRepository) : ViewMode
             try {
                 val response = userRepository.register(user)
                 if (response.success == true) {
+                    val usermodel = UserModel(user.name,
+                        user.email,
+                        user.servesBeer,
+                        user.servesWine,
+                        user.servesCocktails,
+                        user.goodForChildren,
+                        user.goodForGroups,
+                        user.reservable,
+                        user.outdoorSeating,
+                        user.liveMusic,
+                        user.servesDessert,
+                        user.priceLevel,
+                        user.acceptsCreditCards,
+                        user.acceptsDebitCards,
+                        user.acceptsCashOnly,
+                        user.acceptsNfc,
+                        true)
+                    saveSession(usermodel)
                     _regist.value = RegistrationStatus.Success(response.message ?: "User Created!")
+
                 } else {
                     _regist.value = RegistrationStatus.Error(response.message ?: "Registration failed")
                 }
@@ -47,6 +67,12 @@ class PreferanceViewModel(private val userRepository: UserRepository) : ViewMode
             } finally {
                 _isLoading.value = false
             }
+        }
+    }
+
+    fun saveSession(user: UserModel) {
+        viewModelScope.launch {
+            userRepository.saveSession(user)
         }
     }
 }

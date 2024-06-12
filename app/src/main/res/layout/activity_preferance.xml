@@ -52,25 +52,14 @@
             android:textSize="16sp" />
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:tabBackground="@color/primary_color"
-        app:tabIndicatorColor="@color/primary_color"
-        app:tabIndicatorHeight="10dp"
-        tools:ignore="SpeakableTextPresentCheck" />
-
     <!--    View Pager untuk menampilkan preference user-->
-    <androidx.viewpager2.widget.ViewPager2
+    <FrameLayout
         android:id="@+id/preferenceViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <Button
         android:id="@+id/nextOrSubmitButton"
