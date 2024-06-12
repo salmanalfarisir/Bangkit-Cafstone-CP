@@ -33,6 +33,7 @@
     <string name="welcome_to">Welcome to</string>
     <string name="welcome_to2">Harmonizing with Flavor, \nCloser with Distance</string>
     <string name="welcome_to3">Exploring culinary \ndelights</string>
+    <string name="submit">Submit</string>
 
     <string name="onboarding_text1">Explore Cafes and Restaurants around you,\naccording to your preferences.</string>
     <string name="onboarding_text2">Experience Perfection in Every Corner of \nthe City with Cafstone Comfort in Your Hand.</string>
@@ -102,4 +103,39 @@
     <string name="icon_rating_jempolan">icon rating jempolan</string>
     <string name="user_preference">User Preference</string>
     <string name="serve_beer">Serve Beer</string>
+    <string name="indonsian_food">Indonsian Food</string>
+    <string name="chinese_food">Chinese Food</string>
+    <string name="american_food">American Food</string>
+    <string name="italian_food">Italian Food</string>
+    <string name="korean_food">Korean Food</string>
+    <string name="japanese_food">Japanese Food</string>
+    <string name="thai_food">Thailand Food</string>
+    <string name="indian_food">Indian Food</string>
+    <string name="fast_food">Fast Food</string>
+    <string name="vegetarian_food">Vegetarian Food</string>
+    <string name="steak_house">Steak House</string>
+    <string name="coffee_shop">Coffee Shop</string>
+    <string name="murah">Murah</string>
+    <string name="sedang">Sedang</string>
+    <string name="mahal">Mahal</string>
+    <string name="lumayan">Lumayan</string>
+    <string name="menyediakan_beer">Menyediakan Beer</string>
+    <string name="menyediakan_wine">Menyediakan Wine</string>
+    <string name="menyediakan_cocktail">Menyediakan Cocktail</string>
+    <string name="baik_untuk_anak_anak">Baik Untuk Anak Anak</string>
+    <string name="baik_untuk_group">Baik Untuk Group</string>
+    <string name="reservable">Reservable</string>
+    <string name="menyediakan_tempat_diluar_ruangan">Menyediakan Tempat Diluar Ruangan</string>
+    <string name="menyediakan_dessert">Menyediakan Dessert</string>
+    <string name="live_music">Live Music</string>
+    <string name="level_harga">Level Harga</string>
+    <string name="preference">Preference</string>
+    <string name="metode_pembayaran">Metode Pembayaran</string>
+    <string name="tunai">Tunai</string>
+    <string name="debit">Debit</string>
+    <string name="credit">Credit</string>
+    <string name="nfc">NFC</string>
+    <string name="debit_card">Debit Card</string>
+    <string name="debit_card1">Debit Card</string>
+    <string name="credit_card">Credit Card</string>
 </resources>

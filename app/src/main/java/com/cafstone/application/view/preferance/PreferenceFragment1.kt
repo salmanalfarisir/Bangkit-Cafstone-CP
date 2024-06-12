@@ -1,18 +1,15 @@
 package com.cafstone.application.view.preferance
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.Fragment
 import com.cafstone.application.R
-import com.cafstone.application.databinding.ActivityPreferanceBinding
-import com.cafstone.application.databinding.ActivitySearchViewBinding
 import com.cafstone.application.databinding.FragmentPreference1Binding
-import com.cafstone.application.databinding.FragmentSearchBinding
-import com.cafstone.application.view.search.SearchViewActivity
 
+@Suppress("NAME_SHADOWING")
 class PreferenceFragment1 : Fragment() {
     private var _binding: FragmentPreference1Binding? = null
     private val binding get() = _binding!!
@@ -29,126 +26,130 @@ class PreferenceFragment1 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as? PreferenceActivity
-        activity?.let{activity->
-            setpricelevel(activity)
-            setbutton(activity.servesBeer,binding.servesbeer)
-            setbutton(activity.servesWine,binding.serveswine)
-            setbutton(activity.servesCocktails,binding.servescocktail)
-            setbutton(activity.goodForChildren,binding.goodforchildren)
-            setbutton(activity.goodForGroups,binding.goodforgroups)
-            setbutton(activity.reservable,binding.reservable)
-            setbutton(activity.outdoorSeating,binding.outdoorseating)
-            setbutton(activity.liveMusic,binding.livemusic)
-            setbutton(activity.servesDessert,binding.servesdessert)
+        activity?.let { activity ->
+            setPriceLevel(activity)
+            setButton(activity.servesBeer, binding.servesBeer)
+            setButton(activity.servesWine, binding.servesWine)
+            setButton(activity.servesCocktails, binding.servesCockTail)
+            setButton(activity.goodForChildren, binding.goodForChildren)
+            setButton(activity.goodForGroups, binding.goodForGroups)
+            setButton(activity.reservable, binding.reservable)
+            setButton(activity.outdoorSeating, binding.outDoorSeating)
+            setButton(activity.liveMusic, binding.liveMusic)
+            setButton(activity.servesDessert, binding.servesDessert)
 
             binding.priceLevel1.setOnClickListener {
                 activity.priceLevel = 1
-                setpricelevel(activity)
+                setPriceLevel(activity)
             }
             binding.priceLevel2.setOnClickListener {
                 activity.priceLevel = 2
-                setpricelevel(activity)
+                setPriceLevel(activity)
             }
             binding.priceLevel3.setOnClickListener {
                 activity.priceLevel = 3
-                setpricelevel(activity)
+                setPriceLevel(activity)
             }
             binding.priceLevel4.setOnClickListener {
                 activity.priceLevel = 4
-                setpricelevel(activity)
+                setPriceLevel(activity)
             }
 
-            binding.servesbeer.setOnClickListener {
-                activity.servesBeer = setclick(activity.servesBeer)
-                setbutton(activity.servesBeer,binding.servesbeer)
+            binding.servesBeer.setOnClickListener {
+                activity.servesBeer = setClick(activity.servesBeer)
+                setButton(activity.servesBeer, binding.servesBeer)
             }
 
-            binding.servescocktail.setOnClickListener {
-                activity.servesCocktails = setclick(activity.servesCocktails)
-                setbutton(activity.servesCocktails,binding.servescocktail)
+            binding.servesCockTail.setOnClickListener {
+                activity.servesCocktails = setClick(activity.servesCocktails)
+                setButton(activity.servesCocktails, binding.servesCockTail)
             }
 
-            binding.serveswine.setOnClickListener {
-                activity.servesWine = setclick(activity.servesWine)
-                setbutton(activity.servesWine,binding.serveswine)
+            binding.servesWine.setOnClickListener {
+                activity.servesWine = setClick(activity.servesWine)
+                setButton(activity.servesWine, binding.servesWine)
             }
 
-            binding.goodforchildren.setOnClickListener {
-                activity.goodForChildren = setclick(activity.goodForChildren)
-                setbutton(activity.goodForChildren,binding.goodforchildren)
+            binding.goodForChildren.setOnClickListener {
+                activity.goodForChildren = setClick(activity.goodForChildren)
+                setButton(activity.goodForChildren, binding.goodForChildren)
             }
 
-            binding.goodforgroups.setOnClickListener {
-                activity.goodForGroups = setclick(activity.goodForGroups)
-                setbutton(activity.goodForGroups,binding.goodforgroups)
+            binding.goodForGroups.setOnClickListener {
+                activity.goodForGroups = setClick(activity.goodForGroups)
+                setButton(activity.goodForGroups, binding.goodForGroups)
             }
 
             binding.reservable.setOnClickListener {
-                activity.reservable = setclick(activity.reservable)
-                setbutton(activity.reservable,binding.reservable)
+                activity.reservable = setClick(activity.reservable)
+                setButton(activity.reservable, binding.reservable)
             }
 
-            binding.outdoorseating.setOnClickListener {
-                activity.outdoorSeating = setclick(activity.outdoorSeating)
-                setbutton(activity.outdoorSeating,binding.outdoorseating)
+            binding.outDoorSeating.setOnClickListener {
+                activity.outdoorSeating = setClick(activity.outdoorSeating)
+                setButton(activity.outdoorSeating, binding.outDoorSeating)
             }
 
-            binding.livemusic.setOnClickListener {
-                activity.liveMusic = setclick(activity.liveMusic)
-                setbutton(activity.liveMusic,binding.livemusic)
+            binding.liveMusic.setOnClickListener {
+                activity.liveMusic = setClick(activity.liveMusic)
+                setButton(activity.liveMusic, binding.liveMusic)
             }
 
-            binding.servesdessert.setOnClickListener {
-                activity.servesDessert = setclick(activity.servesDessert)
-                setbutton(activity.servesDessert,binding.servesdessert)
+            binding.servesDessert.setOnClickListener {
+                activity.servesDessert = setClick(activity.servesDessert)
+                setButton(activity.servesDessert, binding.servesDessert)
             }
         }
     }
 
-    fun setclick(status : Boolean) : Boolean{
-            if(status){
-                return false
-            }else{
-                return true
-            }
+    fun setClick(status: Boolean): Boolean {
+        return !status
     }
 
-    fun setbutton(status : Boolean,Button : Button)
-    {
-        if(status)
-        {
-            Button.setBackgroundResource(R.color.primary_color)
-        }else{
-            Button.setBackgroundResource(R.color.button_no)
+    fun setButton(status: Boolean, button: AppCompatButton) {
+        if (status) {
+            button.setBackgroundResource(R.drawable.button_for_reference_yes)
+        } else {
+            button.setBackgroundResource(R.drawable.button_for_reference_no)
         }
     }
-    fun setpricelevel(activity : PreferenceActivity){
-        if (activity.priceLevel == 1){
-            binding.priceLevel1.setBackgroundResource(R.color.primary_color)
-            binding.priceLevel2.setBackgroundResource(R.color.button_no)
-            binding.priceLevel3.setBackgroundResource(R.color.button_no)
-            binding.priceLevel4.setBackgroundResource(R.color.button_no)
-        }else if (activity.priceLevel == 2){
-            binding.priceLevel1.setBackgroundResource(R.color.button_no)
-            binding.priceLevel2.setBackgroundResource(R.color.primary_color)
-            binding.priceLevel3.setBackgroundResource(R.color.button_no)
-            binding.priceLevel4.setBackgroundResource(R.color.button_no)
-        }else if (activity.priceLevel == 3){
-            binding.priceLevel1.setBackgroundResource(R.color.button_no)
-            binding.priceLevel2.setBackgroundResource(R.color.button_no)
-            binding.priceLevel3.setBackgroundResource(R.color.primary_color)
-            binding.priceLevel4.setBackgroundResource(R.color.button_no)
-        }
-        else if (activity.priceLevel == 4){
-            binding.priceLevel1.setBackgroundResource(R.color.button_no)
-            binding.priceLevel2.setBackgroundResource(R.color.button_no)
-            binding.priceLevel3.setBackgroundResource(R.color.button_no)
-            binding.priceLevel4.setBackgroundResource(R.color.primary_color)
-        }else{
-            binding.priceLevel1.setBackgroundResource(R.color.button_no)
-            binding.priceLevel2.setBackgroundResource(R.color.button_no)
-            binding.priceLevel3.setBackgroundResource(R.color.button_no)
-            binding.priceLevel4.setBackgroundResource(R.color.button_no)
+
+    fun setPriceLevel(activity: PreferenceActivity) {
+        when (activity.priceLevel) {
+            1 -> {
+                binding.priceLevel1.setBackgroundResource(R.drawable.button_for_reference_yes)
+                binding.priceLevel2.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel3.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel4.setBackgroundResource(R.drawable.button_for_reference_no)
+            }
+
+            2 -> {
+                binding.priceLevel1.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel2.setBackgroundResource(R.drawable.button_for_reference_yes)
+                binding.priceLevel3.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel4.setBackgroundResource(R.drawable.button_for_reference_no)
+            }
+
+            3 -> {
+                binding.priceLevel1.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel2.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel3.setBackgroundResource(R.drawable.button_for_reference_yes)
+                binding.priceLevel4.setBackgroundResource(R.drawable.button_for_reference_no)
+            }
+
+            4 -> {
+                binding.priceLevel1.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel2.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel3.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel4.setBackgroundResource(R.drawable.button_for_reference_yes)
+            }
+
+            else -> {
+                binding.priceLevel1.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel2.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel3.setBackgroundResource(R.drawable.button_for_reference_no)
+                binding.priceLevel4.setBackgroundResource(R.drawable.button_for_reference_no)
+            }
         }
     }
 

@@ -9,4 +9,22 @@
     <string name="icon_maps_terdekat">icon maps terdekat</string>
     <string name="icon_harga_terendah">icon harga terendah</string>
     <string name="icon_rating_jempolan">icon rating jempolan</string>
+    <string name="vegetarian_food">Vegetarian Food</string>
+    <string name="murah">Murah</string>
+    <string name="mahal">Mahal</string>
+    <string name="lumayan">Lumayan</string>
+    <string name="menyediakan_beer">Menyediakan Beer</string>
+    <string name="menyediakan_wine">Menyediakan Wine</string>
+    <string name="menyediakan_cocktail">Menyediakan Cocktail</string>
+    <string name="baik_untuk_anak_anak">Baik Untuk Anak Anak</string>
+    <string name="baik_untuk_group">Baik Untuk Group</string>
+    <string name="reservable">Reservable</string>
+    <string name="menyediakan_tempat_diluar_ruangan">Menyediakan Tempat Diluar Ruangan</string>
+    <string name="level_harga">Level Harga</string>
+    <string name="preference">Preference</string>
+    <string name="tunai">Tunai</string>
+    <string name="debit">Debit</string>
+    <string name="credit">Credit</string>
+    <string name="debit_card">Debit Card\n</string>
+    <string name="debit_card1">Debit Card</string>
 </resources>

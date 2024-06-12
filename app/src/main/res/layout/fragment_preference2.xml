@@ -1,65 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     tools:context=".view.preferance.PreferenceFragment2">
-    <com.google.android.material.textview.MaterialTextView
+
+    <TextView
         android:id="@+id/tv_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:maxLines="2"
-        android:textSize="17sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:includeFontPadding="false"
+        android:text="@string/metode_pembayaran"
+        android:textColor="@color/black_text"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UnusedAttribute"
-        tools:text="Metode Pembayaran" />
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/acceptsCashOnly"
-        android:layout_width="wrap_content"
+        tools:ignore="UnusedAttribute" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/button_no"
-        android:paddingEnd="9dp"
-        android:text="Cash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        app:dividerColor="@color/light_text"
+        app:dividerThickness="1dp"
         app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/acceptsDeditCards"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/button_no"
-        android:text="Debit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.034"
-        app:layout_constraintStart_toEndOf="@id/acceptsCashOnly"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/acceptsCreditCards"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/button_no"
-        android:text="Credit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.034"
-        app:layout_constraintStart_toEndOf="@id/acceptsDeditCards"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/divider">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/acceptsNfc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/button_no"
-        android:text="NFC"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.437"
-        app:layout_constraintStart_toEndOf="@id/acceptsCreditCards"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acceptsCashOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/button_for_reference_no"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="13dp"
+            android:text="@string/tunai"
+            android:textAllCaps="false"
+            android:textColor="#0d4b85"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acceptsDeditCards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/button_for_reference_no"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="13dp"
+            android:text="@string/debit_card1"
+            android:textAllCaps="false"
+            android:textColor="#0d4b85"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.034"
+            app:layout_constraintStart_toEndOf="@id/acceptsCashOnly"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acceptsCreditCards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/button_for_reference_no"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="13dp"
+            android:text="@string/credit_card"
+            android:textAllCaps="false"
+            android:textColor="#0d4b85"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.034"
+            app:layout_constraintStart_toEndOf="@id/acceptsDeditCards"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acceptsNfc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/button_for_reference_no"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="13dp"
+            android:text="@string/nfc"
+            android:textAllCaps="false"
+            android:textColor="#0d4b85"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.437"
+            app:layout_constraintStart_toEndOf="@id/acceptsCreditCards"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

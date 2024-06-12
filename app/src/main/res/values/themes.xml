@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Cafstone_Project" parent="Theme.Material3.Light">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->\
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <!--item name="android:windowTranslucentNavigation">true</item>-->
         <!--<item name="android:windowTranslucentStatus">true</item>-->
@@ -12,7 +12,7 @@
         <item name="android:statusBarColor">@color/white</item>
     </style>
     <!-- Base application theme. -->
-    <style name="Base.Base.Theme.Cafstone_Project" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Base.Theme.Cafstone_Project" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>

@@ -1,6 +1,5 @@
 package com.cafstone.application.view.preferance
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -21,7 +20,7 @@ class PreferenceActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
-    val fragmentManager = supportFragmentManager
+    private val fragmentManager = supportFragmentManager
     private lateinit var binding: ActivityPreferanceBinding
 
     private lateinit var name: String
@@ -62,7 +61,8 @@ class PreferenceActivity : AppCompatActivity() {
             password = registerPassword
             setupView()
 
-            val fragment = fragmentManager.findFragmentByTag(PreferenceFragment1::class.java.simpleName)
+            val fragment =
+                fragmentManager.findFragmentByTag(PreferenceFragment1::class.java.simpleName)
             if (fragment !is PreferenceFragment1) {
                 Log.d(
                     "MyFlexibleFragment",
@@ -70,7 +70,11 @@ class PreferenceActivity : AppCompatActivity() {
                 )
                 fragmentManager
                     .beginTransaction()
-                    .add(R.id.preferenceViewPager, PreferenceFragment1(), PreferenceFragment1::class.java.simpleName)
+                    .add(
+                        R.id.preferenceViewPager,
+                        PreferenceFragment1(),
+                        PreferenceFragment1::class.java.simpleName
+                    )
                     .commit()
             }
             setupAction()
@@ -88,20 +92,26 @@ class PreferenceActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.backButton.setOnClickListener {
-            val fragment = fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
+            val fragment =
+                fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
             if (fragment is PreferenceFragment2) {
                 fragmentManager
                     .beginTransaction()
-                    .replace(R.id.preferenceViewPager, PreferenceFragment1(), PreferenceFragment1::class.java.simpleName)
+                    .replace(
+                        R.id.preferenceViewPager,
+                        PreferenceFragment1(),
+                        PreferenceFragment1::class.java.simpleName
+                    )
                     .commit()
-                setsubmittext()
-            }else{
+                setSubmitText()
+            } else {
                 finish()
-                setsubmittext()
+                setSubmitText()
             }
         }
         binding.nextOrSubmitButton.setOnClickListener {
-            val fragment = fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
+            val fragment =
+                fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
             if (fragment is PreferenceFragment2) {
                 val data = UserRegisterModel(
                     name,
@@ -123,12 +133,16 @@ class PreferenceActivity : AppCompatActivity() {
                     acceptsNfc
                 )
                 signupViewModel.register(data)
-            }else{
+            } else {
                 fragmentManager
                     .beginTransaction()
-                    .replace(R.id.preferenceViewPager, PreferenceFragment2(), PreferenceFragment2::class.java.simpleName)
+                    .replace(
+                        R.id.preferenceViewPager,
+                        PreferenceFragment2(),
+                        PreferenceFragment2::class.java.simpleName
+                    )
                     .commit()
-                setsubmittext()
+                setSubmitText()
             }
         }
 
@@ -151,12 +165,12 @@ class PreferenceActivity : AppCompatActivity() {
         }
     }
 
-    fun setsubmittext(){
+    fun setSubmitText() {
         val fragment = fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
         if (fragment is PreferenceFragment2) {
-            binding.nextOrSubmitButton.text = "Next"
-        }else{
-            binding.nextOrSubmitButton.text = "Submit"
+            binding.nextOrSubmitButton.text = getString(R.string.next)
+        } else {
+            binding.nextOrSubmitButton.text = getString(R.string.submit)
         }
     }
 
@@ -164,7 +178,7 @@ class PreferenceActivity : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
-            setPositiveButton("Next") { dialog, _ ->
+            setPositiveButton("Next") { _, _ ->
                 finish()
             }
             create()

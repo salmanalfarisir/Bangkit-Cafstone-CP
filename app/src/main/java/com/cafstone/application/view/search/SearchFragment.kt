@@ -31,7 +31,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragmen
+        // Inflate the layout for this fragment
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,10 +42,11 @@ class SearchFragment : Fragment() {
         binding.rvReview.layoutManager = LinearLayoutManager(context)
         binding.rvReview.adapter = searchAdapter
         val activity = requireActivity() as? SearchViewActivity
-        activity?.let{
-            searchText(it,it.s)
+        activity?.let {
+            searchText(it, it.result)
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun updateSearchResults(newPlacesList: List<AdapterModel>) {
         placesList.clear()
@@ -60,7 +61,7 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun searchText(activity: SearchViewActivity, text: String) {
-        activity.showloading(true)
+        activity.showLoading(true)
         placesList.clear()
         // Create a new PlacesClient instance
 
@@ -76,7 +77,7 @@ class SearchFragment : Fragment() {
         // Define latitude and longitude coordinates of the search area
         val lat = activity.lat
         val long = activity.long
-        val searchCenter = LatLng(lat,long)
+        val searchCenter = LatLng(lat, long)
         // Use the builder to create a SearchByTextRequest object
         val searchByTextRequest: SearchByTextRequest =
             SearchByTextRequest.builder(text, placeFields)
@@ -107,13 +108,12 @@ class SearchFragment : Fragment() {
                             }
                         }
                         if (i != 0) {
-                            var photoUrl : PhotoMetadata? = null
-                            if (!place.photoMetadatas.isNullOrEmpty())
-                            {
+                            var photoUrl: PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty()) {
                                 photoUrl = place.photoMetadatas?.get(0)
                             }
 
-                            Log.d(ContentValues.TAG,"0")
+                            Log.d(ContentValues.TAG, "0")
                             placesList.add(
                                 AdapterModel(
                                     place.id!!,
@@ -131,6 +131,6 @@ class SearchFragment : Fragment() {
             .addOnFailureListener { exception: Exception ->
                 Log.e(ContentValues.TAG, "Place not found: ${exception.message}")
             }
-        activity.showloading(false)
+        activity.showLoading(false)
     }
 }

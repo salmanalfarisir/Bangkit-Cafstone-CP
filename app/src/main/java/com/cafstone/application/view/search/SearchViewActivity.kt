@@ -25,15 +25,15 @@ import java.util.Locale
 class SearchViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchViewBinding
-    var s = ""
+    var result = ""
     lateinit var placesClient: PlacesClient
     val fragmentManager = supportFragmentManager
     private val searchFragment = SearchFragment()
     val emptyFragment = SearchEmptyFragment()
     private val placesList = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
-    var lat :Double = 0.0
-    var long : Double = 0.0
+    var lat: Double = 0.0
+    var long: Double = 0.0
 
 
     @SuppressLint("RestrictedApi")
@@ -43,12 +43,13 @@ class SearchViewActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.progressBar.visibility = View.GONE
-        lat = intent.getDoubleExtra(LATITUDE,0.0)
-        long = intent.getDoubleExtra(LONGTITUDE,0.0)
-        if (lat != 0.0 && long != 0.0)
-        {
+        lat = intent.getDoubleExtra(LATITUDE, 0.0)
+        long = intent.getDoubleExtra(LONGITUDE, 0.0)
+
+        if (lat != 0.0 && long != 0.0) {
             adapter = PlacesAdapter(placesList)
-            val fragment = fragmentManager.findFragmentByTag(SearchEmptyFragment::class.java.simpleName)
+            val fragment =
+                fragmentManager.findFragmentByTag(SearchEmptyFragment::class.java.simpleName)
             if (fragment !is SearchEmptyFragment) {
                 Log.d(
                     "MyFlexibleFragment",
@@ -56,7 +57,11 @@ class SearchViewActivity : AppCompatActivity() {
                 )
                 fragmentManager
                     .beginTransaction()
-                    .add(R.id.frame_container, emptyFragment, SearchEmptyFragment::class.java.simpleName)
+                    .add(
+                        R.id.frame_container,
+                        emptyFragment,
+                        SearchEmptyFragment::class.java.simpleName
+                    )
                     .commit()
             }
 
@@ -66,7 +71,8 @@ class SearchViewActivity : AppCompatActivity() {
 
             placesClient = PlacesClientSingleton.getInstance(this)
 
-            binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            binding.searchView.setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     // Handle the query submission here
                     // Example: perform a search with the query
@@ -76,25 +82,26 @@ class SearchViewActivity : AppCompatActivity() {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     // Handle the text change here
                     // Example: update search suggestions
-                    if (newText.isNullOrEmpty() || newText.length < 3)
-                    {
-                        if(fragment !is SearchEmptyFragment)
-                        {
+                    if (newText.isNullOrEmpty() || newText.length < 3) {
+                        if (fragment !is SearchEmptyFragment) {
                             fragmentManager
                                 .beginTransaction()
-                                .replace(R.id.frame_container, emptyFragment, SearchEmptyFragment::class.java.simpleName)
+                                .replace(
+                                    R.id.frame_container,
+                                    emptyFragment,
+                                    SearchEmptyFragment::class.java.simpleName
+                                )
                                 .commit()
                         }
-                    }
-                    else{
-                        val lowertext = newText.lowercase(Locale.getDefault())
-                        s = lowertext
-                        searchText(lowertext)
+                    } else {
+                        val lowerText = newText.lowercase(Locale.getDefault())
+                        result = lowerText
+                        searchText(lowerText)
                     }
                     return true
                 }
             })
-        }else{
+        } else {
             finish()
         }
 
@@ -106,7 +113,7 @@ class SearchViewActivity : AppCompatActivity() {
 
 
     fun searchText(text: String) {
-        showloading(true)
+        showLoading(true)
         placesList.clear()
         // Create a new PlacesClient instance
 
@@ -121,7 +128,7 @@ class SearchViewActivity : AppCompatActivity() {
         )
 
 
-        val searchCenter = LatLng(lat,long)
+        val searchCenter = LatLng(lat, long)
         // Define latitude and longitude coordinates of the search area
 
         // Use the builder to create a SearchByTextRequest object
@@ -155,13 +162,12 @@ class SearchViewActivity : AppCompatActivity() {
                             }
                         }
                         if (i != 0) {
-                            var photoUrl : PhotoMetadata? = null
-                            if (!place.photoMetadatas.isNullOrEmpty())
-                            {
+                            var photoUrl: PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty()) {
                                 photoUrl = place.photoMetadatas?.get(0)
                             }
 
-                            Log.d(TAG,"0")
+                            Log.d(TAG, "0")
                             placesList.add(
                                 AdapterModel(
                                     place.id!!,
@@ -174,33 +180,38 @@ class SearchViewActivity : AppCompatActivity() {
                         }
                     }
                 }
-                val fragments = fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
-                if (fragments is SearchFragment)
-                {
+                val fragments =
+                    fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
+                if (fragments is SearchFragment) {
                     searchFragment.updateSearchResults(placesList)
-                }else{
-                    Log.d(TAG,"masuk awal")
+                } else {
+                    Log.d(TAG, "Search Empty Fragment")
                     fragmentManager
                         .beginTransaction()
-                        .replace(R.id.frame_container, searchFragment, SearchFragment::class.java.simpleName)
+                        .replace(
+                            R.id.frame_container,
+                            searchFragment,
+                            SearchFragment::class.java.simpleName
+                        )
                         .commit()
                 }
             }
             .addOnFailureListener { exception: Exception ->
                 Log.e(TAG, "Place not found: ${exception.message}")
             }
-        showloading(false)
+        showLoading(false)
     }
 
-    fun showloading (loading : Boolean){
-        if (loading){
+    fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.progressBar.visibility = View.GONE
         }
     }
-    companion object{
+
+    companion object {
         const val LATITUDE = "lat"
-        const val LONGTITUDE = "long"
+        const val LONGITUDE = "long"
     }
 }

@@ -45,14 +45,17 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
     private var currentLocation: Location? = null
+
     private val placesList = mutableListOf<AdapterModel>()
     private val placesList1 = mutableListOf<AdapterModel>()
     private val placesList2 = mutableListOf<AdapterModel>()
+
     private lateinit var adapter: PlacesAdapter2
     private lateinit var adapter1: PlacesAdapter2
     private lateinit var adapter2: PlacesAdapter2
@@ -326,7 +329,7 @@ class MainActivity : AppCompatActivity() {
             binding.searchBar.setOnClickListener {
                 val intent = Intent(this, SearchViewActivity::class.java)
                 intent.putExtra(SearchViewActivity.LATITUDE, location.latitude)
-                intent.putExtra(SearchViewActivity.LONGTITUDE, location.longitude)
+                intent.putExtra(SearchViewActivity.LONGITUDE, location.longitude)
                 startActivity(intent)
             }
             binding.progressBar.visibility = View.GONE
