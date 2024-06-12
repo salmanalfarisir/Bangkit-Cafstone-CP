@@ -40,7 +40,7 @@
     <string name="skip">Skip</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="lokasi">Lokasi</string>
-    <string name="mau_kemana_nih">Mau kemana nih? ...</string>
+    <string name="mau_kemana_nih">Mau kemana nih? </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="destination_title">Destination Title With Image and Also Restaurant Type</string>
@@ -100,4 +100,6 @@
     <string name="icon_maps_terdekat">icon maps terdekat</string>
     <string name="icon_harga_terendah">icon harga terendah</string>
     <string name="icon_rating_jempolan">icon rating jempolan</string>
+    <string name="user_preference">User Preference</string>
+    <string name="serve_beer">Serve Beer</string>
 </resources>

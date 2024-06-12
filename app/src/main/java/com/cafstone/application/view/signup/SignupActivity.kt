@@ -12,12 +12,9 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.databinding.ActivitySignupBinding
-import com.cafstone.application.view.ViewModelFactory
-import com.cafstone.application.view.preferance.PreferanceActivity
+import com.cafstone.application.view.preferance.PreferenceActivity
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
@@ -45,12 +42,9 @@ class SignupActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    @Suppress("SameParameterValue")
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun setButtonEnabled() {
@@ -94,10 +88,10 @@ class SignupActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
             if (email.isNotEmpty() && nama.isNotEmpty() && password.isNotEmpty()) {
                 if (binding.emailEditTextLayout.error == null && binding.passwordEditTextLayout.error == null) {
-                    val intent = Intent(this,PreferanceActivity::class.java)
-                    intent.putExtra(PreferanceActivity.NAME,nama)
-                    intent.putExtra(PreferanceActivity.EMAIL,email)
-                    intent.putExtra(PreferanceActivity.PASSWORD,password)
+                    val intent = Intent(this, PreferenceActivity::class.java)
+                    intent.putExtra(PreferenceActivity.NAME, nama)
+                    intent.putExtra(PreferenceActivity.EMAIL, email)
+                    intent.putExtra(PreferenceActivity.PASSWORD, password)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Error Email or Password", Toast.LENGTH_SHORT)
