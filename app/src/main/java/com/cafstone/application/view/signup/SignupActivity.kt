@@ -70,11 +70,11 @@ class SignupActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                setButtonEnabled()
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // No action needed
+                setButtonEnabled()
             }
         }
         binding.nameEditText.addTextChangedListener(textWatcher)

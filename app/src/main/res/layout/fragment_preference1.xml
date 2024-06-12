@@ -1,36 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     tools:context=".view.preferance.PreferenceFragment1">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="PRICE LEVEL" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/price_level1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/checkbox_cutom"
-        android:paddingStart="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="9dp"
+        android:text="Murah"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/price_level2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/button_no"
+        android:text="Sedang"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintStart_toEndOf="@id/price_level1"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/price_level3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/button_no"
+        android:text="Lumayan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintStart_toEndOf="@id/price_level2"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/price_level4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/button_no"
+        android:text="Mahal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toEndOf="@id/price_level3"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_name" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_item_name2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:maxLines="2"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/price_level1"
+        tools:ignore="UnusedAttribute"
+        tools:text="Preverance" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/servesbeer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/button_no"
         android:paddingEnd="10dp"
-        tools:ignore="UselessParent">
+        android:paddingStart="10dp"
+        android:text="Menyediakan Beer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_name2" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/serveswine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Menyediakan Wine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/servesbeer"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_name2" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkBox1"
-            style="@style/Widget.Material3.CompoundButton.CheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="5dp"
-            app:buttonCom="@null"
-            android:button="@drawable/circle_outline"
-            android:checked="false"
-            android:includeFontPadding="false"
-            android:text="@string/serve_beer"
-            tools:ignore="RtlSymmetry" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/servescocktail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Menyediakan Cocktail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/servesbeer" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/goodforchildren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Baik Untuk Anak Anak"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/servescocktail"
+        app:layout_constraintTop_toBottomOf="@id/servesbeer" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/goodforgroups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Baik Untuk Group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/servescocktail" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reservable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Reservable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/goodforgroups"
+        app:layout_constraintTop_toBottomOf="@id/servescocktail" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/outdoorseating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Menyediakan Tempat Diluar Ruangan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/goodforgroups" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/livemusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Live Music"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outdoorseating" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/servesdessert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/button_no"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Menyediakan Dessert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/livemusic"
+        app:layout_constraintTop_toBottomOf="@id/outdoorseating" />
 
-    </LinearLayout>
 
-
-</GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
