@@ -25,12 +25,13 @@ class SearchEmptyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.logoutButton.setOnClickListener{
+        binding.americanFoodCard.setOnClickListener {
             val activity = requireActivity() as? SearchViewActivity
             activity?.let {
-                val intent = Intent(requireActivity().applicationContext,NearbyActivity::class.java)
+                val intent =
+                    Intent(requireActivity().applicationContext, NearbyActivity::class.java)
                 intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terdekat")
-                intent.putExtra(NearbyActivity.LATITUDE,activity.lat)
+                intent.putExtra(NearbyActivity.LATITUDE, activity.lat)
                 intent.putExtra(NearbyActivity.LONGTITUDE, activity.long)
                 startActivity(intent)
             }
