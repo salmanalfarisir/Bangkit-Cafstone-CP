@@ -2,11 +2,12 @@ package com.cafstone.application.view.search
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.AdapterModel
@@ -22,6 +23,7 @@ import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchByTextResponse
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 class SearchViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchViewBinding
@@ -102,7 +104,13 @@ class SearchViewActivity : AppCompatActivity() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.show(WindowInsets.Type.statusBars())
+            window.apply {
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                statusBarColor = Color.TRANSPARENT
+            }
         }
         supportActionBar?.hide()
     }

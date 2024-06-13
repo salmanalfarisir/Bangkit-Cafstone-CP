@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,10 +21,10 @@
             android:layout_height="40dp"
             android:clickable="true"
             android:padding="0dp"
+            android:backgroundTint="@android:color/transparent"
+            app:cardElevation="0dp"
             app:cardCornerRadius="50dp"
-            tools:ignore="ContentDescription,KeyboardInaccessibleWidget,SpeakableTextPresentCheck,TouchTargetSizeCheck"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="12dp">
+            tools:ignore="ContentDescription,KeyboardInaccessibleWidget,SpeakableTextPresentCheck,TouchTargetSizeCheck">
 
             <LinearLayout
                 android:layout_width="wrap_content"

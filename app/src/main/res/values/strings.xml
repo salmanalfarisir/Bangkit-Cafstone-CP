@@ -138,4 +138,5 @@
     <string name="debit_card">Debit Card</string>
     <string name="debit_card1">Debit Card</string>
     <string name="credit_card">Credit Card</string>
+    <string name="profile">Profile</string>
 </resources>
