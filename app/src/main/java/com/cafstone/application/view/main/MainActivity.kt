@@ -24,6 +24,7 @@ import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
+import com.cafstone.application.view.ProfileActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.search.SearchViewActivity
@@ -64,6 +65,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        binding.profileCard.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
