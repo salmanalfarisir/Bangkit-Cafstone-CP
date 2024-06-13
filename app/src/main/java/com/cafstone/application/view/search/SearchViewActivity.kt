@@ -58,7 +58,7 @@ class SearchViewActivity : AppCompatActivity() {
                 fragmentManager
                     .beginTransaction()
                     .add(
-                        R.id.frame_container,
+                        R.id.fragmentContainer,
                         emptyFragment,
                         SearchEmptyFragment::class.java.simpleName
                     )
@@ -74,20 +74,16 @@ class SearchViewActivity : AppCompatActivity() {
             binding.searchView.setOnQueryTextListener(object :
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    // Handle the query submission here
-                    // Example: perform a search with the query
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    // Handle the text change here
-                    // Example: update search suggestions
                     if (newText.isNullOrEmpty() || newText.length < 3) {
                         if (fragment !is SearchEmptyFragment) {
                             fragmentManager
                                 .beginTransaction()
                                 .replace(
-                                    R.id.frame_container,
+                                    R.id.fragmentContainer,
                                     emptyFragment,
                                     SearchEmptyFragment::class.java.simpleName
                                 )
@@ -189,7 +185,7 @@ class SearchViewActivity : AppCompatActivity() {
                     fragmentManager
                         .beginTransaction()
                         .replace(
-                            R.id.frame_container,
+                            R.id.fragmentContainer,
                             searchFragment,
                             SearchFragment::class.java.simpleName
                         )
