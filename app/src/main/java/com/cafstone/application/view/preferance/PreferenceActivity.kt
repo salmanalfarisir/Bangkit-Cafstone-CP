@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -46,7 +47,7 @@ class PreferenceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPreferanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        showloading(false)
         setupView()
         setupAction()
 
@@ -84,6 +85,13 @@ class PreferenceActivity : AppCompatActivity() {
         }
     }
 
+    private fun showloading (status : Boolean){
+        if(status){
+            binding.progressBar.visibility = View.VISIBLE
+        }else{
+            binding.progressBar.visibility = View.GONE
+        }
+    }
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.show(WindowInsets.Type.statusBars())
@@ -113,10 +121,7 @@ class PreferenceActivity : AppCompatActivity() {
             val fragment =
                 fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
             if (fragment is PreferenceFragment2) {
-                val data = UserRegisterModel(
-                    name,
-                    email,
-                    password,
+                val preferences = PreferencesModel(
                     servesBeer,
                     servesWine,
                     servesCocktails,
@@ -131,6 +136,12 @@ class PreferenceActivity : AppCompatActivity() {
                     acceptsDebitCards,
                     acceptsCashOnly,
                     acceptsNfc
+                )
+                val data = UserRegisterModel(
+                    name,
+                    email,
+                    password,
+                    preferences
                 )
                 signupViewModel.register(data)
             } else {
@@ -149,9 +160,13 @@ class PreferenceActivity : AppCompatActivity() {
         signupViewModel.regist.observe(this) { registerForm ->
             when (registerForm) {
                 is PreferanceViewModel.RegistrationStatus.Loading -> {
+                    showloading(true)
+                    binding.nextOrSubmitButton.isEnabled = false
                 }
 
                 is PreferanceViewModel.RegistrationStatus.Success -> {
+                    showloading(false)
+                    binding.nextOrSubmitButton.isEnabled = true
                     Toast.makeText(this, "Register Successfully", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@PreferenceActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -159,7 +174,9 @@ class PreferenceActivity : AppCompatActivity() {
                 }
 
                 is PreferanceViewModel.RegistrationStatus.Error -> {
+                    showloading(false)
                     showDialog(registerForm.message)
+                    binding.nextOrSubmitButton.isEnabled = true
                 }
             }
         }

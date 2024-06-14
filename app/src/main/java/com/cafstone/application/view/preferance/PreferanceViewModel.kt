@@ -34,28 +34,28 @@ class PreferanceViewModel(private val userRepository: UserRepository) : ViewMode
             try {
                 val response = userRepository.register(user)
                 if (response.success == true) {
-                    val usermodel = UserModel(user.name,
+                    val userModel = UserModel(user.name,
                         user.email,
-                        user.servesBeer,
-                        user.servesWine,
-                        user.servesCocktails,
-                        user.goodForChildren,
-                        user.goodForGroups,
-                        user.reservable,
-                        user.outdoorSeating,
-                        user.liveMusic,
-                        user.servesDessert,
-                        user.priceLevel,
-                        user.acceptsCreditCards,
-                        user.acceptsDebitCards,
-                        user.acceptsCashOnly,
-                        user.acceptsNfc,
+                        user.preferences.servesBeer,
+                        user.preferences.servesWine,
+                        user.preferences.servesCocktails,
+                        user.preferences.goodForChildren,
+                        user.preferences.goodForGroups,
+                        user.preferences.reservable,
+                        user.preferences.outdoorSeating,
+                        user.preferences.liveMusic,
+                        user.preferences.servesDessert,
+                        user.preferences.priceLevel,
+                        user.preferences.acceptsCreditCards,
+                        user.preferences.acceptsDebitCards,
+                        user.preferences.acceptsCashOnly,
+                        user.preferences.acceptsNfc,
                         true)
-                    saveSession(usermodel)
-                    _regist.value = RegistrationStatus.Success(response.message ?: "User Created!")
+                    saveSession(userModel)
+                    _regist.value = RegistrationStatus.Success(response.message)
 
                 } else {
-                    _regist.value = RegistrationStatus.Error(response.message ?: "Registration failed")
+                    _regist.value = RegistrationStatus.Error(response.message)
                 }
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()

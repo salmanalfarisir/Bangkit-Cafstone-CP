@@ -5,15 +5,19 @@ import android.util.Log
 import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.data.pref.UserPreference
 import com.cafstone.application.data.response.LoginResponse
+import com.cafstone.application.data.response.RecomendationResponseItem
 import com.cafstone.application.data.response.RegisterResponse
 import com.cafstone.application.data.retrofit.ApiService
+import com.cafstone.application.data.retrofit.ApiService2
+import com.cafstone.application.view.main.RecomendationModel
 import com.cafstone.application.view.signup.UserRegisterModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 
 class UserRepository private constructor(
     private val userPreference: UserPreference,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val apiService2: ApiService2
 ) {
 
     suspend fun saveSession(user: UserModel) {
@@ -32,6 +36,16 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
+    suspend fun recomendation (list : RecomendationModel) : List<RecomendationResponseItem>?{
+        return try {
+            val response = apiService2.getrecomendation(list)
+            Log.d(TAG,"Berhasil BANG ANAJAYYY")
+            response
+        }catch (e: Exception){
+            Log.d(TAG,"${e.message}")
+            null
+        }
+    }
     suspend fun login(email: String, password: String): LoginResponse {
             val response = apiService.login(email, password)
             if (response.success) {
@@ -61,7 +75,7 @@ class UserRepository private constructor(
     }
 
     suspend fun register(user: UserRegisterModel): RegisterResponse {
-        return apiService.register(user.name,user.email,user.password,user.servesBeer,user.servesWine,user.servesCocktails,user.goodForChildren,user.goodForGroups,user.reservable,user.outdoorSeating,user.liveMusic,user.servesDessert,user.priceLevel,user.acceptsCreditCards,user.acceptsDebitCards,user.acceptsCashOnly,user.acceptsNfc)
+        return apiService.register(user)
     }
 
     companion object {
@@ -69,10 +83,11 @@ class UserRepository private constructor(
         private var instance: UserRepository? = null
         fun getInstance(
             userPreference: UserPreference,
-            apiService: ApiService
+            apiService: ApiService,
+            apiService2: ApiService2
         ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference, apiService)
+                instance ?: UserRepository(userPreference, apiService,apiService2)
             }.also { instance = it }
     }
 }

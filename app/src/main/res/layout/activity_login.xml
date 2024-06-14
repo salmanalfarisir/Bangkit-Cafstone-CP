@@ -174,60 +174,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
         tools:alpha="100" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        tools:layout_editor_absoluteX="17dp">
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="153dp"
-            android:layout_height="wrap_content"
-            app:dividerColor="@color/light_text"
-            app:dividerThickness="2dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/login_or"
-            android:textColor="@color/light_text"
-            android:textSize="14sp" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="153dp"
-            android:layout_height="wrap_content"
-            app:dividerColor="@color/light_text"
-            app:dividerThickness="2dp" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_login_with_google"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="17dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_google"
-        android:fontFamily="@font/montserrat_semibold"
-        android:text="@string/login_with_google"
-        android:textColor="@color/black_text"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:ignore="RtlHardcoded" />
-
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -238,7 +185,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login_with_google"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintVertical_bias="0.0">
 
 
@@ -260,13 +207,13 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
+    <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="gone"
         app:layout_anchorGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

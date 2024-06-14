@@ -2,6 +2,7 @@ package com.cafstone.application.view.Nearby
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchNearbyRequest
 
 class NearbyActivity : AppCompatActivity() {
@@ -33,10 +35,15 @@ class NearbyActivity : AppCompatActivity() {
         val long = intent.getDoubleExtra(LONGTITUDE,0.0)
         binding.rvReview.layoutManager = LinearLayoutManager(this)
         binding.rvReview.adapter = adapter
-
         if (lat!=0.0 && long!=0.0) {
             val data = intent.getStringExtra(EXTRA_DETAIL)
-            nearby(data,lat,long)
+            val att = if (Build.VERSION.SDK_INT >= 33) {
+                intent.getParcelableExtra(EXTRA_ATT, NearbyModel::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra(EXTRA_ATT)
+            }
+            nearby(data,att,lat,long)
         } else {
             finish()
         }
@@ -47,7 +54,7 @@ class NearbyActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun nearby(text: String?, lat:Double, long:Double) {
+    fun nearby(text: String?,att:NearbyModel?, lat:Double, long:Double) {
 
         placesClient = PlacesClientSingleton.getInstance(this)
 
@@ -57,11 +64,12 @@ class NearbyActivity : AppCompatActivity() {
             Place.Field.ADDRESS,
             Place.Field.TYPES,
             Place.Field.PHOTO_METADATAS,
-            Place.Field.RATING
+            Place.Field.RATING,
+            Place.Field.PRICE_LEVEL
         )
         val searchCenter = LatLng(lat, long)
         val circle = CircularBounds.newInstance(searchCenter, 50000.0)
-        val includedTypes = listOf(
+        var includedTypes = listOf(
             "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
             "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
             "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
@@ -73,38 +81,75 @@ class NearbyActivity : AppCompatActivity() {
             "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
         )
 
-        val searchNearbyRequest = searchnearby(circle, placeFields, includedTypes, text)
+        if ((att != null)){
+            includedTypes = listOf(att.value)
+            binding.tvItemName.text = att.title
+            binding.textView.text = att.desc
+            binding.ivItemPhoto.setBackgroundResource(att.image)
+        }
 
-        placesClient.searchNearby(searchNearbyRequest)
-            .addOnSuccessListener { response ->
-                val places = response.places
-                Log.d(TAG, "Number of places found: ${places.size}")
-                for (place in places) {
-                    if (place.placeTypes != null) {
-                        var photoUrl : PhotoMetadata? = null
-                        if (!place.photoMetadatas.isNullOrEmpty())
-                        {
-                            photoUrl = place.photoMetadatas?.get(0)
-                        }
+        if (text != null && text == "termurah")
+        {
+            binding.tvItemName.text = "Termurah"
+            binding.textView.text = "Ingin Mencari Cafe Termurah? Ini Rekomendasinya"
+            val searchNearbyRequest = searchnearby2(circle, placeFields, "Cafe dan Restorant Termurah")
+            placesClient.searchByText(searchNearbyRequest)
+                .addOnSuccessListener { response ->
+                    val places = response.places
+                    for (place in places) {
+                        if (place.placeTypes != null) {
+                            var photoUrl : PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty())
+                            {
+                                photoUrl = place.photoMetadatas?.get(0)
+                            }
 
-                        Log.d(TAG, "Adding place: ${place.name}")
-                        placesList.add(
-                            AdapterModel(
-                                place.id!!,
-                                place.name!!,
-                                place.address!!,
-                                photoUrl,
-                                place.rating
+                            placesList.add(
+                                AdapterModel(
+                                    place.id!!,
+                                    place.name!!,
+                                    place.address!!,
+                                    photoUrl,
+                                    place.rating
+                                )
                             )
-                        )
+                        }
                     }
+                    adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
-                Log.d(TAG,"Adapter updated")
-            }
-            .addOnFailureListener { exception: Exception ->
-                Log.e(TAG, "Place not found: ${exception.message}")
-            }
+                .addOnFailureListener { exception: Exception ->
+                    Log.e(TAG, "Place not found: ${exception.message}")
+                }
+        }else{
+            val searchNearbyRequest = searchnearby(circle, placeFields, includedTypes, text)
+            placesClient.searchNearby(searchNearbyRequest)
+                .addOnSuccessListener { response ->
+                    val places = response.places
+                    for (place in places) {
+                        if (place.placeTypes != null) {
+                            var photoUrl : PhotoMetadata? = null
+                            if (!place.photoMetadatas.isNullOrEmpty())
+                            {
+                                photoUrl = place.photoMetadatas?.get(0)
+                            }
+
+                            placesList.add(
+                                AdapterModel(
+                                    place.id!!,
+                                    place.name!!,
+                                    place.address!!,
+                                    photoUrl,
+                                    place.rating
+                                )
+                            )
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener { exception: Exception ->
+                    Log.e(TAG, "Place not found: ${exception.message}")
+                }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -119,22 +164,49 @@ class NearbyActivity : AppCompatActivity() {
                 .setIncludedTypes(includedTypes)
                 .setMaxResultCount(20)
                 .build()
-        if (kriteria.equals("terdekat")) {
-            binding.tvItemName.text = "Terdekat"
-            binding.textView.text = "Butuh Cafe Terdekat? Ini Rekomendasinya"
+        if ((kriteria != null))
+        {
+            if (kriteria == "terdekat") {
+                binding.tvItemName.text = "Terdekat"
+                binding.textView.text = "Butuh Cafe Terdekat? Ini Rekomendasinya"
+                searchNearbyRequest =
+                    SearchNearbyRequest.builder(circle, placeFields)
+                        .setIncludedTypes(includedTypes)
+                        .setMaxResultCount(20)
+                        .setRankPreference(SearchNearbyRequest.RankPreference.DISTANCE)
+                        .build()
+            }else if (kriteria.equals("terbaik")) {
+            binding.tvItemName.text = "Rating Jempolan"
+            binding.textView.text = "Butuh Cafe Dengan rating tertinggi? Ini Rekomendasinya"
             searchNearbyRequest =
                 SearchNearbyRequest.builder(circle, placeFields)
                     .setIncludedTypes(includedTypes)
                     .setMaxResultCount(20)
-                    .setRankPreference(SearchNearbyRequest.RankPreference.DISTANCE)
+                    .setRankPreference(SearchNearbyRequest.RankPreference.POPULARITY)
                     .build()
         }
+        }
         return searchNearbyRequest
+    }
+
+    fun searchnearby2(
+        circle: CircularBounds,
+        placeFields: List<Place.Field>,
+        text : String
+    ): SearchByTextRequest {
+        val searchByTextRequest: SearchByTextRequest =
+            SearchByTextRequest.builder(text, placeFields)
+                .setPriceLevels(listOf(1,2))
+                .setLocationBias(circle)
+                .setMaxResultCount(20)
+                .build()
+        return searchByTextRequest
     }
 
     companion object {
         const val EXTRA_DETAIL = "extra_detail"
         const val LATITUDE = "lat"
         const val LONGTITUDE = "LONG"
+        const val EXTRA_ATT = "attribute"
     }
 }

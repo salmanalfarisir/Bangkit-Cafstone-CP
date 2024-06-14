@@ -50,7 +50,7 @@ class PasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
                     errorMessage = null
                     errorTextView?.error = errorMessage
                     passwordTextView?.isEnabled = true
-                    passwordErrorTextView?.hint = null
+                    passwordErrorTextView?.hint = "Password Confirm"
                 }
             }
         })

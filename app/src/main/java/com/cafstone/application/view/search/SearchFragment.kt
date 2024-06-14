@@ -47,20 +47,13 @@ class SearchFragment : Fragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateSearchResults(newPlacesList: List<AdapterModel>) {
-        placesList.clear()
-        placesList.addAll(newPlacesList)
-        searchAdapter.notifyDataSetChanged()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun searchText(activity: SearchViewActivity, text: String) {
+    fun searchText(activity: SearchViewActivity, text: String) {
         activity.showLoading(true)
         placesList.clear()
         // Create a new PlacesClient instance
@@ -127,10 +120,11 @@ class SearchFragment : Fragment() {
                     }
                 }
                 searchAdapter.notifyDataSetChanged()
+                activity.showLoading(false)
             }
             .addOnFailureListener { exception: Exception ->
                 Log.e(ContentValues.TAG, "Place not found: ${exception.message}")
+                activity.showLoading(false)
             }
-        activity.showLoading(false)
     }
 }

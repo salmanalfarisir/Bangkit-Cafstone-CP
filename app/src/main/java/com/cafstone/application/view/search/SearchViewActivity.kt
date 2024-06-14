@@ -14,13 +14,7 @@ import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
 import com.cafstone.application.databinding.ActivitySearchViewBinding
 import com.cafstone.application.di.PlacesClientSingleton
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.CircularBounds
-import com.google.android.libraries.places.api.model.PhotoMetadata
-import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.api.net.SearchByTextRequest
-import com.google.android.libraries.places.api.net.SearchByTextResponse
 import java.util.Locale
 
 @Suppress("DEPRECATION")
@@ -91,10 +85,10 @@ class SearchViewActivity : AppCompatActivity() {
                                 )
                                 .commit()
                         }
-                    } else {
+                    }else {
                         val lowerText = newText.lowercase(Locale.getDefault())
                         result = lowerText
-                        searchText(lowerText)
+                        searchText2(lowerText)
                     }
                     return true
                 }
@@ -115,96 +109,23 @@ class SearchViewActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-
-    fun searchText(text: String) {
-        showLoading(true)
-        placesList.clear()
-        // Create a new PlacesClient instance
-
-        // Specify the list of fields to return
-        val placeFields = listOf(
-            Place.Field.ID,
-            Place.Field.NAME,
-            Place.Field.ADDRESS,
-            Place.Field.TYPES,
-            Place.Field.PHOTO_METADATAS,
-            Place.Field.RATING
-        )
-
-
-        val searchCenter = LatLng(lat, long)
-        // Define latitude and longitude coordinates of the search area
-
-        // Use the builder to create a SearchByTextRequest object
-        val searchByTextRequest: SearchByTextRequest =
-            SearchByTextRequest.builder(text, placeFields)
-                .setMaxResultCount(20)
-                .setLocationBias(CircularBounds.newInstance(searchCenter, 0.0)).build()
-
-        val includedTypes = listOf(
-            "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
-            "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
-            "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
-            "brazilian_restaurant", "mexican_restaurant", "breakfast_restaurant",
-            "middle_eastern_restaurant", "brunch_restaurant", "pizza_restaurant", "cafe",
-            "ramen_restaurant", "chinese_restaurant", "mediterranean_restaurant", "meal_delivery",
-            "meal_takeaway", "barbecue_restaurant", "spanish_restaurant", "greek_restaurant",
-            "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
-            "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
-        )
-
-        // Call PlacesClient.searchByText() to perform the search
-        placesClient.searchByText(searchByTextRequest)
-            .addOnSuccessListener { response: SearchByTextResponse ->
-                val places = response.places
-                for (place in places) {
-                    if (place.placeTypes != null) {
-                        var i = 0
-                        place.placeTypes?.forEach {
-                            if (it in includedTypes) {
-                                i += 1
-                            }
-                        }
-                        if (i != 0) {
-                            var photoUrl: PhotoMetadata? = null
-                            if (!place.photoMetadatas.isNullOrEmpty()) {
-                                photoUrl = place.photoMetadatas?.get(0)
-                            }
-
-                            Log.d(TAG, "0")
-                            placesList.add(
-                                AdapterModel(
-                                    place.id!!,
-                                    place.name!!,
-                                    place.address!!,
-                                    photoUrl,
-                                    place.rating
-                                )
-                            )
-                        }
-                    }
-                }
-                val fragments =
-                    fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
-                if (fragments is SearchFragment) {
-                    searchFragment.updateSearchResults(placesList)
-                } else {
-                    Log.d(TAG, "Search Empty Fragment")
-                    fragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.fragmentContainer,
-                            searchFragment,
-                            SearchFragment::class.java.simpleName
-                        )
-                        .commit()
-                }
-            }
-            .addOnFailureListener { exception: Exception ->
-                Log.e(TAG, "Place not found: ${exception.message}")
-            }
-        showLoading(false)
+fun searchText2(text : String){
+    val fragments =
+        fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
+    if (fragments is SearchFragment) {
+        searchFragment.searchText(this,text)
+    } else {
+        Log.d(TAG, "Search Empty Fragment")
+        fragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fragmentContainer,
+                searchFragment,
+                SearchFragment::class.java.simpleName
+            )
+            .commit()
     }
+}
 
     fun showLoading(isLoading: Boolean) {
         if (isLoading) {
