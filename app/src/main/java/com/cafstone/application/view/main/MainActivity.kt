@@ -31,12 +31,14 @@ import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.search.SearchViewActivity
 import com.cafstone.application.view.welcome.SplashScreenActivity
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchByTextResponse
@@ -80,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, OnboardingActivity::class.java))
                 finish()
             } else {
+                placesClient = PlacesClientSingleton.getInstance(this)
                 locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
                 fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                 getMyLastLocation()
@@ -190,8 +193,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     fun searchText(text: String, p: Int, a: Int) {
         // Create a new PlacesClient instance
-        placesClient = PlacesClientSingleton.getInstance(this)
-
         // Specify the list of fields to return
         val placeFields = listOf(
             Place.Field.ID,
@@ -245,7 +246,6 @@ class MainActivity : AppCompatActivity() {
 
                             when (p) {
                                 0 -> {
-                                    Log.d(TAG, "0")
                                     placesList.add(
                                         AdapterModel(
                                             place.id!!,
@@ -258,7 +258,6 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 1 -> {
-                                    Log.d(TAG, "1")
                                     placesList1.add(
                                         AdapterModel(
                                             place.id!!,
@@ -271,7 +270,6 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 2 -> {
-                                    Log.d(TAG, "2")
                                     placesList2.add(
                                         AdapterModel(
                                             place.id!!,
@@ -333,6 +331,7 @@ class MainActivity : AppCompatActivity() {
             binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
+            binding.rvReview3.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
 
             adapter = PlacesAdapter2(placesList)
             binding.rvReview.adapter = adapter
@@ -341,7 +340,7 @@ class MainActivity : AppCompatActivity() {
             adapter2 = PlacesAdapter2(placesList2)
             binding.rvReview2.adapter = adapter2
             adapter3 = PlacesAdapter2(placesList3)
-            binding.rvReview2.adapter = adapter3
+            binding.rvReview3.adapter = adapter3
 
             val data = viewModel.getdata()
             data.let {
@@ -356,31 +355,32 @@ class MainActivity : AppCompatActivity() {
                             binding.textView3.visibility = View.GONE
                             binding.rvReview3.visibility = View.GONE
                         }else{
-//                            val fields = listOf(Place.Field.ID,Place.Field.NAME,Place.Field.ADDRESS,Place.Field.RATING,Place.Field.PHOTO_METADATAS)
-//                            it.forEach {data->
-//                                val placeRequest = FetchPlaceRequest.newInstance(data.id, fields)
-//                                placesClient.fetchPlace(placeRequest).addOnSuccessListener { response ->
-//                                    val place = response.place
-//                                    var photoUrl: PhotoMetadata? = null
-//                                    if (!place.photoMetadatas.isNullOrEmpty()) {
-//                                        photoUrl = place.photoMetadatas?.get(0)
-//                                    }
-//                                    placesList3.add(
-//                                        AdapterModel(
-//                                            place.id!!,
-//                                            place.name!!,
-//                                            place.address!!,
-//                                            photoUrl,
-//                                            place.rating
-//                                        )
-//                                    )
-//                                    adapter3.notifyItemInserted(placesList3.size - 1)
-//                                }.addOnFailureListener { exception ->
-//                                    if (exception is ApiException) {
-//                                        Log.e("MainActivity", "Place not found: ${exception.message}")
-//                                    }
-//                                }
-//                            }
+                            val fields = listOf(Place.Field.ID,Place.Field.NAME,Place.Field.ADDRESS,Place.Field.RATING,Place.Field.PHOTO_METADATAS)
+                            it.forEach {data->
+                                val placeRequest = FetchPlaceRequest.newInstance(data.id, fields)
+                                placesClient.fetchPlace(placeRequest).addOnSuccessListener { response ->
+                                    val place = response.place
+                                    var photoUrl: PhotoMetadata? = null
+                                    if (!place.photoMetadatas.isNullOrEmpty()) {
+                                        photoUrl = place.photoMetadatas?.get(0)
+                                    }
+                                    placesList3.add(
+                                        AdapterModel(
+                                            place.id!!,
+                                            place.name!!,
+                                            place.address!!,
+                                            photoUrl,
+                                            place.rating
+                                        )
+                                    )
+                                    Log.d("Main","Data Diupdate")
+                                    adapter3.notifyItemInserted(placesList3.size - 1)
+                                }.addOnFailureListener { exception ->
+                                    if (exception is ApiException) {
+                                        Log.e("MainActivity", "Place not found: ${exception.message}")
+                                    }
+                                }
+                            }
                         }
                     }
                 }

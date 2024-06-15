@@ -121,7 +121,7 @@ class PreferenceActivity : AppCompatActivity() {
             val fragment =
                 fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
             if (fragment is PreferenceFragment2) {
-                val preferences = PreferencesModel(
+                val preferences = PreferencesData(
                     servesBeer,
                     servesWine,
                     servesCocktails,
