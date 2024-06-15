@@ -34,6 +34,9 @@
     <string name="welcome_to2">Harmonizing with Flavor, \nCloser with Distance</string>
     <string name="welcome_to3">Exploring culinary \ndelights</string>
     <string name="submit">Submit</string>
+    <string name="tab_text_1">Ringkasan</string>
+    <string name="tab_text_2">Ulasan</string>
+    <string name="tab_text_3">Tentang</string>
 
     <string name="onboarding_text1">Explore Cafes and Restaurants around you,\naccording to your preferences.</string>
     <string name="onboarding_text2">Experience Perfection in Every Corner of \nthe City with Cafstone Comfort in Your Hand.</string>
