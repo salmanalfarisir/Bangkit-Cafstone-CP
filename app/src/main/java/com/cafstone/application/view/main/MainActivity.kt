@@ -24,7 +24,7 @@ import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
-import com.cafstone.application.view.ProfileActivity
+import com.cafstone.application.view.profile.ProfileActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.search.SearchViewActivity
@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         binding.profileCard.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
@@ -306,7 +305,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.show(WindowInsets.Type.statusBars())
-            supportActionBar?.hide()
         }
     }
 
@@ -314,8 +312,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupAction() {
         currentLocation?.let { location ->
             Log.d(TAG, "Lokasi : " + location.latitude + " + " + location.longitude)
-            binding.btnLocation.text =
-                getCityNameFromCoordinates(location.latitude, location.longitude)
+//            binding.btnLocation.text =
+//                getCityNameFromCoordinates(location.latitude, location.longitude)
             binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
@@ -340,6 +338,7 @@ class MainActivity : AppCompatActivity() {
             }
             binding.progressBar.visibility = View.GONE
         }
+
         binding.btnLocation.setOnClickListener {
             AlertDialog.Builder(this).apply {
                 setTitle(title)

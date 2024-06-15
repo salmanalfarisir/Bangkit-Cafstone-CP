@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
+import com.cafstone.application.R
 import com.cafstone.application.data.adapter.ImageAdapter
 import com.cafstone.application.databinding.ActivityDetailBinding
 import com.cafstone.application.di.PlacesClientSingleton
@@ -13,6 +15,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -23,6 +26,9 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        viewPager.adapter = ViewPagerAdapter(this)
 
         val id = intent.getStringExtra(PLACE_ID)
         if (id != null){

@@ -1,5 +1,6 @@
 package com.cafstone.application.view.preferance
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.main.MainActivity
 import com.cafstone.application.view.signup.UserRegisterModel
 
+@Suppress("DEPRECATION")
 class PreferenceActivity : AppCompatActivity() {
     private val signupViewModel: PreferanceViewModel by viewModels {
         ViewModelFactory.getInstance(this)
@@ -42,10 +44,18 @@ class PreferenceActivity : AppCompatActivity() {
     var acceptsCashOnly: Boolean = false
     var acceptsNfc: Boolean = false
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPreferanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.defToolbar.toolbarTitle.text = "Preference"
+        binding.defToolbar.myToolbar.apply {
+            setSupportActionBar(this)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+        }
 
         setupView()
         setupAction()
@@ -68,20 +78,22 @@ class PreferenceActivity : AppCompatActivity() {
                     "MyFlexibleFragment",
                     "Fragment Name :" + PreferenceFragment1::class.java.simpleName
                 )
-                fragmentManager
-                    .beginTransaction()
-                    .add(
-                        R.id.preferenceViewPager,
-                        PreferenceFragment1(),
-                        PreferenceFragment1::class.java.simpleName
-                    )
-                    .commit()
+                fragmentManager.beginTransaction().add(
+                    R.id.preferenceViewPager,
+                    PreferenceFragment1(),
+                    PreferenceFragment1::class.java.simpleName
+                ).commit()
             }
             setupAction()
 
         } else {
             finish()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun setupView() {
@@ -91,32 +103,11 @@ class PreferenceActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.backButton.setOnClickListener {
-            val fragment =
-                fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
-            if (fragment is PreferenceFragment2) {
-                fragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.preferenceViewPager,
-                        PreferenceFragment1(),
-                        PreferenceFragment1::class.java.simpleName
-                    )
-                    .commit()
-                setSubmitText()
-            } else {
-                finish()
-                setSubmitText()
-            }
-        }
         binding.nextOrSubmitButton.setOnClickListener {
             val fragment =
                 fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
             if (fragment is PreferenceFragment2) {
-                val data = UserRegisterModel(
-                    name,
-                    email,
-                    password,
+                val preferences = PreferenceModel(
                     servesBeer,
                     servesWine,
                     servesCocktails,
@@ -132,16 +123,16 @@ class PreferenceActivity : AppCompatActivity() {
                     acceptsCashOnly,
                     acceptsNfc
                 )
+                val data = UserRegisterModel(
+                    name, email, password, preferences
+                )
                 signupViewModel.register(data)
             } else {
-                fragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.preferenceViewPager,
-                        PreferenceFragment2(),
-                        PreferenceFragment2::class.java.simpleName
-                    )
-                    .commit()
+                fragmentManager.beginTransaction().replace(
+                    R.id.preferenceViewPager,
+                    PreferenceFragment2(),
+                    PreferenceFragment2::class.java.simpleName
+                ).commit()
                 setSubmitText()
             }
         }

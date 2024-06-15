@@ -17,7 +17,7 @@
         android:theme="@style/Base.Theme.Cafstone_Project"
         tools:targetApi="31">
         <activity
-            android:name=".view.ProfileActivity"
+            android:name=".view.profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".view.preferance.PreferenceActivity"

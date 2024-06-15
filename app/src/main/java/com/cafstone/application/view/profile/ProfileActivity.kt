@@ -1,14 +1,13 @@
-package com.cafstone.application.view
+package com.cafstone.application.view.profile
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.cafstone.application.R
 import com.cafstone.application.databinding.ActivityProfileBinding
-import com.cafstone.application.view.main.MainActivity
 
 @Suppress("DEPRECATION")
 class ProfileActivity : AppCompatActivity() {
@@ -20,8 +19,16 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.backButton.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+        binding.profileToolbar.editProfileButton.visibility = View.GONE
+        binding.profileToolbar.myToolbar.background = null
+        binding.profileToolbar.toolbarTitle.setTextColor(Color.WHITE)
+
+        binding.profileToolbar.myToolbar.apply {
+            setSupportActionBar(this)
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.charm__arrow_left_white)
+            supportActionBar?.title = ""
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -32,6 +39,5 @@ class ProfileActivity : AppCompatActivity() {
                 statusBarColor = Color.TRANSPARENT
             }
         }
-        supportActionBar?.hide()
     }
 }

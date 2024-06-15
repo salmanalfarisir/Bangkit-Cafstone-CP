@@ -153,8 +153,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2"
-        tools:layout_editor_absoluteX="16dp">
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="6dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/servesBeer"
@@ -162,7 +164,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -182,7 +183,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -201,10 +201,9 @@
             android:id="@+id/servesCockTail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="3dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -224,7 +223,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
 
             android:minWidth="0dp"
@@ -243,14 +241,13 @@
             android:id="@+id/goodForGroups"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="13dp"
-            android:layout_marginStart="3dp"
             android:text="@string/baik_untuk_group"
             android:textAllCaps="false"
             android:textColor="#0d4b85"
@@ -266,7 +263,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -284,11 +280,11 @@
             android:id="@+id/outDoorSeating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
-            android:includeFontPadding="false"
             android:layout_marginStart="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_for_reference_no"
+            android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="13dp"
@@ -296,10 +292,11 @@
             android:textAllCaps="false"
             android:textColor="#0d4b85"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/goodForGroups" />
+            app:layout_constraintTop_toBottomOf="@+id/servesDessert" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/liveMusic"
@@ -307,9 +304,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
-
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="13dp"
@@ -317,19 +312,16 @@
             android:textAllCaps="false"
             android:textColor="#0d4b85"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/servesWine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/servesWine"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/servesDessert"
+            app:layout_constraintStart_toEndOf="@+id/servesDessert"
+            app:layout_constraintTop_toTopOf="@+id/servesDessert" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/servesDessert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_for_reference_no"
-            android:backgroundTint="@color/button_no"
             android:includeFontPadding="false"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -340,8 +332,8 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/reservable"
-            app:layout_constraintTop_toTopOf="@+id/reservable" />
+            app:layout_constraintStart_toStartOf="@+id/goodForGroups"
+            app:layout_constraintTop_toBottomOf="@+id/goodForGroups" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

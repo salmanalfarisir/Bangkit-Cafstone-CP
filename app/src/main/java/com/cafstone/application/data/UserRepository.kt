@@ -24,44 +24,47 @@ class UserRepository private constructor(
         return userPreference.getSession()
     }
 
-    fun getdata() : UserModel{
+    fun getdata(): UserModel {
         val data = runBlocking { userPreference.getdata() }
         return data
     }
+
     suspend fun logout() {
         userPreference.logout()
     }
 
     suspend fun login(email: String, password: String): LoginResponse {
-            val response = apiService.login(email, password)
-            if (response.success) {
-                // Jika login berhasil dan token diterima, simpan token ke dalam DataStore
-                val user = UserModel(response.data.name,
-                    email,
-                    response.data.preferences.servesBeer,
-                    response.data.preferences.servesWine,
-                    response.data.preferences.servesCocktails,
-                    response.data.preferences.goodForChildren,
-                    response.data.preferences.goodForGroups,
-                    response.data.preferences.reservable,
-                    response.data.preferences.outdoorSeating,
-                    response.data.preferences.liveMusic,
-                    response.data.preferences.servesDessert,
-                    response.data.preferences.priceLevel,
-                    response.data.preferences.acceptsCreditCards,
-                    response.data.preferences.acceptsDebitCards,
-                    response.data.preferences.acceptsCashOnly,
-                    response.data.preferences.acceptsNfc,
-                    true)
+        val response = apiService.login(email, password)
+        if (response.success) {
+            // Jika login berhasil dan token diterima, simpan token ke dalam DataStore
+            val user = UserModel(
+                response.data.name,
+                email,
+                response.data.preferences.servesBeer,
+                response.data.preferences.servesWine,
+                response.data.preferences.servesCocktails,
+                response.data.preferences.goodForChildren,
+                response.data.preferences.goodForGroups,
+                response.data.preferences.reservable,
+                response.data.preferences.outdoorSeating,
+                response.data.preferences.liveMusic,
+                response.data.preferences.servesDessert,
+                response.data.preferences.priceLevel,
+                response.data.preferences.acceptsCreditCards,
+                response.data.preferences.acceptsDebitCards,
+                response.data.preferences.acceptsCashOnly,
+                response.data.preferences.acceptsNfc,
+                true
+            )
 
-                Log.d(TAG,user.toString())
-                saveSession(user)
-            }
-            return response
+            Log.d(TAG, user.toString())
+            saveSession(user)
+        }
+        return response
     }
 
     suspend fun register(user: UserRegisterModel): RegisterResponse {
-        return apiService.register(user.name,user.email,user.password,user.servesBeer,user.servesWine,user.servesCocktails,user.goodForChildren,user.goodForGroups,user.reservable,user.outdoorSeating,user.liveMusic,user.servesDessert,user.priceLevel,user.acceptsCreditCards,user.acceptsDebitCards,user.acceptsCashOnly,user.acceptsNfc)
+        return apiService.register(user)
     }
 
     companion object {
