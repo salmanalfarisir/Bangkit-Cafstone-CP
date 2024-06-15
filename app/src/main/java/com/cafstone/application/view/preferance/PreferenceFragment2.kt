@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.cafstone.application.R
 import com.cafstone.application.databinding.FragmentPreference2Binding
 
+@Suppress("NAME_SHADOWING")
 class PreferenceFragment2 : Fragment() {
 
     private var _binding: FragmentPreference2Binding? = null
@@ -25,41 +26,37 @@ class PreferenceFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val act = requireActivity() as? PreferenceActivity
-        act?.let{activity->
-            setButton(activity.acceptsCreditCards,binding.acceptsCreditCards)
-            setButton(activity.acceptsDebitCards,binding.acceptsDeditCards)
-            setButton(activity.acceptsCashOnly,binding.acceptsCashOnly)
-            setButton(activity.acceptsNfc,binding.acceptsNfc)
+        val activity = requireActivity() as? PreferenceActivity
+        activity?.let { activity ->
+            setButton(activity.acceptsCreditCards, binding.acceptsCreditCards)
+            setButton(activity.acceptsDebitCards, binding.acceptsDeditCards)
+            setButton(activity.acceptsCashOnly, binding.acceptsCashOnly)
+            setButton(activity.acceptsNfc, binding.acceptsNfc)
 
             binding.acceptsCashOnly.setOnClickListener {
                 activity.acceptsCashOnly = setClick(activity.acceptsCashOnly)
-                setButton(activity.acceptsCashOnly,binding.acceptsCashOnly)
+                setButton(activity.acceptsCashOnly, binding.acceptsCashOnly)
             }
 
             binding.acceptsDeditCards.setOnClickListener {
                 activity.acceptsDebitCards = setClick(activity.acceptsDebitCards)
-                setButton(activity.acceptsDebitCards,binding.acceptsDeditCards)
+                setButton(activity.acceptsDebitCards, binding.acceptsDeditCards)
             }
 
             binding.acceptsCreditCards.setOnClickListener {
                 activity.acceptsCreditCards = setClick(activity.acceptsCreditCards)
-                setButton(activity.acceptsCreditCards,binding.acceptsCreditCards)
+                setButton(activity.acceptsCreditCards, binding.acceptsCreditCards)
             }
 
             binding.acceptsNfc.setOnClickListener {
                 activity.acceptsNfc = setClick(activity.acceptsNfc)
-                setButton(activity.acceptsNfc,binding.acceptsNfc)
+                setButton(activity.acceptsNfc, binding.acceptsNfc)
             }
         }
     }
 
-    fun setClick(status : Boolean) : Boolean{
-        if(status){
-            return false
-        }else{
-            return true
-        }
+    fun setClick(status: Boolean): Boolean {
+        return !status
     }
 
     fun setButton(status: Boolean, button: AppCompatButton) {

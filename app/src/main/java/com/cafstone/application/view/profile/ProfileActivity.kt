@@ -19,16 +19,15 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.profileToolbar.title.text = "Profile"
-        binding.profileToolbar.title.setTextColor(Color.WHITE)
-        binding.profileToolbar.toolbar.setBackgroundColor(Color.TRANSPARENT)
+        binding.profileToolbar.editProfileButton.visibility = View.GONE
+        binding.profileToolbar.myToolbar.background = null
+        binding.profileToolbar.toolbarTitle.setTextColor(Color.WHITE)
 
-        binding.profileToolbar.backButton.visibility = View.GONE
-
-        binding.profileToolbar.toolbar.apply {
+        binding.profileToolbar.myToolbar.apply {
             setSupportActionBar(this)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.charm__arrow_left_white)
+
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.charm__arrow_left_white)
             supportActionBar?.title = ""
         }
 
@@ -40,10 +39,5 @@ class ProfileActivity : AppCompatActivity() {
                 statusBarColor = Color.TRANSPARENT
             }
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
     }
 }

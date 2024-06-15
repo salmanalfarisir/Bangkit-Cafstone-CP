@@ -18,10 +18,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <include
-            android:id="@+id/profileToolbar"
-            layout="@layout/toolbar" />
+            android:id="@+id/profile_toolbar"
+            layout="@layout/toolbar_default" />
 
-        <!--        Profile CardView -->
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="100dp"

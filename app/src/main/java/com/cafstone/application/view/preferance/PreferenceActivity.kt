@@ -1,10 +1,10 @@
 package com.cafstone.application.view.preferance
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.WindowInsets
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -16,6 +16,7 @@ import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.main.MainActivity
 import com.cafstone.application.view.signup.UserRegisterModel
 
+@Suppress("DEPRECATION")
 class PreferenceActivity : AppCompatActivity() {
     private val signupViewModel: PreferanceViewModel by viewModels {
         ViewModelFactory.getInstance(this)
@@ -43,11 +44,19 @@ class PreferenceActivity : AppCompatActivity() {
     var acceptsCashOnly: Boolean = false
     var acceptsNfc: Boolean = false
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPreferanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        showloading(false)
+
+        binding.defToolbar.toolbarTitle.text = "Preference"
+        binding.defToolbar.myToolbar.apply {
+            setSupportActionBar(this)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+        }
+
         setupView()
         setupAction()
 
@@ -69,14 +78,11 @@ class PreferenceActivity : AppCompatActivity() {
                     "MyFlexibleFragment",
                     "Fragment Name :" + PreferenceFragment1::class.java.simpleName
                 )
-                fragmentManager
-                    .beginTransaction()
-                    .add(
-                        R.id.preferenceViewPager,
-                        PreferenceFragment1(),
-                        PreferenceFragment1::class.java.simpleName
-                    )
-                    .commit()
+                fragmentManager.beginTransaction().add(
+                    R.id.preferenceViewPager,
+                    PreferenceFragment1(),
+                    PreferenceFragment1::class.java.simpleName
+                ).commit()
             }
             setupAction()
 
@@ -85,13 +91,11 @@ class PreferenceActivity : AppCompatActivity() {
         }
     }
 
-    private fun showloading (status : Boolean){
-        if(status){
-            binding.progressBar.visibility = View.VISIBLE
-        }else{
-            binding.progressBar.visibility = View.GONE
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
+
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.show(WindowInsets.Type.statusBars())
@@ -99,29 +103,11 @@ class PreferenceActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.backButton.setOnClickListener {
-            val fragment =
-                fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
-            if (fragment is PreferenceFragment2) {
-                fragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.preferenceViewPager,
-                        PreferenceFragment1(),
-                        PreferenceFragment1::class.java.simpleName
-                    )
-                    .commit()
-                setSubmitText()
-            } else {
-                finish()
-                setSubmitText()
-            }
-        }
         binding.nextOrSubmitButton.setOnClickListener {
             val fragment =
                 fragmentManager.findFragmentByTag(PreferenceFragment2::class.java.simpleName)
             if (fragment is PreferenceFragment2) {
-                val preferences = PreferencesData(
+                val preferences = PreferenceModel(
                     servesBeer,
                     servesWine,
                     servesCocktails,
@@ -138,21 +124,15 @@ class PreferenceActivity : AppCompatActivity() {
                     acceptsNfc
                 )
                 val data = UserRegisterModel(
-                    name,
-                    email,
-                    password,
-                    preferences
+                    name, email, password, preferences
                 )
                 signupViewModel.register(data)
             } else {
-                fragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.preferenceViewPager,
-                        PreferenceFragment2(),
-                        PreferenceFragment2::class.java.simpleName
-                    )
-                    .commit()
+                fragmentManager.beginTransaction().replace(
+                    R.id.preferenceViewPager,
+                    PreferenceFragment2(),
+                    PreferenceFragment2::class.java.simpleName
+                ).commit()
                 setSubmitText()
             }
         }
@@ -160,13 +140,9 @@ class PreferenceActivity : AppCompatActivity() {
         signupViewModel.regist.observe(this) { registerForm ->
             when (registerForm) {
                 is PreferanceViewModel.RegistrationStatus.Loading -> {
-                    showloading(true)
-                    binding.nextOrSubmitButton.isEnabled = false
                 }
 
                 is PreferanceViewModel.RegistrationStatus.Success -> {
-                    showloading(false)
-                    binding.nextOrSubmitButton.isEnabled = true
                     Toast.makeText(this, "Register Successfully", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@PreferenceActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -174,9 +150,7 @@ class PreferenceActivity : AppCompatActivity() {
                 }
 
                 is PreferanceViewModel.RegistrationStatus.Error -> {
-                    showloading(false)
                     showDialog(registerForm.message)
-                    binding.nextOrSubmitButton.isEnabled = true
                 }
             }
         }
