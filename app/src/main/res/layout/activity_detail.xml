@@ -25,6 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="wrap_content"
@@ -34,13 +35,13 @@
             app:layout_constraintEnd_toStartOf="@id/next_button"
             app:layout_constraintStart_toEndOf="@id/prev_button"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicator="@drawable/tab_selector2"
-            app:tabIndicatorColor="@color/primary_color"
-            app:tabIndicatorAnimationMode="elastic"
             app:tabBackground="@drawable/tab_selector2"
-            app:tabRippleColor="@null"
+            app:tabIndicator="@drawable/tab_selector2"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorColor="@color/primary_color"
             app:tabIndicatorHeight="10dp"
             app:tabPadding="5dp"
+            app:tabRippleColor="@null"
             tools:ignore="ObsoleteLayoutParam,RtlSymmetry" />
 
         <ImageView
@@ -57,8 +58,8 @@
             android:id="@+id/prev_button"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:src="@drawable/ep__arrow_right_bold"
             android:rotation="180"
+            android:src="@drawable/ep__arrow_right_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,11 +90,11 @@
                 android:id="@+id/linearLayout3"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rating_container"
                 android:elevation="2dp"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
