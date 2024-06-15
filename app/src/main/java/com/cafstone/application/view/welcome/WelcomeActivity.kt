@@ -5,23 +5,16 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.BuildConfig
 import com.cafstone.application.databinding.ActivityWelcomeBinding
 import com.cafstone.application.view.login.LoginActivity
 import com.cafstone.application.view.signup.SignupActivity
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.api.net.SearchByTextRequest
-import com.google.android.libraries.places.api.net.SearchByTextResponse
-import java.util.Arrays
 
 
 class WelcomeActivity : AppCompatActivity() {
@@ -31,11 +24,13 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
 
         setupView()
         setupAction()
         playAnimation()
     }
+
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -59,8 +54,8 @@ class WelcomeActivity : AppCompatActivity() {
             startActivity(Intent(this, SignupActivity::class.java))
         }
 
-                if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         }
 
     }

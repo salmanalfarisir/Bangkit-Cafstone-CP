@@ -2,6 +2,7 @@ package com.cafstone.application.view.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -11,22 +12,18 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.databinding.ActivitySignupBinding
-import com.cafstone.application.view.ViewModelFactory
+import com.cafstone.application.view.preferance.PreferenceActivity
 
 class SignupActivity : AppCompatActivity() {
-    private val viewModel by viewModels<SignUpViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
     private lateinit var binding: ActivitySignupBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
+
         showLoading(false)
         setupView()
         setupAction()
@@ -45,12 +42,9 @@ class SignupActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    @Suppress("SameParameterValue")
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun setButtonEnabled() {
@@ -68,7 +62,7 @@ class SignupActivity : AppCompatActivity() {
         binding.emailEditText.setErrorTextView(binding.emailEditTextLayout)
         binding.passwordConfirmEditText.setTextView(binding.passwordConfirmEditText)
         binding.passwordConfirmEditText.setErrorTextView(binding.passwordConfirmEditTextLayout)
-        binding.passwordConfirmEditText.setpasswordTextView(binding.passwordEditText)
+        binding.passwordConfirmEditText.setPasswordTextView(binding.passwordEditText)
         setButtonEnabled()
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -76,11 +70,11 @@ class SignupActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                setButtonEnabled()
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // No action needed
+                setButtonEnabled()
             }
         }
         binding.nameEditText.addTextChangedListener(textWatcher)
@@ -94,48 +88,17 @@ class SignupActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
             if (email.isNotEmpty() && nama.isNotEmpty() && password.isNotEmpty()) {
                 if (binding.emailEditTextLayout.error == null && binding.passwordEditTextLayout.error == null) {
-                    viewModel.register(nama, email, password)
-                    viewModel.isLoading.observe(this) { ds ->
-                        showLoading(ds)
-                        if (ds == false) {
-                            viewModel.isStatus.observe(this@SignupActivity) { cs ->
-                                if (cs != null) {
-                                    if (!cs.error) {
-                                        Toast.makeText(
-                                            this, "Register Succesfully", Toast.LENGTH_SHORT
-                                        ).show()
-                                        finish()
-                                    } else {
-                                        AlertDialog.Builder(this@SignupActivity).apply {
-                                            setTitle("Gagal")
-                                            setMessage(cs.message)
-                                            setNegativeButton("Lanjut") { dialog, _ ->
-                                                dialog.dismiss()
-                                            }
-                                            create()
-                                            show()
-                                        }
-                                    }
-                                } else {
-                                    AlertDialog.Builder(this@SignupActivity).apply {
-                                        setTitle("Gagal")
-                                        setMessage("$email Sudah Tersedia, Mohon menggunakan email yang lain")
-                                        setNegativeButton("Lanjut") { dialog, _ ->
-                                            dialog.dismiss()
-                                        }
-                                        create()
-                                        show()
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    val intent = Intent(this, PreferenceActivity::class.java)
+                    intent.putExtra(PreferenceActivity.NAME, nama)
+                    intent.putExtra(PreferenceActivity.EMAIL, email)
+                    intent.putExtra(PreferenceActivity.PASSWORD, password)
+                    startActivity(intent)
                 } else {
-                    Toast.makeText(this, "Masih Ada Error di Email / Password", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Error Email or Password", Toast.LENGTH_SHORT)
                         .show()
                 }
             } else {
-                Toast.makeText(this, "Masih Belum Terisi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Fill the form", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -160,9 +123,9 @@ class SignupActivity : AppCompatActivity() {
             ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
         val passwordEditTextLayout =
             ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val passwordconfirmTextView =
+        val passwordConfirmTextView =
             ObjectAnimator.ofFloat(binding.passwordConfirmTextView, View.ALPHA, 1f).setDuration(100)
-        val passwordconfirmEditTextLayout =
+        val passwordConfirmEditTextLayout =
             ObjectAnimator.ofFloat(binding.passwordConfirmEditTextLayout, View.ALPHA, 1f)
                 .setDuration(100)
         val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(100)
@@ -177,8 +140,8 @@ class SignupActivity : AppCompatActivity() {
                 emailEditTextLayout,
                 passwordTextView,
                 passwordEditTextLayout,
-                passwordconfirmTextView,
-                passwordconfirmEditTextLayout,
+                passwordConfirmTextView,
+                passwordConfirmEditTextLayout,
                 signup
             )
             startDelay = 100

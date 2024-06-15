@@ -8,7 +8,7 @@ import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class EmailEditText (context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs){
+class EmailEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs) {
     private var errorTextView: TextInputLayout? = null
 
     fun setErrorTextView(text: TextInputLayout) {

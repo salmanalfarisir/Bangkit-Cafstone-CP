@@ -23,8 +23,7 @@
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image_login" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/frame_layout"
@@ -154,7 +153,7 @@
                     android:id="@+id/next_button"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/button_circle"
+                    android:background="@drawable/btn_onboarding"
                     android:drawableEnd="@drawable/ep__arrow_right_bold"
                     android:paddingEnd="9dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView4"

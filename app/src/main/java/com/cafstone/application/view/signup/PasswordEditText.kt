@@ -11,15 +11,17 @@ class PasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
 
     private var errorTextView: TextInputLayout? = null
     private var errorMessage: String? = null
-    private var passworderrorTextView: TextInputLayout? = null
-    private var passwordTextView : PasswordConfirmEditText? = null
+    private var passwordErrorTextView: TextInputLayout? = null
+    private var passwordTextView: PasswordConfirmEditText? = null
 
     fun setErrorTextView(text: TextInputLayout) {
         errorTextView = text
     }
+
     fun setPasswordErrorTextView(text: TextInputLayout) {
-        passworderrorTextView = text
+        passwordErrorTextView = text
     }
+
     fun setPasswordTextView(text: PasswordConfirmEditText) {
         passwordTextView = text
     }
@@ -32,25 +34,23 @@ class PasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                if (s == null)
-                {
+                if (s == null) {
                     errorMessage = null
                     errorTextView?.error = errorMessage
                     passwordTextView?.text = null
                     passwordTextView?.isEnabled = false
-                    passworderrorTextView?.hint = "Masukkan Password Terlebih Dahulu"
-                }
-                else if (s.length < 8) {
+                    passwordErrorTextView?.hint = "Fill the Password"
+                } else if (s.length < 8) {
                     errorMessage = "Password should be at least 8 characters long"
                     errorTextView?.error = errorMessage
                     passwordTextView?.text = null
                     passwordTextView?.isEnabled = false
-                    passworderrorTextView?.hint = "Masukkan Password Terlebih Dahulu"
+                    passwordErrorTextView?.hint = "Fill the Password"
                 } else {
                     errorMessage = null
                     errorTextView?.error = errorMessage
                     passwordTextView?.isEnabled = true
-                    passworderrorTextView?.hint = null
+                    passwordErrorTextView?.hint = "Password Confirm"
                 }
             }
         })

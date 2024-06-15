@@ -11,8 +11,8 @@ import com.cafstone.application.R
 
 class MyButton : AppCompatButton {
 
-    constructor(context: Context) : super(context) // untuk di Activity/Fragment
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)  // untuk di XML
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     private var txtColor: Int = 0
     private var enabledBackground: Drawable

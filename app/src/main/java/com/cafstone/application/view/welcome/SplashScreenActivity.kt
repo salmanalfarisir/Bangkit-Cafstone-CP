@@ -16,8 +16,8 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
         setContentView(binding.root)
+        enableEdgeToEdge()
 
         Handler(Looper.getMainLooper()).postDelayed({
             goToMainActivity()

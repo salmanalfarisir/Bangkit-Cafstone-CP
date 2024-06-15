@@ -1,63 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginStart="12dp"
-    android:layout_marginTop="6dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="6dp"
-    card_view:cardCornerRadius="8dp">
+    android:layout_height="280dp"
+    android:layout_gravity="center|start"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="10dp"
+    android:elevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_item_photo"
+            style="@style/RoundedSquare"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            tools:src="@tools:sample/avatars"
+            android:layout_height="150dp"
+            android:background="@drawable/radius_image"
+            android:contentDescription="@string/destination_image"
             android:scaleType="centerCrop"
-            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="1.0"
+            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintBottom_toTopOf="@+id/tv_item_name"/>
+            tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tv_item_name"
-            android:layout_width="wrap_content"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="14dp"
-            android:layout_toEndOf="@id/iv_item_photo"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            card_view:layout_constraintTop_toBottomOf="@id/iv_item_photo"
+            android:backgroundTint="#00ffffff"
+            android:paddingTop="10dp"
+            card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            tools:text="test"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/iv_item_photo">
 
-        <TextView
-            android:id="@+id/story_description"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="2dp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent">
 
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginBottom="14dp"
-            android:layout_toEndOf="@id/iv_item_photo"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            card_view:layout_constraintTop_toBottomOf="@id/tv_item_name"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintStart_toEndOf="parent"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            tools:text="test"/>
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/rating"
+                    android:src="@drawable/emojione_star"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/ratingtextview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/poppins"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="@string/rating_4_5"
+                    android:textSize="13sp"
+                    card_view:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                    card_view:layout_constraintStart_toEndOf="@+id/imageView2"
+                    card_view:layout_constraintTop_toTopOf="@+id/imageView2"
+                    tools:ignore="SmallSp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/poppins_bold"
+                android:maxLines="2"
+                android:textSize="17sp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                tools:ignore="UnusedAttribute"
+                tools:text="@string/destination_title" />
+
+            <TextView
+                android:id="@+id/story_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:maxLines="2"
+                android:textSize="15sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="@+id/tv_item_name"
+                card_view:layout_constraintStart_toStartOf="@+id/tv_item_name"
+                card_view:layout_constraintTop_toBottomOf="@+id/tv_item_name"
+                card_view:layout_constraintVertical_bias="0.0"
+                tools:text="@string/destination_address" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -7,9 +7,10 @@ import com.cafstone.application.data.UserRepository
 import com.cafstone.application.di.Injection
 import com.cafstone.application.view.login.LoginViewModel
 import com.cafstone.application.view.main.MainViewModel
-import com.cafstone.application.view.signup.SignUpViewModel
+import com.cafstone.application.view.preferance.PreferanceViewModel
 
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: UserRepository) :
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -17,12 +18,15 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(repository) as T
             }
+
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(SignUpViewModel::class.java) -> {
-                SignUpViewModel(repository) as T
+
+            modelClass.isAssignableFrom(PreferanceViewModel::class.java) -> {
+                PreferanceViewModel(repository) as T
             }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -30,6 +34,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
     companion object {
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
+
         @JvmStatic
         fun getInstance(context: Context): ViewModelFactory {
             if (INSTANCE == null) {

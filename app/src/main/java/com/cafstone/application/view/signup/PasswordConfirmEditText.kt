@@ -7,21 +7,24 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class PasswordConfirmEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs) {
+class PasswordConfirmEditText(context: Context, attrs: AttributeSet) :
+    AppCompatEditText(context, attrs) {
 
     private var errorTextView: TextInputLayout? = null
-    private var TextView: PasswordConfirmEditText? = null
+    private var textView: PasswordConfirmEditText? = null
     private var passwordTextView: PasswordEditText? = null
 
     fun setErrorTextView(text: TextInputLayout) {
         errorTextView = text
-        errorTextView?.hint = "Masukkan Password Terlebih Dahulu"
+        errorTextView?.hint = "Fill password"
     }
+
     fun setTextView(text: PasswordConfirmEditText) {
-        TextView = text
-        TextView?.isEnabled = false
+        textView = text
+        textView?.isEnabled = false
     }
-    fun setpasswordTextView(text: PasswordEditText) {
+
+    fun setPasswordTextView(text: PasswordEditText) {
         passwordTextView = text
     }
 
@@ -33,14 +36,11 @@ class PasswordConfirmEditText(context: Context, attrs: AttributeSet) : AppCompat
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                if (s.toString().isEmpty())
-                {
+                if (s.toString().isEmpty()) {
                     errorTextView?.error = null
-                }
-                else if (s.toString().equals(passwordTextView?.text.toString()))
-                {
+                } else if (s.toString() == passwordTextView?.text.toString()) {
                     errorTextView?.error = null
-                }else{
+                } else {
                     val error = "The password and confirmation password do not match."
                     errorTextView?.error = error
                 }
