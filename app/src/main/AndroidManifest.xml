@@ -17,26 +17,33 @@
         android:theme="@style/Base.Theme.Cafstone_Project"
         tools:targetApi="31">
         <activity
-            android:name=".view.profile.ProfileActivity"
+            android:name=".view.ProfileActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.preferance.PreferenceActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.detail.DetailActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.Nearby.NearbyActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.onboardingpage.OnboardingActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.search.SearchViewActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:parentActivityName=".view.main.MainActivity" />
         <activity
             android:name=".view.welcome.SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -47,24 +54,31 @@
         </activity>
         <activity
             android:name=".view.onboarding.ThirdOBActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.onboarding.SecondOBActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.onboarding.FirstOBActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.welcome.WelcomeActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.signup.SignupActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.login.LoginActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.main.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
 
         <meta-data

@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
@@ -25,7 +27,7 @@ class SearchViewActivity : AppCompatActivity() {
     lateinit var placesClient: PlacesClient
     val fragmentManager = supportFragmentManager
     private val searchFragment = SearchFragment()
-    val emptyFragment = SearchEmptyFragment()
+    val emptyFragment = SearchMainFragment()
     private val placesList = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
     var lat: Double = 0.0
@@ -37,7 +39,11 @@ class SearchViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         binding.progressBar.visibility = View.GONE
         lat = intent.getDoubleExtra(LATITUDE, 0.0)
         long = intent.getDoubleExtra(LONGITUDE, 0.0)
@@ -45,18 +51,18 @@ class SearchViewActivity : AppCompatActivity() {
         if (lat != 0.0 && long != 0.0) {
             adapter = PlacesAdapter(placesList)
             val fragment =
-                fragmentManager.findFragmentByTag(SearchEmptyFragment::class.java.simpleName)
-            if (fragment !is SearchEmptyFragment) {
+                fragmentManager.findFragmentByTag(SearchMainFragment::class.java.simpleName)
+            if (fragment !is SearchMainFragment) {
                 Log.d(
                     "MyFlexibleFragment",
-                    "Fragment Name :" + SearchEmptyFragment::class.java.simpleName
+                    "Fragment Name :" + SearchMainFragment::class.java.simpleName
                 )
                 fragmentManager
                     .beginTransaction()
                     .add(
                         R.id.fragmentContainer,
                         emptyFragment,
-                        SearchEmptyFragment::class.java.simpleName
+                        SearchMainFragment::class.java.simpleName
                     )
                     .commit()
             }
@@ -75,17 +81,17 @@ class SearchViewActivity : AppCompatActivity() {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (newText.isNullOrEmpty() || newText.length < 3) {
-                        if (fragment !is SearchEmptyFragment) {
+                        if (fragment !is SearchMainFragment) {
                             fragmentManager
                                 .beginTransaction()
                                 .replace(
                                     R.id.fragmentContainer,
                                     emptyFragment,
-                                    SearchEmptyFragment::class.java.simpleName
+                                    SearchMainFragment::class.java.simpleName
                                 )
                                 .commit()
                         }
-                    }else {
+                    } else {
                         val lowerText = newText.lowercase(Locale.getDefault())
                         result = lowerText
                         searchText2(lowerText)
@@ -109,23 +115,23 @@ class SearchViewActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-fun searchText2(text : String){
-    val fragments =
-        fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
-    if (fragments is SearchFragment) {
-        searchFragment.searchText(this,text)
-    } else {
-        Log.d(TAG, "Search Empty Fragment")
-        fragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.fragmentContainer,
-                searchFragment,
-                SearchFragment::class.java.simpleName
-            )
-            .commit()
+    fun searchText2(text: String) {
+        val fragments =
+            fragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
+        if (fragments is SearchFragment) {
+            searchFragment.searchText(this, text)
+        } else {
+            Log.d(TAG, "Search Empty Fragment")
+            fragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragmentContainer,
+                    searchFragment,
+                    SearchFragment::class.java.simpleName
+                )
+                .commit()
+        }
     }
-}
 
     fun showLoading(isLoading: Boolean) {
         if (isLoading) {
