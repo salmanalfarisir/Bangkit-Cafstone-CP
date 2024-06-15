@@ -9,7 +9,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.ImageAdapter
 import com.cafstone.application.databinding.ActivityDetailBinding
@@ -20,6 +19,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -55,14 +55,28 @@ class DetailActivity : AppCompatActivity() {
 
         val id = intent.getStringExtra(PLACE_ID)
         if (id != null) {
-            binding.rvReview.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             photoAdapter = ImageAdapter(photoUris)
-            binding.rvReview.adapter = photoAdapter
+            binding.imageContainer.adapter = photoAdapter
+
             // Create a new PlacesClient instance
             placesClient = PlacesClientSingleton.getInstance(this)
-
+            TabLayoutMediator(binding.tabLayout, binding.imageContainer) { _, _ ->
+            }.attach()
+            binding.viewPager.adapter = DetailSectionPager(this)
+            TabLayoutMediator(binding.tabs,binding.viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
             fetchPlacePhotos(id)
+            binding.nextButton.setOnClickListener {
+                if (binding.imageContainer.currentItem < binding.imageContainer.adapter!!.itemCount - 1) {
+                    binding.imageContainer.currentItem += 1
+                }
+            }
+            binding.prevButton.setOnClickListener {
+                if (binding.imageContainer.currentItem != 0) {
+                    binding.imageContainer.currentItem -= 1
+                }
+            }
         } else {
             finish()
         }
@@ -73,9 +87,13 @@ class DetailActivity : AppCompatActivity() {
         val fields = listOf(
             Place.Field.ID,
             Place.Field.NAME,
+            Place.Field.OPENING_HOURS,
+            Place.Field.CURRENT_OPENING_HOURS,
             Place.Field.RATING,
             Place.Field.REVIEWS,
-            Place.Field.PHOTO_METADATAS
+            Place.Field.PHOTO_METADATAS,
+            Place.Field.SECONDARY_OPENING_HOURS,
+            Place.Field.TYPES
         )
 
         val placeRequest = FetchPlaceRequest.newInstance(placeId, fields)
@@ -87,6 +105,23 @@ class DetailActivity : AppCompatActivity() {
                 Log.w("MainActivity", "No photo metadata.")
                 return@addOnSuccessListener
             }
+
+            binding.ratingtextview.text = place.rating?.toString() ?: "0.0"
+
+            val review = place.reviews
+            if (review != null){
+                binding.reviewcounttextview.text = place.reviews?.size.toString()
+            }else{
+                binding.reviewcounttextview.text = "0"
+            }
+            binding.titleDestination.text = place.name?.toString() ?: ""
+            val type = place.placeTypes
+            if(type != null){
+                binding.tipeRestoran.text = type.joinToString(separator = ", ")
+            }else{
+                binding.tipeRestoran.visibility = View.GONE
+            }
+
             for (photoMetadata in metadata) {
                 val photoRequest = FetchResolvedPhotoUriRequest.builder(photoMetadata)
                     .setMaxWidth(300)
@@ -113,5 +148,10 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val PLACE_ID = "place_id"
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2,
+            R.string.tab_text_3
+        )
     }
 }
