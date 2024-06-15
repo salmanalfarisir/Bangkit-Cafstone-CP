@@ -24,9 +24,9 @@ import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
-import com.cafstone.application.view.profile.ProfileActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
+import com.cafstone.application.view.profile.ProfileActivity
 import com.cafstone.application.view.search.SearchViewActivity
 import com.cafstone.application.view.welcome.SplashScreenActivity
 import com.google.android.gms.location.FusedLocationProviderClient
