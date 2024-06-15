@@ -26,7 +26,7 @@ import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
 import com.cafstone.application.view.Nearby.NearbyActivity
-import com.cafstone.application.view.ProfileActivity
+import com.cafstone.application.view.profile.ProfileActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.search.SearchViewActivity

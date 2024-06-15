@@ -1,14 +1,13 @@
-package com.cafstone.application.view
+package com.cafstone.application.view.profile
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.cafstone.application.R
 import com.cafstone.application.databinding.ActivityProfileBinding
-import com.cafstone.application.view.main.MainActivity
 
 @Suppress("DEPRECATION")
 class ProfileActivity : AppCompatActivity() {
@@ -20,8 +19,17 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.backButton.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+        binding.profileToolbar.title.text = "Profile"
+        binding.profileToolbar.title.setTextColor(Color.WHITE)
+        binding.profileToolbar.toolbar.setBackgroundColor(Color.TRANSPARENT)
+
+        binding.profileToolbar.backButton.visibility = View.GONE
+
+        binding.profileToolbar.toolbar.apply {
+            setSupportActionBar(this)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.charm__arrow_left_white)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.title = ""
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -32,6 +40,10 @@ class ProfileActivity : AppCompatActivity() {
                 statusBarColor = Color.TRANSPARENT
             }
         }
-        supportActionBar?.hide()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }
