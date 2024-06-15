@@ -40,6 +40,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         searchAdapter = PlacesAdapter(placesList)
         binding.rvReview.layoutManager = LinearLayoutManager(context)
+        binding.rvReview.setHasFixedSize(true)
         binding.rvReview.adapter = searchAdapter
         val activity = requireActivity() as? SearchViewActivity
         activity?.let {
