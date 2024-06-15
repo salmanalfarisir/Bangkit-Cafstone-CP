@@ -22,19 +22,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
+import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
+import com.cafstone.application.view.Nearby.NearbyActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.profile.ProfileActivity
 import com.cafstone.application.view.search.SearchViewActivity
 import com.cafstone.application.view.welcome.SplashScreenActivity
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchByTextResponse
@@ -56,16 +60,19 @@ class MainActivity : AppCompatActivity() {
     private val placesList = mutableListOf<AdapterModel>()
     private val placesList1 = mutableListOf<AdapterModel>()
     private val placesList2 = mutableListOf<AdapterModel>()
+    private val placesList3 = mutableListOf<AdapterModel>()
 
     private lateinit var adapter: PlacesAdapter2
     private lateinit var adapter1: PlacesAdapter2
     private lateinit var adapter2: PlacesAdapter2
+    private lateinit var adapter3: PlacesAdapter2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        showloading(false)
         binding.profileCard.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
@@ -75,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, OnboardingActivity::class.java))
                 finish()
             } else {
+                placesClient = PlacesClientSingleton.getInstance(this)
                 locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
                 fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                 getMyLastLocation()
@@ -185,8 +193,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     fun searchText(text: String, p: Int, a: Int) {
         // Create a new PlacesClient instance
-        placesClient = PlacesClientSingleton.getInstance(this)
-
         // Specify the list of fields to return
         val placeFields = listOf(
             Place.Field.ID,
@@ -240,7 +246,6 @@ class MainActivity : AppCompatActivity() {
 
                             when (p) {
                                 0 -> {
-                                    Log.d(TAG, "0")
                                     placesList.add(
                                         AdapterModel(
                                             place.id!!,
@@ -253,7 +258,6 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 1 -> {
-                                    Log.d(TAG, "1")
                                     placesList1.add(
                                         AdapterModel(
                                             place.id!!,
@@ -266,7 +270,6 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 2 -> {
-                                    Log.d(TAG, "2")
                                     placesList2.add(
                                         AdapterModel(
                                             place.id!!,
@@ -299,12 +302,23 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { exception: Exception ->
                 Log.e(TAG, "Place not found: ${exception.message}")
+                if (p == 0) {
+                    binding.textView.visibility = View.GONE
+                    binding.rvReview.visibility = View.GONE
+                } else if (p == 1) {
+                    binding.textView1.visibility = View.GONE
+                    binding.rvReview1.visibility = View.GONE
+                } else if (p == 2) {
+                    binding.textView2.visibility = View.GONE
+                    binding.rvReview2.visibility = View.GONE
+                }
             }
     }
 
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.show(WindowInsets.Type.statusBars())
+            supportActionBar?.hide()
         }
     }
 
@@ -312,11 +326,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupAction() {
         currentLocation?.let { location ->
             Log.d(TAG, "Lokasi : " + location.latitude + " + " + location.longitude)
-//            binding.btnLocation.text =
-//                getCityNameFromCoordinates(location.latitude, location.longitude)
+            binding.btnLocation.text =
+                getCityNameFromCoordinates(location.latitude, location.longitude)
             binding.rvReview.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview1.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
+            binding.rvReview3.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
 
             adapter = PlacesAdapter2(placesList)
             binding.rvReview.adapter = adapter
@@ -324,8 +339,61 @@ class MainActivity : AppCompatActivity() {
             binding.rvReview1.adapter = adapter1
             adapter2 = PlacesAdapter2(placesList2)
             binding.rvReview2.adapter = adapter2
+            adapter3 = PlacesAdapter2(placesList3)
+            binding.rvReview3.adapter = adapter3
 
-            // Initialize the SDK
+            val data = viewModel.getdata()
+            data.let {
+                getrecomendation(it)
+            }
+            viewModel.isLoading.observe(this) {
+                showloading(it)
+                if (!it) {
+                    viewModel.recomendation.observe(this) {
+                        if (it == null) {
+                            binding.textView3.visibility = View.GONE
+                            binding.rvReview3.visibility = View.GONE
+                        } else {
+                            val fields = listOf(
+                                Place.Field.ID,
+                                Place.Field.NAME,
+                                Place.Field.ADDRESS,
+                                Place.Field.RATING,
+                                Place.Field.PHOTO_METADATAS
+                            )
+                            it.forEach { data ->
+                                val placeRequest = FetchPlaceRequest.newInstance(data.id, fields)
+                                placesClient.fetchPlace(placeRequest)
+                                    .addOnSuccessListener { response ->
+                                        val place = response.place
+                                        var photoUrl: PhotoMetadata? = null
+                                        if (!place.photoMetadatas.isNullOrEmpty()) {
+                                            photoUrl = place.photoMetadatas?.get(0)
+                                        }
+                                        placesList3.add(
+                                            AdapterModel(
+                                                place.id!!,
+                                                place.name!!,
+                                                place.address!!,
+                                                photoUrl,
+                                                place.rating
+                                            )
+                                        )
+                                        Log.d("Main", "Data Diupdate")
+                                        adapter3.notifyItemInserted(placesList3.size - 1)
+                                    }.addOnFailureListener { exception ->
+                                        if (exception is ApiException) {
+                                            Log.e(
+                                                "MainActivity",
+                                                "Place not found: ${exception.message}"
+                                            )
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
             searchText("Cafe Yang Sedang Banyak Dikunjungi", 1, 1)
             searchText("Cafe Fancy", 2, 2)
             searchText("Cafe Ternyaman", 0, 0)
@@ -336,9 +404,28 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra(SearchViewActivity.LONGITUDE, location.longitude)
                 startActivity(intent)
             }
-            binding.progressBar.visibility = View.GONE
+            binding.nearByCardView.setOnClickListener {
+                val intent = Intent(this, NearbyActivity::class.java)
+                intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terdekat")
+                intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
+                intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+                startActivity(intent)
+            }
+            binding.ratingCardView.setOnClickListener {
+                val intent = Intent(this, NearbyActivity::class.java)
+                intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terbaik")
+                intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
+                intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+                startActivity(intent)
+            }
+            binding.priceCardView.setOnClickListener {
+                val intent = Intent(this, NearbyActivity::class.java)
+                intent.putExtra(NearbyActivity.EXTRA_DETAIL, "termurah")
+                intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
+                intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+                startActivity(intent)
+            }
         }
-
         binding.btnLocation.setOnClickListener {
             AlertDialog.Builder(this).apply {
                 setTitle(title)
@@ -354,4 +441,44 @@ class MainActivity : AppCompatActivity() {
             viewModel.logout()
         }
     }
+
+    private fun showloading(bool: Boolean) {
+        if (bool) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun getrecomendation(user: UserModel) {
+        val list = RecomendationModel(
+            listOf(
+                setboolean(user.servesBeer),
+                setboolean(user.servesWine),
+                setboolean(user.servesCocktails),
+                setboolean(user.goodForChildren),
+                setboolean(user.goodForGroups),
+                setboolean(user.reservable),
+                setboolean(user.outdoorSeating),
+                setboolean(user.liveMusic),
+                setboolean(user.servesDessert),
+                user.priceLevel,
+                setboolean(user.acceptsCreditCards),
+                setboolean(user.acceptsDebitCards),
+                setboolean(user.acceptsCashOnly),
+                setboolean(user.acceptsNfc)
+            )
+        )
+        viewModel.recomendation(list)
+    }
+
+    private fun setboolean(bool: Boolean): Int {
+        if (bool) {
+            return 1
+        } else {
+            return 0
+        }
+    }
+
+
 }

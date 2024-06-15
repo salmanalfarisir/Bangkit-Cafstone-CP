@@ -21,7 +21,7 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         return repository.getSession().asLiveData()
     }
 
-    fun getdata() : UserModel{
+    fun getdata(): UserModel {
         return repository.getdata()
     }
 
@@ -31,10 +31,11 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-init {
-    _isLoading.value = false
-    _recomendation.value = null
-}
+    init {
+        _isLoading.value = false
+        _recomendation.value = null
+    }
+
     fun recomendation(user: RecomendationModel) {
         _isLoading.value = true
         viewModelScope.launch {
