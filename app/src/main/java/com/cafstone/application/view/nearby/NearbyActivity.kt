@@ -21,6 +21,7 @@ import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchNearbyRequest
 
 class NearbyActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityNearbyBinding
     private val placesList = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
@@ -109,13 +110,13 @@ class NearbyActivity : AppCompatActivity() {
 
         if ((att != null)) {
             includedTypes = listOf(att.value)
-            binding.tvItemName.text = att.title
+            binding.placeName.text = att.title
             binding.textView.text = att.desc
             binding.ivItemPhoto.setBackgroundResource(att.image)
         }
 
         if (text != null && text == "termurah") {
-            binding.tvItemName.text = getString(R.string.place_termurah)
+            binding.placeName.text = getString(R.string.place_termurah)
             binding.textView.text = getString(R.string.ini_rekomendasi_tempat_dengan_harga_termurah)
             val searchNearbyRequest =
                 searchNearby2(circle, placeFields, "Tempat makan dengan harga paling murah")
@@ -184,7 +185,7 @@ class NearbyActivity : AppCompatActivity() {
                 .setMaxResultCount(20).build()
         if ((kriteria != null)) {
             if (kriteria == "terdekat") {
-                binding.tvItemName.text = getString(R.string.place_terdekat)
+                binding.placeName.text = getString(R.string.place_terdekat)
                 binding.textView.text =
                     getString(R.string.berikut_adalah_tempat_terdekat_dari_lokasi_anda)
                 searchNearbyRequest =
@@ -192,7 +193,7 @@ class NearbyActivity : AppCompatActivity() {
                         .setMaxResultCount(20)
                         .setRankPreference(SearchNearbyRequest.RankPreference.DISTANCE).build()
             } else if (kriteria == "terbaik") {
-                binding.tvItemName.text = getString(R.string.rating_jempolan)
+                binding.placeName.text = getString(R.string.rating_jempolan)
                 binding.textView.text =
                     getString(R.string.tempat_dengan_rekomendasi_terbaik_ada_di_dekat_kamu_loh)
                 searchNearbyRequest =
