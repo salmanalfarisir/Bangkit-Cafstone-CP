@@ -12,7 +12,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.databinding.ActivityLoginBinding
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.main.MainActivity
@@ -23,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityLoginBinding
-    lateinit var email : String
+    lateinit var email: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -68,43 +67,44 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            if ((binding.emailEditText.text.toString().isNotEmpty() && binding.emailEditTextLayout.error == null) &&
-                (binding.passwordEditText.text.toString().isNotEmpty() && binding.passwordEditTextLayout.error == null))
-            {
+            if ((binding.emailEditText.text.toString()
+                    .isNotEmpty() && binding.emailEditTextLayout.error == null) &&
+                (binding.passwordEditText.text.toString()
+                    .isNotEmpty() && binding.passwordEditTextLayout.error == null)
+            ) {
                 viewModel.login(email, password)
                 viewModel.isLoading.observe(this) { isLoading ->
                     showLoading(isLoading)
-                    if (!isLoading)
-                    {
+                    if (!isLoading) {
                         viewModel.login.observe(this) { response ->
                             if (response.success) {
 
-                                Toast.makeText(this,"Login SuccesFully",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Login SuccessFul", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                 startActivity(intent)
                             }
                         }
                     }
                 }
 
-                viewModel.error.observe(this){
-                    if (!it.equals(""))
-                    {
+                viewModel.error.observe(this) {
+                    if (!it.equals("")) {
                         AlertDialog.Builder(this).apply {
-                            setTitle("Login Gagal")
-                            setMessage("Email atau Password Salah")
+                            setTitle("Login Failed")
+                            setMessage("Email or Password is invalid")
                             setPositiveButton("OK") { dialog, _ ->
                                 dialog.dismiss()
                             }
                             create()
                             show()
                         }
-                        viewModel.seterror()
+                        viewModel.setError()
                     }
                 }
-            }else {
-                Toast.makeText(this,"Mohon Isi Form Dengan Benar",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
         }
 

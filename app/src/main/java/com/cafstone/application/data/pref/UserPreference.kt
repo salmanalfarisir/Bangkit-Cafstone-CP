@@ -48,7 +48,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[servesCocktails_key] ?: false,
                 preferences[goodForChildren_key] ?: false,
                 preferences[goodForGroups_key] ?: false,
-                preferences[reservable_key]?: false,
+                preferences[reservable_key] ?: false,
                 preferences[outdoorSeating_key] ?: false,
                 preferences[liveMusic_key] ?: false,
                 preferences[servesDessert_key] ?: false,
@@ -62,7 +62,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
-    suspend fun getdata(): UserModel{
+    suspend fun getData(): UserModel {
         val preferences = dataStore.data.first()
         return UserModel(
             preferences[NAME_KEY] ?: "",
@@ -72,7 +72,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[servesCocktails_key] ?: false,
             preferences[goodForChildren_key] ?: false,
             preferences[goodForGroups_key] ?: false,
-            preferences[reservable_key]?: false,
+            preferences[reservable_key] ?: false,
             preferences[outdoorSeating_key] ?: false,
             preferences[liveMusic_key] ?: false,
             preferences[servesDessert_key] ?: false,
@@ -84,6 +84,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[IS_LOGIN_KEY] ?: false
         )
     }
+
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()
@@ -107,9 +108,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val servesDessert_key = booleanPreferencesKey("servesDessert")
         private val priceLevel_key = intPreferencesKey("price_level")
         private val acceptsCreditCards_key = booleanPreferencesKey("acceptsCreditCards")
-        private val acceptsDebitCards_key= booleanPreferencesKey("acceptsDebitCards")
-        private val acceptsCashOnly_key= booleanPreferencesKey("acceptsCashOnly")
-        private val acceptsNfc_key = booleanPreferencesKey("accpetsNfc")
+        private val acceptsDebitCards_key = booleanPreferencesKey("acceptsDebitCards")
+        private val acceptsCashOnly_key = booleanPreferencesKey("acceptsCashOnly")
+        private val acceptsNfc_key = booleanPreferencesKey("acceptsNfc")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {

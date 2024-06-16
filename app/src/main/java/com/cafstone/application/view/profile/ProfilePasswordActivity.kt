@@ -14,11 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.databinding.ActivityProfilePasswordBinding
 import com.cafstone.application.view.ViewModelFactory
 
+@Suppress("DEPRECATION", "NAME_SHADOWING")
 class ProfilePasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfilePasswordBinding
     private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePasswordBinding.inflate(layoutInflater)
@@ -47,7 +49,10 @@ class ProfilePasswordActivity : AppCompatActivity() {
         binding.oldpasswordEditText.setErrorTextView(binding.oldpasswordEditTextLayout)
         binding.passwordEditText.setErrorTextView(binding.passwordEditTextLayout)
         binding.passwordEditText.setPasswordTextView(binding.passwordConfirmEditText)
-        binding.passwordEditText.setPasswordErrorTextView(binding.passwordConfirmEditTextLayout,"Password Confirm")
+        binding.passwordEditText.setPasswordErrorTextView(
+            binding.passwordConfirmEditTextLayout,
+            "Password Confirm"
+        )
         binding.passwordConfirmEditText.setTextView(binding.passwordConfirmEditText)
         binding.passwordConfirmEditText.setErrorTextView(binding.passwordConfirmEditTextLayout)
         binding.passwordConfirmEditText.setPasswordTextView(binding.passwordEditText)
@@ -70,38 +75,52 @@ class ProfilePasswordActivity : AppCompatActivity() {
         binding.passwordConfirmEditText.addTextChangedListener(textWatcher)
 
         binding.signupButton.setOnClickListener {
-            val isOldPasswordValid = binding.oldpasswordEditText.text.toString().isNotEmpty() && binding.oldpasswordEditTextLayout.error == null
-            val isPasswordValid = binding.passwordEditText.text.toString().isNotEmpty() && binding.passwordEditTextLayout.error == null
-            val isPasswordConfirmValid = binding.passwordConfirmEditText.text.toString().isNotEmpty() && binding.passwordConfirmEditTextLayout.error == null
-            if (isPasswordValid && isOldPasswordValid && isPasswordConfirmValid)
-            {
-                viewModel.password(binding.oldpasswordEditText.text.toString(),binding.passwordEditText.text.toString())
-                viewModel.isLoading.observe(this){
+            val isOldPasswordValid = binding.oldpasswordEditText.text.toString()
+                .isNotEmpty() && binding.oldpasswordEditTextLayout.error == null
+            val isPasswordValid = binding.passwordEditText.text.toString()
+                .isNotEmpty() && binding.passwordEditTextLayout.error == null
+            val isPasswordConfirmValid = binding.passwordConfirmEditText.text.toString()
+                .isNotEmpty() && binding.passwordConfirmEditTextLayout.error == null
+            if (isPasswordValid && isOldPasswordValid && isPasswordConfirmValid) {
+                viewModel.password(
+                    binding.oldpasswordEditText.text.toString(),
+                    binding.passwordEditText.text.toString()
+                )
+                viewModel.isLoading.observe(this) { it ->
                     showloading(it)
-                    if (!it){
-                        viewModel.password.observe(this){
-                            if (it.success)
-                            {
-                                Toast.makeText(this,"Password Berhasil Diubah",Toast.LENGTH_SHORT).show()
+                    if (!it) {
+                        viewModel.password.observe(this) {
+                            if (it.success) {
+                                Toast.makeText(
+                                    this,
+                                    "Password kamu berhasil diubah",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
                                 finish()
-                            }else{
+                            } else {
                                 showDialog(it.message)
                             }
                         }
                     }
                 }
-            }else{
+            } else {
                 showDialog("Semua Form Belum Terisi")
             }
         }
     }
 
     private fun setButtonEnabled() {
-        val isOldPasswordValid = binding.oldpasswordEditText.text.toString().isNotEmpty() && binding.oldpasswordEditTextLayout.error == null
-        val isPasswordValid = binding.passwordEditText.text.toString().isNotEmpty() && binding.passwordEditTextLayout.error == null
-        val isPasswordConfirmValid = binding.passwordConfirmEditText.text.toString().isNotEmpty() && binding.passwordConfirmEditTextLayout.error == null
-        binding.signupButton.isEnabled = isOldPasswordValid && isPasswordValid && isPasswordConfirmValid
+        val isOldPasswordValid = binding.oldpasswordEditText.text.toString()
+            .isNotEmpty() && binding.oldpasswordEditTextLayout.error == null
+        val isPasswordValid = binding.passwordEditText.text.toString()
+            .isNotEmpty() && binding.passwordEditTextLayout.error == null
+        val isPasswordConfirmValid = binding.passwordConfirmEditText.text.toString()
+            .isNotEmpty() && binding.passwordConfirmEditTextLayout.error == null
+        binding.signupButton.isEnabled =
+            isOldPasswordValid && isPasswordValid && isPasswordConfirmValid
     }
+
     private fun showDialog(message: String) {
         AlertDialog.Builder(this).apply {
             setTitle(title)
@@ -114,10 +133,10 @@ class ProfilePasswordActivity : AppCompatActivity() {
         }
     }
 
-    private fun showloading(status:Boolean){
-        if (status){
+    private fun showloading(status: Boolean) {
+        if (status) {
             binding.progressBar.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.progressBar.visibility = View.GONE
         }
     }

@@ -7,7 +7,7 @@ import com.cafstone.application.data.UserRepository
 import com.cafstone.application.di.Injection
 import com.cafstone.application.view.login.LoginViewModel
 import com.cafstone.application.view.main.MainViewModel
-import com.cafstone.application.view.preferance.PreferanceViewModel
+import com.cafstone.application.view.preferance.PreferenceViewModel
 import com.cafstone.application.view.profile.ProfileViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
@@ -24,8 +24,8 @@ class ViewModelFactory(private val repository: UserRepository) :
                 LoginViewModel(repository) as T
             }
 
-            modelClass.isAssignableFrom(PreferanceViewModel::class.java) -> {
-                PreferanceViewModel(repository) as T
+            modelClass.isAssignableFrom(PreferenceViewModel::class.java) -> {
+                PreferenceViewModel(repository) as T
             }
 
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {

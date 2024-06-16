@@ -5,11 +5,11 @@ import android.util.Log
 import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.data.pref.UserPreference
 import com.cafstone.application.data.response.LoginResponse
-import com.cafstone.application.data.response.RecomendationResponseItem
+import com.cafstone.application.data.response.RecommendationResponseItem
 import com.cafstone.application.data.response.RegisterResponse
 import com.cafstone.application.data.retrofit.ApiService
 import com.cafstone.application.data.retrofit.ApiService2
-import com.cafstone.application.view.main.RecomendationModel
+import com.cafstone.application.view.main.RecommendationModel
 import com.cafstone.application.view.signup.UserRegisterModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
@@ -29,7 +29,7 @@ class UserRepository private constructor(
     }
 
     fun getdata(): UserModel {
-        val data = runBlocking { userPreference.getdata() }
+        val data = runBlocking { userPreference.getData() }
         return data
     }
 
@@ -37,9 +37,9 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
-    suspend fun recomendation (list : RecomendationModel) : List<RecomendationResponseItem>?{
+    suspend fun recomendation (list : RecommendationModel) : List<RecommendationResponseItem>?{
         return try {
-            val response = apiService2.getrecomendation(list)
+            val response = apiService2.getRecommendation(list)
             Log.d(TAG,"Berhasil BANG ANAJAYYY")
             response
         }catch (e: Exception){

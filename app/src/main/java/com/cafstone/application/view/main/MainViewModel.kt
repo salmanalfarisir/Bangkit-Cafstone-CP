@@ -7,13 +7,13 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.cafstone.application.data.UserRepository
 import com.cafstone.application.data.pref.UserModel
-import com.cafstone.application.data.response.RecomendationResponseItem
+import com.cafstone.application.data.response.RecommendationResponseItem
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: UserRepository) : ViewModel() {
-    private val _recomendation = MutableLiveData<List<RecomendationResponseItem>?>()
-    val recomendation: LiveData<List<RecomendationResponseItem>?>
-        get() = _recomendation
+    private val _recommendation = MutableLiveData<List<RecommendationResponseItem>?>()
+    val recommendation: LiveData<List<RecommendationResponseItem>?>
+        get() = _recommendation
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -21,7 +21,7 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         return repository.getSession().asLiveData()
     }
 
-    fun getdata(): UserModel {
+    fun getData(): UserModel {
         return repository.getdata()
     }
 
@@ -33,14 +33,14 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     init {
         _isLoading.value = false
-        _recomendation.value = null
+        _recommendation.value = null
     }
 
-    fun recomendation(user: RecomendationModel) {
+    fun recommendation(user: RecommendationModel) {
         _isLoading.value = true
         viewModelScope.launch {
             val response = repository.recomendation(user)
-            _recomendation.value = response
+            _recommendation.value = response
             _isLoading.value = false
         }
     }

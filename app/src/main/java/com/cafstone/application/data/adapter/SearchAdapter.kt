@@ -8,22 +8,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cafstone.application.R
-import com.cafstone.application.view.Nearby.NearbyActivity
-import com.cafstone.application.view.Nearby.NearbyModel
+import com.cafstone.application.view.nearby.NearbyActivity
+import com.cafstone.application.view.nearby.NearbyModel
 
 class SearchAdapter(private val placesList: List<SearchModel>) :
     RecyclerView.Adapter<SearchAdapter.PlaceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_item_view, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.search_item_view, parent, false)
         return PlaceViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (id, title, desc,att,long, photo) = placesList[position]
+        val (id, title, desc, att, long, photo) = placesList[position]
         holder.placeImageView.setImageResource(photo)
         holder.placeNameTextView.text = title
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             val data = NearbyModel(
                 title,
                 "Ingin Mencoba ${desc}? Berikut Rekomendasinya.",

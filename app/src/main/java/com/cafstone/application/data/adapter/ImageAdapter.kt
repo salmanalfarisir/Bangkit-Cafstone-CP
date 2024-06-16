@@ -11,7 +11,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.cafstone.application.R
 
-class ImageAdapter(private val photoUris: List<Uri>) : RecyclerView.Adapter<ImageAdapter.PhotoViewHolder>() {
+class ImageAdapter(private val photoUris: List<Uri>) :
+    RecyclerView.Adapter<ImageAdapter.PhotoViewHolder>() {
 
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.iv_item_photo)
@@ -24,7 +25,7 @@ class ImageAdapter(private val photoUris: List<Uri>) : RecyclerView.Adapter<Imag
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val uri = photoUris[position]
-        val req : RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
+        val req: RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
         Glide.with(holder.itemView.context)
             .load(uri)
             .apply(req)

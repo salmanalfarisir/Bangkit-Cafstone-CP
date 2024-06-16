@@ -58,7 +58,10 @@ class SignupActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.passwordEditText.setErrorTextView(binding.passwordEditTextLayout)
         binding.passwordEditText.setPasswordTextView(binding.passwordConfirmEditText)
-        binding.passwordEditText.setPasswordErrorTextView(binding.passwordConfirmEditTextLayout,"Password Confirm")
+        binding.passwordEditText.setPasswordErrorTextView(
+            binding.passwordConfirmEditTextLayout,
+            "Password Confirm"
+        )
         binding.emailEditText.setErrorTextView(binding.emailEditTextLayout)
         binding.passwordConfirmEditText.setTextView(binding.passwordConfirmEditText)
         binding.passwordConfirmEditText.setErrorTextView(binding.passwordConfirmEditTextLayout)

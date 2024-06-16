@@ -25,5 +25,5 @@ interface ApiService {
         @Field("email") email: String,
         @Field("oldPassword") oldPassword: String,
         @Field("newPassword") newPassword: String
-    ):RegisterResponse
+    ): RegisterResponse
 }

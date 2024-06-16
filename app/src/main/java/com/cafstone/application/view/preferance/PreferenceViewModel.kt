@@ -12,11 +12,11 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class PreferanceViewModel(private val userRepository: UserRepository) : ViewModel() {
+class PreferenceViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    private val _regist = MutableLiveData<RegistrationStatus>()
-    val regist: LiveData<RegistrationStatus>
-        get() = _regist
+    private val _register = MutableLiveData<RegistrationStatus>()
+    val register: LiveData<RegistrationStatus>
+        get() = _register
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -30,7 +30,7 @@ class PreferanceViewModel(private val userRepository: UserRepository) : ViewMode
     fun register(user: UserRegisterModel) {
         _isLoading.value = true
         viewModelScope.launch {
-            _regist.value = RegistrationStatus.Loading
+            _register.value = RegistrationStatus.Loading
             try {
                 val response = userRepository.register(user)
                 if (response.success) {
@@ -54,19 +54,19 @@ class PreferanceViewModel(private val userRepository: UserRepository) : ViewMode
                         true
                     )
                     saveSession(userModel)
-                    _regist.value = RegistrationStatus.Success(response.message)
+                    _register.value = RegistrationStatus.Success(response.message)
 
                 } else {
-                    _regist.value =
+                    _register.value =
                         RegistrationStatus.Error(response.message)
                 }
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-                _regist.value = errorMessage?.let { RegistrationStatus.Error(it) }
+                _register.value = errorMessage?.let { RegistrationStatus.Error(it) }
             } catch (e: Exception) {
-                _regist.value = RegistrationStatus.Error(
+                _register.value = RegistrationStatus.Error(
                     e.message ?: "Something went wrong during registration"
                 )
             } finally {

@@ -6,11 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
-import com.cafstone.application.view.signup.PasswordConfirmEditText
-import com.cafstone.application.view.signup.PasswordEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class OldPasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs) {
+class OldPasswordEditText(context: Context, attrs: AttributeSet) :
+    AppCompatEditText(context, attrs) {
 
     private var errorTextView: TextInputLayout? = null
     private var errorMessage: String? = null

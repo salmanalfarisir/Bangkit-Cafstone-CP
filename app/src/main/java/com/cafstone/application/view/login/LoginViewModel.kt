@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cafstone.application.data.UserRepository
-import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.data.response.LoginResponse
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
@@ -31,9 +29,8 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
             try {
                 val response = repository.login(email, password)
                 _login.value = response
-                if (response.success) {
-                } else {
-                    val errorMessage = response.message ?: "Login failed"
+                if (!response.success) {
+                    val errorMessage = response.message
                     _error.value = errorMessage
                 }
             } catch (e: Exception) {
@@ -45,7 +42,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun seterror() {
+    fun setError() {
         _error.value = ""
     }
 }

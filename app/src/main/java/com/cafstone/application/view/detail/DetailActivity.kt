@@ -40,7 +40,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.a.buttonToolbar.visibility = View.GONE
         binding.a.backButton.setOnClickListener {
-            startActivity(Intent(this@DetailActivity , MainActivity::class.java))
+            startActivity(Intent(this@DetailActivity, MainActivity::class.java))
         }
 
 
@@ -66,7 +66,7 @@ class DetailActivity : AppCompatActivity() {
             TabLayoutMediator(binding.tabLayout, binding.imageContainer) { _, _ ->
             }.attach()
             binding.viewPager.adapter = DetailSectionPager(this)
-            TabLayoutMediator(binding.tabs,binding.viewPager) { tab, position ->
+            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
                 tab.text = resources.getString(TAB_TITLES[position])
             }.attach()
             fetchPlacePhotos(id)
@@ -116,7 +116,18 @@ class DetailActivity : AppCompatActivity() {
         )
 
         //Tambahin type sesuai dengan urutan list diatas
-        val nametype : List<String> = listOf("Restorant","Restorant Amerika")
+
+        val nameType: List<String> = listOf(
+            "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
+            "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
+            "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
+            "Brazilian Restaurant", "Mexican Restaurant", "Breakfast Restaurant",
+            "Middle Eastern Restaurant", "Brunch Restaurant", "Pizza Restaurant", "Cafe",
+            "Ramen Restaurant", "Chinese Restaurant", "Mediterranean Restaurant", "Meal Delivery",
+            "Meal Takeaway", "Barbecue Restaurant", "Spanish Restaurant", "Greek Restaurant",
+            "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
+            "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
+        )
 
 
         placesClient.fetchPlace(placeRequest).addOnSuccessListener { response ->
@@ -128,63 +139,61 @@ class DetailActivity : AppCompatActivity() {
             val type = place.placeTypes
             binding.tipeRestoran.text = ""
             var tipe = ""
-            if(type != null){
+            if (type != null) {
                 type.forEach {
                     if (it in includedTypes) {
-                        if (tipe == "")
-                        {
+                        if (tipe == "") {
                             tipe = it
-                        }else
-                        {
+                        } else {
                             tipe += ",$it"
                         }
                     }
                 }
                 binding.tipeRestoran.text = tipe
-            }else{
+            } else {
                 binding.tipeRestoran.visibility = View.GONE
             }
             val openingHours = place.openingHours?.periods
             var isi = 0
-            if (openingHours != null)
-            {
-                for(open in openingHours)
-                {
+            if (openingHours != null) {
+                for (open in openingHours) {
                     val timeOfWeek = open.open?.day
-                    if (timeOfWeek != null)
-                    {
+                    if (timeOfWeek != null) {
                         val today = LocalDate.now().dayOfWeek
-                        if (timeOfWeek.toString() == today.toString()){
+                        if (timeOfWeek.toString() == today.toString()) {
                             val time = open.open?.time
                             val close = open.close?.time
-                            if (time != null && close != null)
-                            {
-                                val opentime = LocalTime.of(time.hours, time.minutes)
-                                val closetime = LocalTime.of(close.hours, close.minutes)
+                            if (time != null && close != null) {
+                                val openTime = LocalTime.of(time.hours, time.minutes)
+                                val closeTime = LocalTime.of(close.hours, close.minutes)
                                 val currentTime = LocalTime.now()
-                                val opens = currentTime.isAfter(opentime)
-                                val closed = currentTime.isBefore(closetime)
+                                val opens = currentTime.isAfter(openTime)
+                                val closed = currentTime.isBefore(closeTime)
                                 if (opens && closed) {
-                                    binding.statusDescription.text = "BUKA"
+                                    binding.statusDescription.text = getString(R.string.place_buka)
                                     binding.statusDescription.setTextColor(Color.GREEN)
                                 } else {
-                                    if(closetime.isBefore(opentime))
-                                    {
-                                        if(currentTime.isAfter(opentime) || currentTime.isBefore(closetime))
-                                        {
-                                            binding.statusDescription.text = "BUKA"
+                                    if (closeTime.isBefore(openTime)) {
+                                        if (currentTime.isAfter(openTime) || currentTime.isBefore(
+                                                closeTime
+                                            )
+                                        ) {
+                                            binding.statusDescription.text =
+                                                getString(R.string.place_buka)
                                             binding.statusDescription.setTextColor(Color.GREEN)
-                                        }else{
-                                            binding.statusDescription.text = "TUTUP"
+                                        } else {
+                                            binding.statusDescription.text =
+                                                getString(R.string.place_tutup)
                                             binding.statusDescription.setTextColor(Color.RED)
                                         }
-                                    }else{
-                                        binding.statusDescription.text = "TUTUP"
+                                    } else {
+                                        binding.statusDescription.text =
+                                            getString(R.string.place_tutup)
                                         binding.statusDescription.setTextColor(Color.RED)
                                     }
                                 }
                                 val formatter = DateTimeFormatter.ofPattern("HH.mm")
-                                val formattedTime = opentime.format(formatter)
+                                val formattedTime = openTime.format(formatter)
                                 binding.timeDescription.text = formattedTime
                                 isi = 1
                                 break
@@ -193,11 +202,10 @@ class DetailActivity : AppCompatActivity() {
                     }
                 }
             }
-            if (isi == 0)
-            {
-                binding.statusDescription.text = "BUKA"
+            if (isi == 0) {
+                binding.statusDescription.text = getString(R.string.place_buka)
                 binding.statusDescription.setTextColor(Color.GREEN)
-                binding.timeDescription.text = "Buka 24 jam"
+                binding.timeDescription.text = getString(R.string.place_buka_24_jam)
             }
             binding.addressDescription.text = place.address
             val metadata = place.photoMetadatas

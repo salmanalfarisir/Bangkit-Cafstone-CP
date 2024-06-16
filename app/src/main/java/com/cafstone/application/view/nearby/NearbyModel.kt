@@ -1,4 +1,4 @@
-package com.cafstone.application.view.Nearby
+package com.cafstone.application.view.nearby
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

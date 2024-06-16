@@ -10,9 +10,8 @@ import com.cafstone.application.data.retrofit.ApiConfig2
 object Injection {
     fun provideRepository(context: Context): UserRepository {
         val pref = UserPreference.getInstance(context.dataStore)
-        // Pastikan Anda memiliki definisi com.cafstone.application.api.ApiConfig yang sesuai di sini
         val apiService = ApiConfig.getApiService()
         val apiService2 = ApiConfig2.getApiService()
-        return UserRepository.getInstance(pref, apiService,apiService2)
+        return UserRepository.getInstance(pref, apiService, apiService2)
     }
 }

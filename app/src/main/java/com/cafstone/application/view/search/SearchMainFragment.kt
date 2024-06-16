@@ -62,7 +62,7 @@ class SearchMainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as? SearchViewActivity
         activity?.let { act ->
-            title.forEachIndexed { index, data ->
+            title.forEachIndexed { index, _ ->
                 list.add(
                     SearchModel(
                         isi[index],

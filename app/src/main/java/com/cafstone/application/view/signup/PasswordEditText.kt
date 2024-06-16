@@ -13,13 +13,13 @@ class PasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
     private var errorMessage: String? = null
     private var passwordErrorTextView: TextInputLayout? = null
     private var passwordTextView: PasswordConfirmEditText? = null
-    private var text : String? = null
+    private var text: String? = null
 
     fun setErrorTextView(text: TextInputLayout) {
         errorTextView = text
     }
 
-    fun setPasswordErrorTextView(text: TextInputLayout,text2 : String) {
+    fun setPasswordErrorTextView(text: TextInputLayout, text2: String) {
         passwordErrorTextView = text
         this.text = text2
     }

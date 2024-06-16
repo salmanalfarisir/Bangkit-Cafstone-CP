@@ -1,4 +1,5 @@
 package com.cafstone.application.di
+
 import android.content.Context
 import com.cafstone.application.BuildConfig
 import com.google.android.libraries.places.api.Places
@@ -12,7 +13,10 @@ object PlacesClientSingleton {
             synchronized(this) {
                 if (placesClient == null) {
                     if (!Places.isInitialized()) {
-                        Places.initializeWithNewPlacesApiEnabled(context.applicationContext, BuildConfig.MAPS_API_KEY)
+                        Places.initializeWithNewPlacesApiEnabled(
+                            context.applicationContext,
+                            BuildConfig.MAPS_API_KEY
+                        )
                     }
                     placesClient = Places.createClient(context.applicationContext)
                 }

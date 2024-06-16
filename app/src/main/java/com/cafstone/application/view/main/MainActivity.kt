@@ -25,7 +25,7 @@ import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
-import com.cafstone.application.view.Nearby.NearbyActivity
+import com.cafstone.application.view.nearby.NearbyActivity
 import com.cafstone.application.view.ViewModelFactory
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.profile.ProfileActivity
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        showloading(false)
+        showLoading(false)
         binding.profileCard.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
                 fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         currentLocation = location
-                        setbutton(location)
+                        setButton(location)
                         setupAction()
                     } else {
                         AlertDialog.Builder(this).apply {
@@ -303,15 +303,21 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { exception: Exception ->
                 Log.e(TAG, "Place not found: ${exception.message}")
-                if (p == 0) {
-                    binding.textView.visibility = View.GONE
-                    binding.rvReview.visibility = View.GONE
-                } else if (p == 1) {
-                    binding.textView1.visibility = View.GONE
-                    binding.rvReview1.visibility = View.GONE
-                } else if (p == 2) {
-                    binding.textView2.visibility = View.GONE
-                    binding.rvReview2.visibility = View.GONE
+                when (p) {
+                    0 -> {
+                        binding.textView.visibility = View.GONE
+                        binding.rvReview.visibility = View.GONE
+                    }
+
+                    1 -> {
+                        binding.textView1.visibility = View.GONE
+                        binding.rvReview1.visibility = View.GONE
+                    }
+
+                    2 -> {
+                        binding.textView2.visibility = View.GONE
+                        binding.rvReview2.visibility = View.GONE
+                    }
                 }
             }
     }
@@ -343,14 +349,12 @@ class MainActivity : AppCompatActivity() {
             adapter3 = PlacesAdapter2(placesList3)
             binding.rvReview3.adapter = adapter3
 
-            val data = viewModel.getdata()
-            data.let {
-                getrecomendation(it)
-            }
-            viewModel.isLoading.observe(this) {
-                showloading(it)
+            val data = viewModel.getData()
+            getRecommendation(data)
+            viewModel.isLoading.observe(this) { it ->
+                showLoading(it)
                 if (!it) {
-                    viewModel.recomendation.observe(this) {
+                    viewModel.recommendation.observe(this) {
                         if (it == null) {
                             binding.textView3.visibility = View.GONE
                             binding.rvReview3.visibility = View.GONE
@@ -402,7 +406,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setbutton(location : Location){
+    private fun setButton(location: Location) {
         binding.searchBar.setOnClickListener {
             val intent = Intent(this, SearchViewActivity::class.java).apply {
                 putExtra(SearchViewActivity.LATITUDE, location.latitude)
@@ -447,7 +451,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showloading(bool: Boolean) {
+    private fun showLoading(bool: Boolean) {
         if (bool) {
             binding.progressBar.visibility = View.VISIBLE
         } else {
@@ -455,33 +459,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getrecomendation(user: UserModel) {
-        val list = RecomendationModel(
+    private fun getRecommendation(user: UserModel) {
+        val list = RecommendationModel(
             listOf(
-                setboolean(user.servesBeer),
-                setboolean(user.servesWine),
-                setboolean(user.servesCocktails),
-                setboolean(user.goodForChildren),
-                setboolean(user.goodForGroups),
-                setboolean(user.reservable),
-                setboolean(user.outdoorSeating),
-                setboolean(user.liveMusic),
-                setboolean(user.servesDessert),
+                setBoolean(user.servesBeer),
+                setBoolean(user.servesWine),
+                setBoolean(user.servesCocktails),
+                setBoolean(user.goodForChildren),
+                setBoolean(user.goodForGroups),
+                setBoolean(user.reservable),
+                setBoolean(user.outdoorSeating),
+                setBoolean(user.liveMusic),
+                setBoolean(user.servesDessert),
                 user.priceLevel,
-                setboolean(user.acceptsCreditCards),
-                setboolean(user.acceptsDebitCards),
-                setboolean(user.acceptsCashOnly),
-                setboolean(user.acceptsNfc)
+                setBoolean(user.acceptsCreditCards),
+                setBoolean(user.acceptsDebitCards),
+                setBoolean(user.acceptsCashOnly),
+                setBoolean(user.acceptsNfc)
             )
         )
-        viewModel.recomendation(list)
+        viewModel.recommendation(list)
     }
 
-    private fun setboolean(bool: Boolean): Int {
-        if (bool) {
-            return 1
+    private fun setBoolean(boolean: Boolean): Int {
+        return if (boolean) {
+            1
         } else {
-            return 0
+            0
         }
     }
 

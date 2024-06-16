@@ -10,5 +10,5 @@ data class AdapterModel(
     val name: String,
     val desc: String,
     val photo: PhotoMetadata?,
-    val rating:Double?
+    val rating: Double?
 ) : Parcelable

@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.cafstone.application.R
 import com.cafstone.application.databinding.ActivityProfileBinding
 import com.cafstone.application.view.ViewModelFactory
-import com.cafstone.application.view.main.MainViewModel
 
 @Suppress("DEPRECATION")
 class ProfileActivity : AppCompatActivity() {
@@ -21,6 +19,7 @@ class ProfileActivity : AppCompatActivity() {
     private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -48,15 +47,12 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
-       val data =  viewModel.getdata()
-        if(data != null)
-        {
-            binding.profileName.text = data.name
-            binding.profileEmail.text = data.email
-        }
+        val data = viewModel.getData()
+        binding.profileName.text = data.name
+        binding.profileEmail.text = data.email
 
         binding.changePassword.setOnClickListener {
-            startActivity(Intent(this,ProfilePasswordActivity::class.java))
+            startActivity(Intent(this, ProfilePasswordActivity::class.java))
         }
     }
 

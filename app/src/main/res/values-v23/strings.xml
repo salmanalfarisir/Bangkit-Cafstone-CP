@@ -28,4 +28,12 @@
     <string name="debit_card">Debit Card\n</string>
     <string name="debit_card1">Debit Card</string>
     <string name="profile">Profile</string>
+    <string name="place_buka">Buka</string>
+    <string name="place_tutup">Tutup</string>
+    <string name="rating_jempolan">Rating Jempolan</string>
+    <string name="tempat_dengan_rekomendasi_terbaik_ada_di_dekat_kamu_loh">Tempat dengan rekomendasi terbaik ada di dekat kamu loh!</string>
+    <string name="place_terdekat">Terdekat</string>
+    <string name="berikut_adalah_tempat_terdekat_dari_lokasi_anda">Berikut adalah tempat terdekat dari lokasi Anda</string>
+    <string name="place_termurah">Termurah</string>
+    <string name="ini_rekomendasi_tempat_dengan_harga_termurah">Ini rekomendasi tempat dengan harga termurah</string>
 </resources>

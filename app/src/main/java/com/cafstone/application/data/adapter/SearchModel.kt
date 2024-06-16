@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class SearchModel(
     val id: String,
     val title: String,
-    val desc : String,
-    val att : Double,
-    val long : Double,
+    val desc: String,
+    val att: Double,
+    val long: Double,
     val photo: Int
 ) : Parcelable

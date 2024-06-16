@@ -19,7 +19,7 @@ import com.cafstone.application.view.signup.UserRegisterModel
 
 @Suppress("DEPRECATION")
 class PreferenceActivity : AppCompatActivity() {
-    private val signupViewModel: PreferanceViewModel by viewModels {
+    private val signupViewModel: PreferenceViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
 
@@ -140,14 +140,14 @@ class PreferenceActivity : AppCompatActivity() {
             }
         }
 
-        signupViewModel.regist.observe(this) { registerForm ->
+        signupViewModel.register.observe(this) { registerForm ->
             when (registerForm) {
-                is PreferanceViewModel.RegistrationStatus.Loading -> {
+                is PreferenceViewModel.RegistrationStatus.Loading -> {
                     showloading(true)
                     binding.nextOrSubmitButton.isEnabled = false
                 }
 
-                is PreferanceViewModel.RegistrationStatus.Success -> {
+                is PreferenceViewModel.RegistrationStatus.Success -> {
                     showloading(true)
                     binding.nextOrSubmitButton.isEnabled = true
                     Toast.makeText(this, "Register Successfully", Toast.LENGTH_SHORT).show()
@@ -156,7 +156,7 @@ class PreferenceActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
 
-                is PreferanceViewModel.RegistrationStatus.Error -> {
+                is PreferenceViewModel.RegistrationStatus.Error -> {
                     showloading(true)
                     showDialog(registerForm.message)
                     binding.nextOrSubmitButton.isEnabled = true
