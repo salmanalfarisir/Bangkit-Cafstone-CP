@@ -13,13 +13,15 @@ class PasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
     private var errorMessage: String? = null
     private var passwordErrorTextView: TextInputLayout? = null
     private var passwordTextView: PasswordConfirmEditText? = null
+    private var text : String? = null
 
     fun setErrorTextView(text: TextInputLayout) {
         errorTextView = text
     }
 
-    fun setPasswordErrorTextView(text: TextInputLayout) {
+    fun setPasswordErrorTextView(text: TextInputLayout,text2 : String) {
         passwordErrorTextView = text
+        this.text = text2
     }
 
     fun setPasswordTextView(text: PasswordConfirmEditText) {
@@ -50,7 +52,7 @@ class PasswordEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
                     errorMessage = null
                     errorTextView?.error = errorMessage
                     passwordTextView?.isEnabled = true
-                    passwordErrorTextView?.hint = "Password Confirm"
+                    passwordErrorTextView?.hint = text
                 }
             }
         })

@@ -149,6 +149,7 @@ class MainActivity : AppCompatActivity() {
                 fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         currentLocation = location
+                        setbutton(location)
                         setupAction()
                     } else {
                         AlertDialog.Builder(this).apply {
@@ -398,33 +399,37 @@ class MainActivity : AppCompatActivity() {
             searchText("Cafe Fancy", 2, 2)
             searchText("Cafe Ternyaman", 0, 0)
 
-            binding.searchBar.setOnClickListener {
-                val intent = Intent(this, SearchViewActivity::class.java)
-                intent.putExtra(SearchViewActivity.LATITUDE, location.latitude)
-                intent.putExtra(SearchViewActivity.LONGITUDE, location.longitude)
-                startActivity(intent)
+        }
+    }
+
+    private fun setbutton(location : Location){
+        binding.searchBar.setOnClickListener {
+            val intent = Intent(this, SearchViewActivity::class.java).apply {
+                putExtra(SearchViewActivity.LATITUDE, location.latitude)
+                putExtra(SearchViewActivity.LONGITUDE, location.longitude)
             }
-            binding.nearByCardView.setOnClickListener {
-                val intent = Intent(this, NearbyActivity::class.java)
-                intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terdekat")
-                intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
-                intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
-                startActivity(intent)
-            }
-            binding.ratingCardView.setOnClickListener {
-                val intent = Intent(this, NearbyActivity::class.java)
-                intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terbaik")
-                intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
-                intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
-                startActivity(intent)
-            }
-            binding.priceCardView.setOnClickListener {
-                val intent = Intent(this, NearbyActivity::class.java)
-                intent.putExtra(NearbyActivity.EXTRA_DETAIL, "termurah")
-                intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
-                intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
-                startActivity(intent)
-            }
+            startActivity(intent)
+        }
+        binding.nearByCardView.setOnClickListener {
+            val intent = Intent(this, NearbyActivity::class.java)
+            intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terdekat")
+            intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
+            intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+            startActivity(intent)
+        }
+        binding.ratingCardView.setOnClickListener {
+            val intent = Intent(this, NearbyActivity::class.java)
+            intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terbaik")
+            intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
+            intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+            startActivity(intent)
+        }
+        binding.priceCardView.setOnClickListener {
+            val intent = Intent(this, NearbyActivity::class.java)
+            intent.putExtra(NearbyActivity.EXTRA_DETAIL, "termurah")
+            intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
+            intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+            startActivity(intent)
         }
         binding.btnLocation.setOnClickListener {
             AlertDialog.Builder(this).apply {

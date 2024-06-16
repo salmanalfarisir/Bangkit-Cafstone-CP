@@ -20,6 +20,9 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.tabs.TabLayoutMediator
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -88,40 +91,120 @@ class DetailActivity : AppCompatActivity() {
             Place.Field.ID,
             Place.Field.NAME,
             Place.Field.OPENING_HOURS,
+            Place.Field.ADDRESS,
             Place.Field.CURRENT_OPENING_HOURS,
             Place.Field.RATING,
             Place.Field.REVIEWS,
             Place.Field.PHOTO_METADATAS,
             Place.Field.SECONDARY_OPENING_HOURS,
+            Place.Field.USER_RATINGS_TOTAL,
             Place.Field.TYPES
         )
 
         val placeRequest = FetchPlaceRequest.newInstance(placeId, fields)
 
+        val includedTypes = listOf(
+            "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
+            "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
+            "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
+            "brazilian_restaurant", "mexican_restaurant", "breakfast_restaurant",
+            "middle_eastern_restaurant", "brunch_restaurant", "pizza_restaurant", "cafe",
+            "ramen_restaurant", "chinese_restaurant", "mediterranean_restaurant", "meal_delivery",
+            "meal_takeaway", "barbecue_restaurant", "spanish_restaurant", "greek_restaurant",
+            "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
+            "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
+        )
+
+        //Tambahin type sesuai dengan urutan list diatas
+        val nametype : List<String> = listOf("Restorant","Restorant Amerika")
+
+
         placesClient.fetchPlace(placeRequest).addOnSuccessListener { response ->
             val place = response.place
+
+            binding.ratingtextview.text = place.rating?.toString() ?: "0.0"
+            binding.reviewcounttextview.text = place.userRatingsTotal?.toString() ?: "0"
+            binding.titleDestination.text = place.name?.toString() ?: ""
+            val type = place.placeTypes
+            binding.tipeRestoran.text = ""
+            var tipe = ""
+            if(type != null){
+                type.forEach {
+                    if (it in includedTypes) {
+                        if (tipe == "")
+                        {
+                            tipe = it
+                        }else
+                        {
+                            tipe += ",$it"
+                        }
+                    }
+                }
+                binding.tipeRestoran.text = tipe
+            }else{
+                binding.tipeRestoran.visibility = View.GONE
+            }
+            val openingHours = place.openingHours?.periods
+            var isi = 0
+            if (openingHours != null)
+            {
+                for(open in openingHours)
+                {
+                    val timeOfWeek = open.open?.day
+                    if (timeOfWeek != null)
+                    {
+                        val today = LocalDate.now().dayOfWeek
+                        if (timeOfWeek.toString() == today.toString()){
+                            val time = open.open?.time
+                            val close = open.close?.time
+                            if (time != null && close != null)
+                            {
+                                val opentime = LocalTime.of(time.hours, time.minutes)
+                                val closetime = LocalTime.of(close.hours, close.minutes)
+                                val currentTime = LocalTime.now()
+                                val opens = currentTime.isAfter(opentime)
+                                val closed = currentTime.isBefore(closetime)
+                                if (opens && closed) {
+                                    binding.statusDescription.text = "BUKA"
+                                    binding.statusDescription.setTextColor(Color.GREEN)
+                                } else {
+                                    if(closetime.isBefore(opentime))
+                                    {
+                                        if(currentTime.isAfter(opentime) || currentTime.isBefore(closetime))
+                                        {
+                                            binding.statusDescription.text = "BUKA"
+                                            binding.statusDescription.setTextColor(Color.GREEN)
+                                        }else{
+                                            binding.statusDescription.text = "TUTUP"
+                                            binding.statusDescription.setTextColor(Color.RED)
+                                        }
+                                    }else{
+                                        binding.statusDescription.text = "TUTUP"
+                                        binding.statusDescription.setTextColor(Color.RED)
+                                    }
+                                }
+                                val formatter = DateTimeFormatter.ofPattern("HH.mm")
+                                val formattedTime = opentime.format(formatter)
+                                binding.timeDescription.text = formattedTime
+                                isi = 1
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+            if (isi == 0)
+            {
+                binding.statusDescription.text = "BUKA"
+                binding.statusDescription.setTextColor(Color.GREEN)
+                binding.timeDescription.text = "Buka 24 jam"
+            }
+            binding.addressDescription.text = place.address
             val metadata = place.photoMetadatas
             if (metadata.isNullOrEmpty()) {
                 Log.w("MainActivity", "No photo metadata.")
                 return@addOnSuccessListener
             }
-
-            binding.ratingtextview.text = place.rating?.toString() ?: "0.0"
-
-            val review = place.reviews
-            if (review != null){
-                binding.reviewcounttextview.text = place.reviews?.size.toString()
-            }else{
-                binding.reviewcounttextview.text = "0"
-            }
-            binding.titleDestination.text = place.name?.toString() ?: ""
-            val type = place.placeTypes
-            if(type != null){
-                binding.tipeRestoran.text = type.joinToString(separator = ", ")
-            }else{
-                binding.tipeRestoran.visibility = View.GONE
-            }
-
             for (photoMetadata in metadata) {
                 val photoRequest = FetchResolvedPhotoUriRequest.builder(photoMetadata)
                     .setMaxWidth(300)

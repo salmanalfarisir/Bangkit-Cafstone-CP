@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -50,7 +51,9 @@ class PreferenceActivity : AppCompatActivity() {
         binding = ActivityPreferanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        showloading(false)
         binding.defToolbar.toolbarTitle.text = "Preference"
+        binding.defToolbar.editProfileButton.visibility = View.GONE
         binding.defToolbar.myToolbar.apply {
             setSupportActionBar(this)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -140,9 +143,13 @@ class PreferenceActivity : AppCompatActivity() {
         signupViewModel.regist.observe(this) { registerForm ->
             when (registerForm) {
                 is PreferanceViewModel.RegistrationStatus.Loading -> {
+                    showloading(true)
+                    binding.nextOrSubmitButton.isEnabled = false
                 }
 
                 is PreferanceViewModel.RegistrationStatus.Success -> {
+                    showloading(true)
+                    binding.nextOrSubmitButton.isEnabled = true
                     Toast.makeText(this, "Register Successfully", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@PreferenceActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -150,7 +157,9 @@ class PreferenceActivity : AppCompatActivity() {
                 }
 
                 is PreferanceViewModel.RegistrationStatus.Error -> {
+                    showloading(true)
                     showDialog(registerForm.message)
+                    binding.nextOrSubmitButton.isEnabled = true
                 }
             }
         }
@@ -162,6 +171,13 @@ class PreferenceActivity : AppCompatActivity() {
             binding.nextOrSubmitButton.text = getString(R.string.next)
         } else {
             binding.nextOrSubmitButton.text = getString(R.string.submit)
+        }
+    }
+    private fun showloading(status:Boolean){
+        if (status){
+            binding.progressBar.visibility = View.VISIBLE
+        }else{
+            binding.progressBar.visibility = View.GONE
         }
     }
 
