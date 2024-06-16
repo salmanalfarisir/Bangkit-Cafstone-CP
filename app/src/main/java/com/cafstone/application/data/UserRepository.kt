@@ -77,6 +77,10 @@ class UserRepository private constructor(
         return response
     }
 
+    suspend fun changepassword(email : String,oldPassword : String,newPassword:String) : RegisterResponse{
+        return apiService.changepassword(email,oldPassword,newPassword)
+    }
+
     suspend fun register(user: UserRegisterModel): RegisterResponse {
         return apiService.register(user)
     }

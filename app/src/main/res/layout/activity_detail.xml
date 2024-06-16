@@ -48,7 +48,7 @@
         <ImageView
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="270dp"
             android:src="@drawable/ep__arrow_right_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -58,7 +58,7 @@
         <ImageView
             android:id="@+id/prev_button"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="270dp"
             android:rotation="180"
             android:src="@drawable/ep__arrow_right_bold"
             app:layout_constraintEnd_toEndOf="parent"

@@ -72,38 +72,39 @@ class LoginActivity : AppCompatActivity() {
                 (binding.passwordEditText.text.toString().isNotEmpty() && binding.passwordEditTextLayout.error == null))
             {
                 viewModel.login(email, password)
+                viewModel.isLoading.observe(this) { isLoading ->
+                    showLoading(isLoading)
+                    if (!isLoading)
+                    {
+                        viewModel.login.observe(this) { response ->
+                            if (response.success) {
+
+                                Toast.makeText(this,"Login SuccesFully",Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                }
+
+                viewModel.error.observe(this){
+                    if (!it.equals(""))
+                    {
+                        AlertDialog.Builder(this).apply {
+                            setTitle("Login Gagal")
+                            setMessage("Email atau Password Salah")
+                            setPositiveButton("OK") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            create()
+                            show()
+                        }
+                        viewModel.seterror()
+                    }
+                }
             }else {
                 Toast.makeText(this,"Mohon Isi Form Dengan Benar",Toast.LENGTH_SHORT).show()
-            }
-
-            viewModel.isLoading.observe(this) { isLoading ->
-                showLoading(isLoading)
-            }
-
-            viewModel.login.observe(this) { response ->
-                if (response.success) {
-
-                    Toast.makeText(this,"Login SuccesFully",Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                }
-            }
-
-            viewModel.error.observe(this){
-                if (!it.equals(""))
-                {
-                    AlertDialog.Builder(this).apply {
-                        setTitle("Login Gagal")
-                        setMessage(it)
-                        setPositiveButton("OK") { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        create()
-                        show()
-                    }
-                    viewModel.seterror()
-                }
             }
         }
 

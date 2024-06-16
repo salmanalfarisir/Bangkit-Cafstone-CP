@@ -18,4 +18,12 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): LoginResponse
+
+    @FormUrlEncoded
+    @POST("change-password")
+    suspend fun changepassword(
+        @Field("email") email: String,
+        @Field("oldPassword") oldPassword: String,
+        @Field("newPassword") newPassword: String
+    ):RegisterResponse
 }
