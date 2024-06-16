@@ -37,7 +37,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.a.buttonToolbar.visibility = View.GONE
         binding.a.backButton.setOnClickListener {
-            startActivity(Intent(this@DetailActivity , MainActivity::class.java))
+            startActivity(Intent(this@DetailActivity, MainActivity::class.java))
         }
 
 
@@ -63,7 +63,7 @@ class DetailActivity : AppCompatActivity() {
             TabLayoutMediator(binding.tabLayout, binding.imageContainer) { _, _ ->
             }.attach()
             binding.viewPager.adapter = DetailSectionPager(this)
-            TabLayoutMediator(binding.tabs,binding.viewPager) { tab, position ->
+            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
                 tab.text = resources.getString(TAB_TITLES[position])
             }.attach()
             fetchPlacePhotos(id)
@@ -109,16 +109,16 @@ class DetailActivity : AppCompatActivity() {
             binding.ratingtextview.text = place.rating?.toString() ?: "0.0"
 
             val review = place.reviews
-            if (review != null){
+            if (review != null) {
                 binding.reviewcounttextview.text = place.reviews?.size.toString()
-            }else{
+            } else {
                 binding.reviewcounttextview.text = "0"
             }
             binding.titleDestination.text = place.name?.toString() ?: ""
             val type = place.placeTypes
-            if(type != null){
+            if (type != null) {
                 binding.tipeRestoran.text = type.joinToString(separator = ", ")
-            }else{
+            } else {
                 binding.tipeRestoran.visibility = View.GONE
             }
 
