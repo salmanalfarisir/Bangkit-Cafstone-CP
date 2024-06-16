@@ -71,7 +71,7 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
     }
 
     class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val placeNameTextView: TextView = itemView.findViewById(R.id.tv_item_name)
+        val placeNameTextView: TextView = itemView.findViewById(R.id.placeName)
         val placeDescTextView: TextView = itemView.findViewById(R.id.story_description)
         val placeImageView: ImageView = itemView.findViewById(R.id.iv_item_photo)
         val ratingImageView: ImageView = itemView.findViewById(R.id.imageView2)

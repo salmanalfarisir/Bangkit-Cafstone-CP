@@ -1,18 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp"
     tools:context=".view.detail.RingkasanFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/listAddress"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ooui__map_pin_blue"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/addressDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:justificationMode="inter_word"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/black_text"
+            android:textSize="12sp"
+            tools:text="Jl. T. Amir Hamzah No.42 - 44, Sei Agul, Kecamatan. Medan Baru, Kota Medan, Sumatera Utara 20117" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tabler__clock"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
+                    android:justificationMode="inter_word"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="12sp"
+                    tools:ignore="TextContrastCheck"
+                    tools:text="Status" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="3dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/small_circle"
+                    android:padding="0dp" />
+
+                <TextView
+                    android:id="@+id/textStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
+                    android:justificationMode="inter_word"
+                    android:textColor="@color/black_text"
+                    android:textSize="12sp"
+                    tools:text="Buka pukul / Tutup Pukul" />
+
+                <TextView
+                    android:id="@+id/jamBukaTutup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
+                    android:justificationMode="inter_word"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="12sp"
+                    tools:text="09.00" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/statusHariLibur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppins"
+                android:includeFontPadding="false"
+                android:justificationMode="inter_word"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                tools:text="Hari Libur Mungkin Tutup" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listNoTelp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/telephone_icon"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/noTelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:justificationMode="inter_word"
+            android:textColor="@color/black_text"
+            android:textSize="12sp"
+            tools:text="1234-56780-9123" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listReserve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reserve_icon"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/reservable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:justificationMode="inter_word"
+            android:textColor="@color/black_text"
+            android:textSize="12sp"
+            tools:text="Reservable" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/food_menu"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/linkMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:justificationMode="inter_word"
+            android:textColor="@color/primary_color_light"
+            android:textSize="12sp"
+            tools:ignore="TextContrastCheck"
+            tools:text="Link Menu Makanan" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listPlusCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pluscode_icon"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/plusCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:justificationMode="inter_word"
+            android:textColor="@color/black_text"
+            android:textSize="12sp"
+            tools:text="Plus Code Address" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:dividerColor="@color/black_text"
+        app:dividerThickness="1dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/poppins_semibold"
         android:includeFontPadding="false"
-        android:text="Ini Fragment Ringkasan"
-        android:textStyle="bold" />
+        android:textSize="13sp"
+        tools:text="Ringkasan Ulasan" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUlasan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:dividerColor="@color/black_text"
+        app:dividerThickness="1dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:includeFontPadding="false"
+        android:textSize="13sp"
+        tools:text="Cafe ini juga recommended loh" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPenelusuranOrang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

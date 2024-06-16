@@ -183,7 +183,7 @@
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/poppins_medium"
                     android:includeFontPadding="false"
-                    android:text="The Obonk Steak dan Ribs"
+                    tools:text="The Obonk Steak dan Ribs"
                     android:textColor="@color/black_text"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -198,7 +198,7 @@
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/poppins"
                     android:includeFontPadding="false"
-                    android:text="Tipe Restoran"
+                    tools:text="Tipe Restoran"
                     android:textColor="@color/light_black_text"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -262,23 +262,7 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/addressDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:lineSpacingExtra="2dp"
-                    android:text="Jl. T. Amir Hamzah No.42 - 44, Sei Agul, Kecamatan. Medan Baru, Kota Medan, Sumatera Utara 20117"
-                    android:textColor="@color/black_text"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
 
                 <LinearLayout
                     android:id="@+id/viewPagerLayout"

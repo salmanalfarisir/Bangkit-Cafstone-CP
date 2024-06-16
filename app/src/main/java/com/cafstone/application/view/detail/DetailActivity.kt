@@ -43,7 +43,6 @@ class DetailActivity : AppCompatActivity() {
             startActivity(Intent(this@DetailActivity, MainActivity::class.java))
         }
 
-
         binding.a.toolbar.apply {
             setSupportActionBar(this)
             supportActionBar?.setDisplayHomeAsUpEnabled(false)

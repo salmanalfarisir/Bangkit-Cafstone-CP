@@ -36,4 +36,5 @@
     <string name="berikut_adalah_tempat_terdekat_dari_lokasi_anda">Berikut adalah tempat terdekat dari lokasi Anda</string>
     <string name="place_termurah">Termurah</string>
     <string name="ini_rekomendasi_tempat_dengan_harga_termurah">Ini rekomendasi tempat dengan harga termurah</string>
+    <string name="placeType">Tipe Restoran</string>
 </resources>
