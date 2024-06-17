@@ -95,7 +95,7 @@ class SearchEmptyFragment : Fragment() {
         val intent = Intent(requireActivity().applicationContext, NearbyActivity::class.java)
         intent.putExtra(NearbyActivity.EXTRA_ATT, data)
         intent.putExtra(NearbyActivity.LATITUDE, activity.lat)
-        intent.putExtra(NearbyActivity.LONGTITUDE, activity.long)
+        intent.putExtra(NearbyActivity.LONGITUDE, activity.long)
         startActivity(intent)
     }
 }

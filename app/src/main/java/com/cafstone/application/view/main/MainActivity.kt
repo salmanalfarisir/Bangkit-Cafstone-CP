@@ -25,8 +25,8 @@ import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
-import com.cafstone.application.view.nearby.NearbyActivity
 import com.cafstone.application.view.ViewModelFactory
+import com.cafstone.application.view.nearby.NearbyActivity
 import com.cafstone.application.view.onboardingpage.OnboardingActivity
 import com.cafstone.application.view.profile.ProfileActivity
 import com.cafstone.application.view.search.SearchViewActivity
@@ -418,21 +418,21 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, NearbyActivity::class.java)
             intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terdekat")
             intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
-            intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+            intent.putExtra(NearbyActivity.LONGITUDE, location.longitude)
             startActivity(intent)
         }
         binding.ratingCardView.setOnClickListener {
             val intent = Intent(this, NearbyActivity::class.java)
             intent.putExtra(NearbyActivity.EXTRA_DETAIL, "terbaik")
             intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
-            intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+            intent.putExtra(NearbyActivity.LONGITUDE, location.longitude)
             startActivity(intent)
         }
         binding.priceCardView.setOnClickListener {
             val intent = Intent(this, NearbyActivity::class.java)
             intent.putExtra(NearbyActivity.EXTRA_DETAIL, "termurah")
             intent.putExtra(NearbyActivity.LATITUDE, location.latitude)
-            intent.putExtra(NearbyActivity.LONGTITUDE, location.longitude)
+            intent.putExtra(NearbyActivity.LONGITUDE, location.longitude)
             startActivity(intent)
         }
         binding.btnLocation.setOnClickListener {

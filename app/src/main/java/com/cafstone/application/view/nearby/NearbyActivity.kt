@@ -2,9 +2,11 @@ package com.cafstone.application.view.nearby
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cafstone.application.R
@@ -34,7 +36,7 @@ class NearbyActivity : AppCompatActivity() {
 
         adapter = PlacesAdapter(placesList)
         val lat = intent.getDoubleExtra(LATITUDE, 0.0)
-        val long = intent.getDoubleExtra(LONGTITUDE, 0.0)
+        val long = intent.getDoubleExtra(LONGITUDE, 0.0)
         binding.rvReview.layoutManager = LinearLayoutManager(this)
         binding.rvReview.adapter = adapter
         if (lat != 0.0 && long != 0.0) {
@@ -49,8 +51,16 @@ class NearbyActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.backButton.setOnClickListener {
+        // Toolbar Customize
+        binding.nearbyToolbar.backButton.setOnClickListener {
             finish()
+        }
+        binding.nearbyToolbar.toolbar.setBackgroundColor(Color.TRANSPARENT)
+        binding.nearbyToolbar.buttonToolbar.visibility = View.GONE
+        binding.nearbyToolbar.title.visibility = View.GONE
+        binding.nearbyToolbar.toolbar.apply {
+            setSupportActionBar(this)
+            supportActionBar?.title = ""
         }
     }
 
@@ -205,7 +215,8 @@ class NearbyActivity : AppCompatActivity() {
         return searchNearbyRequest
     }
 
-    fun searchNearby2(
+    @Suppress("SameParameterValue")
+    private fun searchNearby2(
         circle: CircularBounds, placeFields: List<Place.Field>, text: String
     ): SearchByTextRequest {
         val searchByTextRequest: SearchByTextRequest =
@@ -217,7 +228,7 @@ class NearbyActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_DETAIL = "extra_detail"
         const val LATITUDE = "lat"
-        const val LONGTITUDE = "LONG"
+        const val LONGITUDE = "LONG"
         const val EXTRA_ATT = "attribute"
     }
 }

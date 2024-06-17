@@ -34,7 +34,7 @@ class SearchAdapter(private val placesList: List<SearchModel>) :
             val intent = Intent(holder.itemView.context, NearbyActivity::class.java)
             intent.putExtra(NearbyActivity.EXTRA_ATT, data)
             intent.putExtra(NearbyActivity.LATITUDE, att)
-            intent.putExtra(NearbyActivity.LONGTITUDE, long)
+            intent.putExtra(NearbyActivity.LONGITUDE, long)
             holder.itemView.context.startActivity(intent)
         }
     }
