@@ -28,6 +28,12 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
         return repository.getdata()
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
     fun password(oldPassword: String, newPassword: String) {
         _isLoading.value = true
         viewModelScope.launch {

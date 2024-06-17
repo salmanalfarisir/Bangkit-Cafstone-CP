@@ -20,6 +20,7 @@ class ProfileActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -53,6 +54,9 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.changePassword.setOnClickListener {
             startActivity(Intent(this, ProfilePasswordActivity::class.java))
+        }
+        binding.btnLogout.setOnClickListener {
+            viewModel.logout()
         }
     }
 

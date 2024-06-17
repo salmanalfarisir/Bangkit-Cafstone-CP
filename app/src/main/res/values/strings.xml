@@ -153,4 +153,14 @@
     <string name="place_termurah">Termurah</string>
     <string name="ini_rekomendasi_tempat_dengan_harga_termurah">Ini rekomendasi tempat dengan harga termurah</string>
     <string name="placeType">Tipe Restoran</string>
+    <string name="arrow_left_corousel">Arrow Left Corousel</string>
+    <string name="arrow_right_corousel">Arrow right Corousel</string>
+    <string name="ganti_katasandi">Ganti Katasandi</string>
+    <string name="penawaran">Penawaran</string>
+    <string name="fasilitas">Fasilitas</string>
+    <string name="persediaan_makanan">Pilihan Makanan</string>
+    <string name="suasana">Suasana</string>
+    <string name="tipe_pembayaran">Tipe Pembayaran</string>
+    <string name="opsi_layanan">Opsi Layanan</string>
+    <string name="reservasi">Reservasi</string>
 </resources>

@@ -446,17 +446,10 @@ class MainActivity : AppCompatActivity() {
                 show()
             }
         }
-        binding.logoutButton.setOnClickListener {
-            viewModel.logout()
-        }
     }
 
     private fun showLoading(bool: Boolean) {
-        if (bool) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (bool) View.VISIBLE else View.GONE
     }
 
     private fun getRecommendation(user: UserModel) {
