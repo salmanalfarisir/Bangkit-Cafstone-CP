@@ -1,6 +1,5 @@
 package com.cafstone.application.view.detail
 
-import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +12,6 @@ import com.cafstone.application.R
 import com.cafstone.application.data.adapter.ImageAdapter
 import com.cafstone.application.databinding.ActivityDetailBinding
 import com.cafstone.application.di.PlacesClientSingleton
-import com.cafstone.application.view.main.MainActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
@@ -40,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.a.buttonToolbar.visibility = View.GONE
         binding.a.backButton.setOnClickListener {
-            startActivity(Intent(this@DetailActivity, MainActivity::class.java))
+            finish()
         }
 
         binding.a.toolbar.apply {
@@ -206,7 +204,6 @@ class DetailActivity : AppCompatActivity() {
                 binding.statusDescription.setTextColor(Color.GREEN)
                 binding.timeDescription.text = getString(R.string.place_buka_24_jam)
             }
-            binding.addressDescription.text = place.address
             val metadata = place.photoMetadatas
             if (metadata.isNullOrEmpty()) {
                 Log.w("MainActivity", "No photo metadata.")
