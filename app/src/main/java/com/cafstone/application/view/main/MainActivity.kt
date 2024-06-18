@@ -50,7 +50,28 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
+    val includedTypes = listOf(
+        "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
+        "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
+        "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
+        "brazilian_restaurant", "mexican_restaurant", "breakfast_restaurant",
+        "middle_eastern_restaurant", "brunch_restaurant", "pizza_restaurant", "cafe",
+        "ramen_restaurant", "chinese_restaurant", "mediterranean_restaurant", "meal_delivery",
+        "meal_takeaway", "barbecue_restaurant", "spanish_restaurant", "greek_restaurant",
+        "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
+        "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
+    )
+    val nameType: List<String> = listOf(
+        "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
+        "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
+        "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
+        "Brazilian Restaurant", "Mexican Restaurant", "Breakfast Restaurant",
+        "Middle Eastern Restaurant", "Brunch Restaurant", "Pizza Restaurant", "Cafe",
+        "Ramen Restaurant", "Chinese Restaurant", "Mediterranean Restaurant", "Meal Delivery",
+        "Meal Takeaway", "Barbecue Restaurant", "Spanish Restaurant", "Greek Restaurant",
+        "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
+        "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
+    )
     private lateinit var binding: ActivityMainBinding
     private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -201,7 +222,9 @@ class MainActivity : AppCompatActivity() {
             Place.Field.ADDRESS,
             Place.Field.TYPES,
             Place.Field.PHOTO_METADATAS,
-            Place.Field.RATING
+            Place.Field.RATING,
+            Place.Field.USER_RATINGS_TOTAL,
+            Place.Field.PRIMARY_TYPE
         )
 
         // Define latitude and longitude coordinates of the search area
@@ -215,29 +238,30 @@ class MainActivity : AppCompatActivity() {
                 .setMinRating(4.0)
                 .setLocationBias(CircularBounds.newInstance(searchCenter, 5000.0)).build()
 
-        val includedTypes = listOf(
-            "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
-            "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
-            "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
-            "brazilian_restaurant", "mexican_restaurant", "breakfast_restaurant",
-            "middle_eastern_restaurant", "brunch_restaurant", "pizza_restaurant", "cafe",
-            "ramen_restaurant", "chinese_restaurant", "mediterranean_restaurant", "meal_delivery",
-            "meal_takeaway", "barbecue_restaurant", "spanish_restaurant", "greek_restaurant",
-            "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
-            "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
-        )
-
         // Call PlacesClient.searchByText() to perform the search
         placesClient.searchByText(searchByTextRequest)
             .addOnSuccessListener { response: SearchByTextResponse ->
                 val places = response.places
+                var tipe = ""
                 for (place in places) {
                     if (place.placeTypes != null) {
                         var i = 0
                         place.placeTypes?.forEach {
-                            if (it in includedTypes) {
+                            val index = includedTypes.indexOf(it)
+                            if (index != -1)
+                            {
                                 i += 1
+                                if (tipe == "")
+                                {
+                                    tipe = nameType[index]
+                                }
                             }
+                        }
+
+                        val index = includedTypes.indexOf(place.primaryType?:"")
+                        if (index != -1)
+                        {
+                            tipe = nameType[index]
                         }
                         if (i != 0) {
                             var photoUrl: PhotoMetadata? = null
@@ -251,7 +275,8 @@ class MainActivity : AppCompatActivity() {
                                         AdapterModel(
                                             place.id!!,
                                             place.name!!,
-                                            place.address!!,
+                                            tipe,
+                                            place.userRatingsTotal?.toString() ?: "0",
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
@@ -265,7 +290,8 @@ class MainActivity : AppCompatActivity() {
                                         AdapterModel(
                                             place.id!!,
                                             place.name!!,
-                                            place.address!!,
+                                            tipe,
+                                            place.userRatingsTotal?.toString() ?: "0",
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
@@ -279,7 +305,8 @@ class MainActivity : AppCompatActivity() {
                                         AdapterModel(
                                             place.id!!,
                                             place.name!!,
-                                            place.address!!,
+                                            tipe,
+                                            place.userRatingsTotal?.toString() ?: "0",
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
@@ -370,13 +397,32 @@ class MainActivity : AppCompatActivity() {
                                 Place.Field.NAME,
                                 Place.Field.ADDRESS,
                                 Place.Field.RATING,
-                                Place.Field.PHOTO_METADATAS
+                                Place.Field.PHOTO_METADATAS,
+                                Place.Field.TYPES,
+                                Place.Field.USER_RATINGS_TOTAL,
+                                Place.Field.PRIMARY_TYPE
                             )
                             it.forEach { data ->
                                 val placeRequest = FetchPlaceRequest.newInstance(data.id, fields)
                                 placesClient.fetchPlace(placeRequest)
                                     .addOnSuccessListener { response ->
                                         val place = response.place
+                                        var tipe = ""
+                                        if (!place.placeTypes.isNullOrEmpty()){
+                                            for(p in place.placeTypes!!){
+                                                val index = includedTypes.indexOf(p)
+                                                if (index != -1)
+                                                {
+                                                    tipe = nameType[index]
+                                                    break
+                                                }
+                                            }
+                                        }
+                                        val index = includedTypes.indexOf(place.primaryType?:"")
+                                        if (index != -1)
+                                        {
+                                            tipe = nameType[index]
+                                        }
                                         var photoUrl: PhotoMetadata? = null
                                         if (!place.photoMetadatas.isNullOrEmpty()) {
                                             photoUrl = place.photoMetadatas?.get(0)
@@ -385,7 +431,8 @@ class MainActivity : AppCompatActivity() {
                                             AdapterModel(
                                                 place.id!!,
                                                 place.name!!,
-                                                place.address!!,
+                                                tipe,
+                                                place.userRatingsTotal?.toString() ?: "0",
                                                 photoUrl,
                                                 location.latitude,
                                                 location.longitude,
