@@ -66,7 +66,9 @@ class SearchFragment : Fragment() {
             Place.Field.ADDRESS,
             Place.Field.TYPES,
             Place.Field.PHOTO_METADATAS,
-            Place.Field.RATING
+            Place.Field.RATING,
+            Place.Field.USER_RATINGS_TOTAL,
+            Place.Field.PRIMARY_TYPE
         )
         // Define latitude and longitude coordinates of the search area
         val lat = activity.lat
@@ -89,6 +91,18 @@ class SearchFragment : Fragment() {
             "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
         )
 
+        val nameType: List<String> = listOf(
+            "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
+            "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
+            "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
+            "Brazilian Restaurant", "Mexican Restaurant", "Breakfast Restaurant",
+            "Middle Eastern Restaurant", "Brunch Restaurant", "Pizza Restaurant", "Cafe",
+            "Ramen Restaurant", "Chinese Restaurant", "Mediterranean Restaurant", "Meal Delivery",
+            "Meal Takeaway", "Barbecue Restaurant", "Spanish Restaurant", "Greek Restaurant",
+            "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
+            "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
+        )
+
         // Call PlacesClient.searchByText() to perform the search
         activity.placesClient.searchByText(searchByTextRequest)
             .addOnSuccessListener { response: SearchByTextResponse ->
@@ -96,11 +110,25 @@ class SearchFragment : Fragment() {
                 for (place in places) {
                     if (place.placeTypes != null) {
                         var i = 0
+                        var tipe = ""
                         place.placeTypes?.forEach {
-                            if (it in includedTypes) {
+                            val index = includedTypes.indexOf(it)
+                            if (index != -1)
+                            {
                                 i += 1
+                                if (tipe == "")
+                                {
+                                    tipe = nameType[index]
+                                }
                             }
                         }
+
+                        val index = includedTypes.indexOf(place.primaryType?:"")
+                        if (index != -1)
+                        {
+                            tipe = nameType[index]
+                        }
+
                         if (i != 0) {
                             var photoUrl: PhotoMetadata? = null
                             if (!place.photoMetadatas.isNullOrEmpty()) {
@@ -112,7 +140,8 @@ class SearchFragment : Fragment() {
                                 AdapterModel(
                                     place.id!!,
                                     place.name!!,
-                                    place.address!!,
+                                    tipe,
+                                    place.userRatingsTotal?.toString() ?: "0.0",
                                     photoUrl,
                                     activity.lat,
                                     activity.long,

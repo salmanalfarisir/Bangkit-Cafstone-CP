@@ -9,6 +9,7 @@ data class AdapterModel(
     val id: String,
     val name: String,
     val desc: String,
+    val total : String,
     val photo: PhotoMetadata?,
     val lat : Double,
     val lang : Double,

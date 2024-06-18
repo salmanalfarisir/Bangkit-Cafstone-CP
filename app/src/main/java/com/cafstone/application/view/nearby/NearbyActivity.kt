@@ -28,6 +28,55 @@ class NearbyActivity : AppCompatActivity() {
     private val placesList = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
     private lateinit var placesClient: PlacesClient
+    var includedTypes = listOf(
+        "restaurant",
+        "american_restaurant",
+        "bar",
+        "sandwich_shop",
+        "coffee_shop",
+        "fast_food_restaurant",
+        "seafood_restaurant",
+        "steak_house",
+        "sushi_restaurant",
+        "vegetarian_restaurant",
+        "ice_cream_shop",
+        "japanese_restaurant",
+        "korean_restaurant",
+        "brazilian_restaurant",
+        "mexican_restaurant",
+        "breakfast_restaurant",
+        "middle_eastern_restaurant",
+        "brunch_restaurant",
+        "pizza_restaurant",
+        "cafe",
+        "ramen_restaurant",
+        "chinese_restaurant",
+        "mediterranean_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "barbecue_restaurant",
+        "spanish_restaurant",
+        "greek_restaurant",
+        "hamburger_restaurant",
+        "thai_restaurant",
+        "indian_restaurant",
+        "turkish_restaurant",
+        "indonesian_restaurant",
+        "vegan_restaurant",
+        "italian_restaurant"
+    )
+
+    val nameType: List<String> = listOf(
+        "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
+        "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
+        "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
+        "Brazilian Restaurant", "Mexican Restaurant", "Breakfast Restaurant",
+        "Middle Eastern Restaurant", "Brunch Restaurant", "Pizza Restaurant", "Cafe",
+        "Ramen Restaurant", "Chinese Restaurant", "Mediterranean Restaurant", "Meal Delivery",
+        "Meal Takeaway", "Barbecue Restaurant", "Spanish Restaurant", "Greek Restaurant",
+        "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
+        "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,47 +125,12 @@ class NearbyActivity : AppCompatActivity() {
             Place.Field.TYPES,
             Place.Field.PHOTO_METADATAS,
             Place.Field.RATING,
-            Place.Field.PRICE_LEVEL
+            Place.Field.PRICE_LEVEL,
+            Place.Field.USER_RATINGS_TOTAL,
+            Place.Field.PRIMARY_TYPE
         )
         val searchCenter = LatLng(lat, long)
         val circle = CircularBounds.newInstance(searchCenter, 50000.0)
-        var includedTypes = listOf(
-            "restaurant",
-            "american_restaurant",
-            "bar",
-            "sandwich_shop",
-            "coffee_shop",
-            "fast_food_restaurant",
-            "seafood_restaurant",
-            "steak_house",
-            "sushi_restaurant",
-            "vegetarian_restaurant",
-            "ice_cream_shop",
-            "japanese_restaurant",
-            "korean_restaurant",
-            "brazilian_restaurant",
-            "mexican_restaurant",
-            "breakfast_restaurant",
-            "middle_eastern_restaurant",
-            "brunch_restaurant",
-            "pizza_restaurant",
-            "cafe",
-            "ramen_restaurant",
-            "chinese_restaurant",
-            "mediterranean_restaurant",
-            "meal_delivery",
-            "meal_takeaway",
-            "barbecue_restaurant",
-            "spanish_restaurant",
-            "greek_restaurant",
-            "hamburger_restaurant",
-            "thai_restaurant",
-            "indian_restaurant",
-            "turkish_restaurant",
-            "indonesian_restaurant",
-            "vegan_restaurant",
-            "italian_restaurant"
-        )
 
         if ((att != null)) {
             includedTypes = listOf(att.value)
@@ -134,6 +148,24 @@ class NearbyActivity : AppCompatActivity() {
                 val places = response.places
                 for (place in places) {
                     if (place.placeTypes != null) {
+                        var tipe = ""
+                        place.placeTypes?.forEach {
+                            val index = includedTypes.indexOf(it)
+                            if (index != -1)
+                            {
+                                if (tipe == "")
+                                {
+                                    tipe = nameType[index]
+                                }
+                            }
+                        }
+
+                        val index = includedTypes.indexOf(place.primaryType?:"")
+                        if (index != -1)
+                        {
+                            tipe = nameType[index]
+                        }
+
                         var photoUrl: PhotoMetadata? = null
                         if (!place.photoMetadatas.isNullOrEmpty()) {
                             photoUrl = place.photoMetadatas?.get(0)
@@ -143,7 +175,8 @@ class NearbyActivity : AppCompatActivity() {
                             AdapterModel(
                                 place.id!!,
                                 place.name!!,
-                                place.address!!,
+                                tipe,
+                                place.userRatingsTotal?.toString() ?: "0.0",
                                 photoUrl,
                                 lat,
                                 long,
@@ -162,6 +195,23 @@ class NearbyActivity : AppCompatActivity() {
                 val places = response.places
                 for (place in places) {
                     if (place.placeTypes != null) {
+                        var tipe = ""
+                        place.placeTypes?.forEach {
+                            val index = includedTypes.indexOf(it)
+                            if (index != -1)
+                            {
+                                if (tipe == "")
+                                {
+                                    tipe = nameType[index]
+                                }
+                            }
+                        }
+
+                        val index = includedTypes.indexOf(place.primaryType?:"")
+                        if (index != -1)
+                        {
+                            tipe = nameType[index]
+                        }
                         var photoUrl: PhotoMetadata? = null
                         if (!place.photoMetadatas.isNullOrEmpty()) {
                             photoUrl = place.photoMetadatas?.get(0)
@@ -171,7 +221,8 @@ class NearbyActivity : AppCompatActivity() {
                             AdapterModel(
                                 place.id!!,
                                 place.name!!,
-                                place.address!!,
+                                tipe,
+                                place.userRatingsTotal?.toString() ?: "0.0",
                                 photoUrl,
                                 lat,long,
                                 place.rating

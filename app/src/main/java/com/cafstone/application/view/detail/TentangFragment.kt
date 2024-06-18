@@ -1,60 +1,120 @@
 package com.cafstone.application.view.detail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cafstone.application.R
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.cafstone.application.data.adapter.TentangAdapter
+import com.cafstone.application.databinding.FragmentTentangBinding
+import com.google.android.libraries.places.api.model.Place
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TentangFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TentangFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    private lateinit var binding : FragmentTentangBinding
+    private val service = mutableListOf<String>()
+    private val offering = mutableListOf<String>()
+    private val access = mutableListOf<String>()
+    private val dining = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tentang, container, false)
+        binding = FragmentTentangBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TentangFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TentangFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val act = requireActivity() as DetailActivity
+        act.let {
+            service.clear()
+            if(it.service.isNotEmpty())
+            {
+                it.service.forEachIndexed { index, booleanPlaceAttributeValue ->
+                    if(booleanPlaceAttributeValue == Place.BooleanPlaceAttributeValue.TRUE)
+                    {
+                        service.add(it.servicename[index])
+                    }
+                }
+                if (service.isNotEmpty())
+                {
+                    binding.rvPenawaran.layoutManager = GridLayoutManager(context,2)
+                    val adapter = TentangAdapter(service)
+                    binding.rvPenawaran.adapter = adapter
+                }else{
+                    binding.layoutPenawaran.visibility = View.GONE
+                    binding.materialDivider.visibility = View.GONE
                 }
             }
+
+
+            access.clear()
+            if(it.accessibility.isNotEmpty())
+            {
+                it.accessibility.forEachIndexed { index, booleanPlaceAttributeValue ->
+                    if(booleanPlaceAttributeValue == Place.BooleanPlaceAttributeValue.TRUE)
+                    {
+                        access.add(it.accessibilityname[index])
+                    }
+                }
+                if (access.isNotEmpty())
+                {
+                    binding.rvFasilitas.layoutManager = GridLayoutManager(context,2)
+                    val adapter = TentangAdapter(access)
+                    binding.rvFasilitas.adapter = adapter
+                }else{
+                    binding.layoutFasilitas.visibility = View.GONE
+                    binding.materialDivider2.visibility = View.GONE
+                }
+            }
+
+
+            offering.clear()
+            if(it.offerings.isNotEmpty())
+            {
+                it.offerings.forEachIndexed { index, booleanPlaceAttributeValue ->
+                    if(booleanPlaceAttributeValue == Place.BooleanPlaceAttributeValue.TRUE)
+                    {
+                        offering.add(it.offeringsname[index])
+                    }
+                }
+                if (offering.isNotEmpty())
+                {
+                    binding.rvPilihanMakanan.layoutManager = GridLayoutManager(context,2)
+                    val adapter = TentangAdapter(offering)
+                    binding.rvPilihanMakanan.adapter = adapter
+                }else{
+                    binding.layoutPersediaanMakanan.visibility = View.GONE
+                    binding.materialDivider3.visibility = View.GONE
+                }
+            }
+            dining.clear()
+            if(it.diningoption.isNotEmpty())
+            {
+                it.diningoption.forEachIndexed { index, booleanPlaceAttributeValue ->
+                    if(booleanPlaceAttributeValue == Place.BooleanPlaceAttributeValue.TRUE)
+                    {
+                        dining.add(it.diningoptionname[index])
+                    }
+                }
+                if (dining.isNotEmpty())
+                {
+                    binding.rvOpsiLayanan.layoutManager = GridLayoutManager(context,2)
+                    val adapter = TentangAdapter(dining)
+                    binding.rvOpsiLayanan.adapter = adapter
+                }else{
+                    binding.layoutOpsiLayanan.visibility = View.GONE
+                    binding.materialDivider6.visibility = View.GONE
+                }
+            }
+        }
     }
 }

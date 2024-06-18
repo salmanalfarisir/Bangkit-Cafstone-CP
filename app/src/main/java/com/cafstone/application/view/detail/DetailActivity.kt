@@ -8,10 +8,12 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.ImageAdapter
+import com.cafstone.application.data.adapter.ViewPagerAdapter
 import com.cafstone.application.databinding.ActivityDetailBinding
 import com.cafstone.application.di.PlacesClientSingleton
 import com.google.android.gms.common.api.ApiException
@@ -28,11 +30,49 @@ import java.time.format.DateTimeFormatter
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var placesClient: PlacesClient
+    lateinit var placesClient: PlacesClient
     private lateinit var photoAdapter: ImageAdapter
     private val photoUris = mutableListOf<Uri>()
     val openlist = mutableListOf<Period>()
     lateinit var ringkasan : List<Any>
+    var latt : Double = 0.0
+    var longg : Double = 0.0
+    var types = mutableListOf<String>()
+
+
+    //Tentang
+    lateinit var service : List<Place.BooleanPlaceAttributeValue>
+    lateinit var servicename : List<String>
+    lateinit var accessibility : List<Place.BooleanPlaceAttributeValue>
+    lateinit var accessibilityname : List<String>
+    lateinit var diningoption : List<Place.BooleanPlaceAttributeValue>
+    lateinit var diningoptionname : List<String>
+    lateinit var offerings : List<Place.BooleanPlaceAttributeValue>
+    lateinit var offeringsname : List<String>
+
+
+    val nameType: List<String> = listOf(
+        "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
+        "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
+        "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
+        "Brazilian Restaurant", "Mexican Restaurant", "Breakfast Restaurant",
+        "Middle Eastern Restaurant", "Brunch Restaurant", "Pizza Restaurant", "Cafe",
+        "Ramen Restaurant", "Chinese Restaurant", "Mediterranean Restaurant", "Meal Delivery",
+        "Meal Takeaway", "Barbecue Restaurant", "Spanish Restaurant", "Greek Restaurant",
+        "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
+        "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
+    )
+    val includedTypes = listOf(
+        "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
+        "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
+        "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
+        "brazilian_restaurant", "mexican_restaurant", "breakfast_restaurant",
+        "middle_eastern_restaurant", "brunch_restaurant", "pizza_restaurant", "cafe",
+        "ramen_restaurant", "chinese_restaurant", "mediterranean_restaurant", "meal_delivery",
+        "meal_takeaway", "barbecue_restaurant", "spanish_restaurant", "greek_restaurant",
+        "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
+        "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +100,9 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val id = intent.getStringExtra(PLACE_ID)
-        val lat = intent.getDoubleExtra(lat,0.0)
-        val long = intent.getDoubleExtra(long,0.0)
-        if (id != null && lat != 0.0 && long != 0.0) {
+        latt = intent.getDoubleExtra(lat,0.0)
+        longg = intent.getDoubleExtra(long,0.0)
+        if (id != null && latt != 0.0 && longg != 0.0) {
             photoAdapter = ImageAdapter(photoUris)
             binding.imageContainer.adapter = photoAdapter
 
@@ -70,7 +110,7 @@ class DetailActivity : AppCompatActivity() {
             placesClient = PlacesClientSingleton.getInstance(this)
             TabLayoutMediator(binding.tabLayout, binding.imageContainer) { _, _ ->
             }.attach()
-            fetchPlacePhotos(id,lat,long)
+            fetchPlacePhotos(id,latt,longg)
             binding.nextButton.setOnClickListener {
                 if (binding.imageContainer.currentItem < binding.imageContainer.adapter!!.itemCount - 1) {
                     binding.imageContainer.currentItem += 1
@@ -103,36 +143,25 @@ class DetailActivity : AppCompatActivity() {
             Place.Field.RESERVABLE,
             Place.Field.LAT_LNG,
             Place.Field.WEBSITE_URI,
-            Place.Field.TYPES
+            Place.Field.TYPES,
+            Place.Field.TAKEOUT,
+            Place.Field.DINE_IN,
+            Place.Field.DELIVERY,
+            Place.Field.WHEELCHAIR_ACCESSIBLE_ENTRANCE,
+            Place.Field.SERVES_BEER,
+            Place.Field.SERVES_WINE,
+            Place.Field.SERVES_VEGETARIAN_FOOD,
+            Place.Field.PLUS_CODE,
+            Place.Field.CURBSIDE_PICKUP,
+            Place.Field.SERVES_BREAKFAST,
+            Place.Field.SERVES_BRUNCH,
+            Place.Field.SERVES_DINNER,
+            Place.Field.SERVES_LUNCH
         )
 
         val placeRequest = FetchPlaceRequest.newInstance(placeId, fields)
 
-        val includedTypes = listOf(
-            "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
-            "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
-            "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
-            "brazilian_restaurant", "mexican_restaurant", "breakfast_restaurant",
-            "middle_eastern_restaurant", "brunch_restaurant", "pizza_restaurant", "cafe",
-            "ramen_restaurant", "chinese_restaurant", "mediterranean_restaurant", "meal_delivery",
-            "meal_takeaway", "barbecue_restaurant", "spanish_restaurant", "greek_restaurant",
-            "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
-            "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
-        )
-
         //Tambahin type sesuai dengan urutan list diatas
-
-        val nameType: List<String> = listOf(
-            "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
-            "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
-            "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
-            "Brazilian Restaurant", "Mexican Restaurant", "Breakfast Restaurant",
-            "Middle Eastern Restaurant", "Brunch Restaurant", "Pizza Restaurant", "Cafe",
-            "Ramen Restaurant", "Chinese Restaurant", "Mediterranean Restaurant", "Meal Delivery",
-            "Meal Takeaway", "Barbecue Restaurant", "Spanish Restaurant", "Greek Restaurant",
-            "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
-            "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
-        )
 
 
         placesClient.fetchPlace(placeRequest).addOnSuccessListener { response ->
@@ -144,7 +173,7 @@ class DetailActivity : AppCompatActivity() {
                     setMessage("Ingin Menavigasikan Ke Alamatnya?")
                     setPositiveButton("Iya") { _, _ ->
                         val uri =
-                            "http://maps.google.com/maps?saddr=$lat,$long&daddr=${latlang.latitude},${latlang.longitude}"
+                            "http://maps.google.com/maps?saddr=$lat,$long&daddr=${latlang?.latitude},${latlang?.longitude}&q=${Uri.encode(place.name)}"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                         intent.setPackage("com.google.android.apps.maps")
                         if (intent.resolveActivity(packageManager) != null) {
@@ -163,15 +192,19 @@ class DetailActivity : AppCompatActivity() {
             binding.reviewcounttextview.text = place.userRatingsTotal?.toString() ?: "0"
             binding.titleDestination.text = place.name?.toString() ?: ""
             val type = place.placeTypes
-            binding.tipeRestoran.text = ""
             var tipe = ""
+            types.clear()
+            binding.tipeRestoran.text = ""
             if (type != null) {
                 type.forEach {
-                    if (it in includedTypes) {
+                    val index = includedTypes.indexOf(it)
+                    if (index != -1)
+                    {
+                        types.add(includedTypes[index])
                         if (tipe == "") {
-                            tipe = it
+                            tipe = nameType[index]
                         } else {
-                            tipe += ",$it"
+                            tipe += ",${nameType[index]}"
                         }
                     }
                 }
@@ -261,11 +294,43 @@ class DetailActivity : AppCompatActivity() {
             val nohp = place.phoneNumber?: ""
             val res = place.reservable ?: ""
             val web = place.websiteUri ?: ""
-            ringkasan = listOf(address,nohp,res,web)
-            binding.viewPager.adapter = DetailSectionPager(this)
-            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-                tab.text = resources.getString(TAB_TITLES[position])
-            }.attach()
+            val plusCode = place.plusCode?.compoundCode ?: ""
+            ringkasan = listOf(address,nohp,res,web,plusCode)
+
+            //service option
+            val delivery = place.delivery
+            val dinein = place.dineIn
+            val takeout = place.takeout
+            val curbside = place.curbsidePickup
+            service = listOf(delivery,dinein,takeout,curbside)
+            servicename = listOf("Pesan Antar","Makan Ditempat","Bawa Pulang","Curbside")
+
+            //accesbillity
+            val wheelchair = place.wheelchairAccessibleEntrance
+            accessibility = listOf(wheelchair)
+            accessibilityname = listOf("Akses Untuk Kursi Roda")
+
+            //offerings
+            val beer = place.servesBeer
+            val wine= place.servesWine
+            val vegetarian = place.servesVegetarianFood
+            offerings = listOf(beer,wine,vegetarian)
+            offeringsname = listOf("Menyediakan Beer", "Menyediakan Wine", "Makananan Vegetarian")
+
+            //dining option
+            val breakfeast = place.servesBreakfast
+            val brunch = place.servesBrunch
+            val dinner = place.servesDinner
+            val lunch = place.servesLunch
+            diningoption = listOf(breakfeast,brunch,dinner,lunch)
+            diningoptionname = listOf("Sarapan","Brunch","Makan Malam","Makan Siang")
+
+            val adapter = ViewPagerAdapter(supportFragmentManager)
+            // Add Fragments to the adapter
+            adapter.addFragment(RingkasanFragment(), "Ringkasan")
+            adapter.addFragment(TentangFragment(), "Tentang")
+            binding.viewPager.adapter = adapter
+            binding.tabs.setupWithViewPager(binding.viewPager)
             val metadata = place.photoMetadatas
             if (metadata.isNullOrEmpty()) {
                 Log.w("MainActivity", "No photo metadata.")
@@ -294,6 +359,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
+
 
     companion object {
         const val PLACE_ID = "place_id"

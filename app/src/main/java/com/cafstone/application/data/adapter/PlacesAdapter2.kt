@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,23 +13,25 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.cafstone.application.R
+import com.cafstone.application.databinding.FragmentTentangBinding
+import com.cafstone.application.databinding.ItemRvRekomendasiLanjutanBinding
 import com.cafstone.application.di.PlacesClientSingleton
 import com.cafstone.application.view.detail.DetailActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
+import com.google.android.material.textview.MaterialTextView
 
 class PlacesAdapter2(private val placesList: List<AdapterModel>) :
     RecyclerView.Adapter<PlacesAdapter2.PlaceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story2, parent, false)
-        return PlaceViewHolder(view)
+        val binding = ItemRvRekomendasiLanjutanBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return PlaceViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (id, name, desc, photo,lat,long, rating) = placesList[position]
-        holder.placeNameTextView.text = name
-        holder.placeDescTextView.text = desc
+        val (id, name, desc,total, photo,lat,long, rating) = placesList[position]
+        holder.bind(name,desc,total)
         photo?.let { url ->
             val placesClient = PlacesClientSingleton.getInstance(holder.itemView.context)
             val photoRequest = FetchResolvedPhotoUriRequest.builder(url)
@@ -43,20 +46,20 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>) :
                     Glide.with(holder.itemView.context)
                         .load(uri)
                         .apply(req)
-                        .into(holder.placeImageView)
+                        .into(holder.binding.rekomendasiPhoto)
                 }.addOnFailureListener { exception ->
                     if (exception is ApiException) {
                         Log.e("MainActivity", "Place not found: ${exception.message}")
-                        holder.placeImageView.setImageResource(R.drawable.no_media_selected)
+                        holder.binding.rekomendasiPhoto.setImageResource(R.drawable.no_media_selected)
                     }
                 }
         }
-            ?: holder.placeImageView.setImageResource(R.drawable.no_media_selected)
+            ?: holder.binding.rekomendasiPhoto.setImageResource(R.drawable.no_media_selected)
         if (rating == null) {
-            holder.ratingTextView.visibility = View.GONE
-            holder.ratingImageView.visibility = View.GONE
+            holder.binding.rekomendasiPhotoRating.visibility = View.GONE
+            holder.binding.ratingtextview.visibility = View.GONE
         } else {
-            holder.ratingTextView.text = rating.toString()
+            holder.binding.ratingtextview.text = rating.toString()
         }
 
         holder.itemView.setOnClickListener {
@@ -72,11 +75,11 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>) :
         return placesList.size
     }
 
-    class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val placeNameTextView: TextView = itemView.findViewById(R.id.placeName)
-        val placeDescTextView: TextView = itemView.findViewById(R.id.story_description)
-        val placeImageView: ImageView = itemView.findViewById(R.id.iv_item_photo)
-        val ratingImageView: ImageView = itemView.findViewById(R.id.imageView2)
-        val ratingTextView: TextView = itemView.findViewById(R.id.ratingTextView)
+    class PlaceViewHolder(val binding: ItemRvRekomendasiLanjutanBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(name : String,desc : String,total : String){
+            binding.rekomendasiplaceName.text = name
+            binding.rekomendasiplaceType.text = desc
+            binding.reviewtextview.text = "(${total})"
+        }
     }
 }

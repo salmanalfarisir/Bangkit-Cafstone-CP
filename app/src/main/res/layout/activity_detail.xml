@@ -316,7 +316,7 @@
                         app:tabTextColor="@color/black_text"
                         tools:ignore="SpeakableTextPresentCheck" />
 
-                    <androidx.viewpager2.widget.ViewPager2
+                    <com.cafstone.application.view.main.NonSwipeableViewPager
                         android:id="@+id/view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
