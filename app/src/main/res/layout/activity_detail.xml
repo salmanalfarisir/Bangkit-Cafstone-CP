@@ -204,6 +204,7 @@
                         tools:text="The Obonk Steak dan Ribs" />
 
                     <ImageView
+                        android:id="@+id/navigate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center"
@@ -266,6 +267,7 @@
                         android:textStyle="normal" />
 
                     <TextView
+                        android:id="@+id/openorclosed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

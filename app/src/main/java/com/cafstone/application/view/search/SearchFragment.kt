@@ -114,6 +114,8 @@ class SearchFragment : Fragment() {
                                     place.name!!,
                                     place.address!!,
                                     photoUrl,
+                                    activity.lat,
+                                    activity.long,
                                     place.rating
                                 )
                             )

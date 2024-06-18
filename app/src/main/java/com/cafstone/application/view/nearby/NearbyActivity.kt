@@ -145,6 +145,8 @@ class NearbyActivity : AppCompatActivity() {
                                 place.name!!,
                                 place.address!!,
                                 photoUrl,
+                                lat,
+                                long,
                                 place.rating
                             )
                         )
@@ -171,6 +173,7 @@ class NearbyActivity : AppCompatActivity() {
                                 place.name!!,
                                 place.address!!,
                                 photoUrl,
+                                lat,long,
                                 place.rating
                             )
                         )

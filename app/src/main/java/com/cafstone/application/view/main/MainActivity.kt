@@ -253,6 +253,8 @@ class MainActivity : AppCompatActivity() {
                                             place.name!!,
                                             place.address!!,
                                             photoUrl,
+                                            currentLocation?.latitude ?: 3.5629935,
+                                            currentLocation?.longitude ?: 98.6529746,
                                             place.rating
                                         )
                                     )
@@ -265,6 +267,8 @@ class MainActivity : AppCompatActivity() {
                                             place.name!!,
                                             place.address!!,
                                             photoUrl,
+                                            currentLocation?.latitude ?: 3.5629935,
+                                            currentLocation?.longitude ?: 98.6529746,
                                             place.rating
                                         )
                                     )
@@ -277,6 +281,8 @@ class MainActivity : AppCompatActivity() {
                                             place.name!!,
                                             place.address!!,
                                             photoUrl,
+                                            currentLocation?.latitude ?: 3.5629935,
+                                            currentLocation?.longitude ?: 98.6529746,
                                             place.rating
                                         )
                                     )
@@ -381,6 +387,8 @@ class MainActivity : AppCompatActivity() {
                                                 place.name!!,
                                                 place.address!!,
                                                 photoUrl,
+                                                location.latitude,
+                                                location.longitude,
                                                 place.rating
                                             )
                                         )
@@ -390,7 +398,7 @@ class MainActivity : AppCompatActivity() {
                                         if (exception is ApiException) {
                                             Log.e(
                                                 "MainActivity",
-                                                "Place not found: ${exception.message}"
+                                                "Gagal: ${exception.message}"
                                             )
                                         }
                                     }

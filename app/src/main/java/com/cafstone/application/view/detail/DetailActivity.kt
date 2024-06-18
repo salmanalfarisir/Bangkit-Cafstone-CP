@@ -1,10 +1,12 @@
 package com.cafstone.application.view.detail
 
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,6 +15,7 @@ import com.cafstone.application.data.adapter.ImageAdapter
 import com.cafstone.application.databinding.ActivityDetailBinding
 import com.cafstone.application.di.PlacesClientSingleton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.places.api.model.Period
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
@@ -22,11 +25,14 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var placesClient: PlacesClient
     private lateinit var photoAdapter: ImageAdapter
     private val photoUris = mutableListOf<Uri>()
+    val openlist = mutableListOf<Period>()
+    lateinit var ringkasan : List<Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +60,9 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val id = intent.getStringExtra(PLACE_ID)
-        if (id != null) {
+        val lat = intent.getDoubleExtra(lat,0.0)
+        val long = intent.getDoubleExtra(long,0.0)
+        if (id != null && lat != 0.0 && long != 0.0) {
             photoAdapter = ImageAdapter(photoUris)
             binding.imageContainer.adapter = photoAdapter
 
@@ -62,11 +70,7 @@ class DetailActivity : AppCompatActivity() {
             placesClient = PlacesClientSingleton.getInstance(this)
             TabLayoutMediator(binding.tabLayout, binding.imageContainer) { _, _ ->
             }.attach()
-            binding.viewPager.adapter = DetailSectionPager(this)
-            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-                tab.text = resources.getString(TAB_TITLES[position])
-            }.attach()
-            fetchPlacePhotos(id)
+            fetchPlacePhotos(id,lat,long)
             binding.nextButton.setOnClickListener {
                 if (binding.imageContainer.currentItem < binding.imageContainer.adapter!!.itemCount - 1) {
                     binding.imageContainer.currentItem += 1
@@ -83,7 +87,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    private fun fetchPlacePhotos(placeId: String) {
+    private fun fetchPlacePhotos(placeId: String, lat : Double,long: Double) {
         val fields = listOf(
             Place.Field.ID,
             Place.Field.NAME,
@@ -95,6 +99,10 @@ class DetailActivity : AppCompatActivity() {
             Place.Field.PHOTO_METADATAS,
             Place.Field.SECONDARY_OPENING_HOURS,
             Place.Field.USER_RATINGS_TOTAL,
+            Place.Field.PHONE_NUMBER,
+            Place.Field.RESERVABLE,
+            Place.Field.LAT_LNG,
+            Place.Field.WEBSITE_URI,
             Place.Field.TYPES
         )
 
@@ -129,6 +137,27 @@ class DetailActivity : AppCompatActivity() {
 
         placesClient.fetchPlace(placeRequest).addOnSuccessListener { response ->
             val place = response.place
+            val latlang = place.latLng
+            binding.navigate.setOnClickListener{
+                AlertDialog.Builder(this).apply {
+                    setTitle(title)
+                    setMessage("Ingin Menavigasikan Ke Alamatnya?")
+                    setPositiveButton("Iya") { _, _ ->
+                        val uri =
+                            "http://maps.google.com/maps?saddr=$lat,$long&daddr=${latlang.latitude},${latlang.longitude}"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                        intent.setPackage("com.google.android.apps.maps")
+                        if (intent.resolveActivity(packageManager) != null) {
+                            startActivity(intent)
+                        }
+                    }
+                    setNegativeButton("Tidak"){dialog,_->
+                        dialog.dismiss()
+                    }
+                    create()
+                    show()
+                }
+            }
 
             binding.ratingtextview.text = place.rating?.toString() ?: "0.0"
             binding.reviewcounttextview.text = place.userRatingsTotal?.toString() ?: "0"
@@ -151,59 +180,92 @@ class DetailActivity : AppCompatActivity() {
                 binding.tipeRestoran.visibility = View.GONE
             }
             val openingHours = place.openingHours?.periods
-            var isi = 0
+            binding.statusDescription.text = openingHours.toString()
+            openlist.clear()
             if (openingHours != null) {
                 for (open in openingHours) {
                     val timeOfWeek = open.open?.day
                     if (timeOfWeek != null) {
                         val today = LocalDate.now().dayOfWeek
                         if (timeOfWeek.toString() == today.toString()) {
-                            val time = open.open?.time
-                            val close = open.close?.time
-                            if (time != null && close != null) {
-                                val openTime = LocalTime.of(time.hours, time.minutes)
-                                val closeTime = LocalTime.of(close.hours, close.minutes)
-                                val currentTime = LocalTime.now()
-                                val opens = currentTime.isAfter(openTime)
-                                val closed = currentTime.isBefore(closeTime)
-                                if (opens && closed) {
-                                    binding.statusDescription.text = getString(R.string.place_buka)
-                                    binding.statusDescription.setTextColor(Color.GREEN)
-                                } else {
-                                    if (closeTime.isBefore(openTime)) {
-                                        if (currentTime.isAfter(openTime) || currentTime.isBefore(
-                                                closeTime
-                                            )
-                                        ) {
-                                            binding.statusDescription.text =
-                                                getString(R.string.place_buka)
-                                            binding.statusDescription.setTextColor(Color.GREEN)
-                                        } else {
-                                            binding.statusDescription.text =
-                                                getString(R.string.place_tutup)
-                                            binding.statusDescription.setTextColor(Color.RED)
-                                        }
+                            openlist.add(open)
+                        }
+                    }
+                }
+            }
+            var isi = 0
+            if (openlist.isEmpty())
+            {
+                binding.statusDescription.text = getString(R.string.place_buka)
+                binding.statusDescription.setTextColor(Color.GREEN)
+                binding.openorclosed.visibility = View.GONE
+                binding.timeDescription.text = getString(R.string.place_buka_24_jam)
+            }else{
+                openlist.forEachIndexed{index,open->
+                    val time = open.open?.time
+                    val close = open.close?.time
+                    if (time != null && close != null) {
+                        val openTime = LocalTime.of(time.hours, time.minutes)
+                        val closeTime = LocalTime.of(close.hours, close.minutes)
+                        val currentTime = LocalTime.of(12,0)
+                        val opens = currentTime.isAfter(openTime)
+                        val closed = currentTime.isBefore(closeTime)
+                        if (isi != 1)
+                        {
+                            if (opens && closed) {
+                                binding.statusDescription.text = getString(R.string.place_buka)
+                                binding.statusDescription.setTextColor(Color.GREEN)
+                                val formatter = DateTimeFormatter.ofPattern("HH.mm")
+                                val formattedTime = closeTime.format(formatter)
+                                binding.timeDescription.text = formattedTime
+                                binding.openorclosed.text = "Tutup Pukul"
+                                isi = 1
+                            } else {
+                                if (closeTime.isBefore(openTime)) {
+                                    if ((currentTime.isAfter(openTime) && currentTime.isBefore(LocalTime.of(23,59))) ||
+                                        ((currentTime == LocalTime.of(0,0) ||currentTime.isAfter(LocalTime.of(0,0))) && currentTime.isBefore(closeTime))
+                                    ) {
+                                        binding.statusDescription.text =
+                                            getString(R.string.place_buka)
+                                        binding.statusDescription.setTextColor(Color.GREEN)
+                                        val formatter = DateTimeFormatter.ofPattern("HH.mm")
+                                        val formattedTime = closeTime.format(formatter)
+                                        binding.timeDescription.text = formattedTime
+                                        binding.openorclosed.text = "Tutup Pukul"
+                                        isi = 1
                                     } else {
                                         binding.statusDescription.text =
                                             getString(R.string.place_tutup)
                                         binding.statusDescription.setTextColor(Color.RED)
+                                        val formatter = DateTimeFormatter.ofPattern("HH.mm")
+                                        val formattedTime = openTime.format(formatter)
+                                        binding.timeDescription.text = formattedTime
+                                        binding.openorclosed.text = "Buka Pukul"
+                                        isi = 1
                                     }
+                                } else if (index == openlist.size-1){
+                                    binding.statusDescription.text =
+                                        getString(R.string.place_tutup)
+                                    binding.statusDescription.setTextColor(Color.RED)
+                                    val formatter = DateTimeFormatter.ofPattern("HH.mm")
+                                    val formattedTime = openTime.format(formatter)
+                                    binding.timeDescription.text = formattedTime
+                                    binding.openorclosed.text = "Buka Pukul"
                                 }
-                                val formatter = DateTimeFormatter.ofPattern("HH.mm")
-                                val formattedTime = openTime.format(formatter)
-                                binding.timeDescription.text = formattedTime
-                                isi = 1
-                                break
                             }
                         }
                     }
                 }
             }
-            if (isi == 0) {
-                binding.statusDescription.text = getString(R.string.place_buka)
-                binding.statusDescription.setTextColor(Color.GREEN)
-                binding.timeDescription.text = getString(R.string.place_buka_24_jam)
-            }
+            val address = place.address ?: ""
+            val nohp = place.phoneNumber?: ""
+            val res = place.reservable ?: ""
+            val web = place.websiteUri ?: ""
+            ringkasan = listOf(address,nohp,res,web)
+            binding.viewPager.adapter = DetailSectionPager(this)
+            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
             val metadata = place.photoMetadatas
             if (metadata.isNullOrEmpty()) {
                 Log.w("MainActivity", "No photo metadata.")
@@ -235,9 +297,10 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val PLACE_ID = "place_id"
+        const val lat = "latitude"
+        const val long = "longtitude"
         private val TAB_TITLES = intArrayOf(
             R.string.tab_text_1,
-            R.string.tab_text_2,
             R.string.tab_text_3
         )
     }

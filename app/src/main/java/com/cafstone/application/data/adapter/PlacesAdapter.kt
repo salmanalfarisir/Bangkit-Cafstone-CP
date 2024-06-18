@@ -26,7 +26,7 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (id, name, desc, photo, rating) = placesList[position]
+        val (id, name, desc, photo,lat, long, rating) = placesList[position]
         holder.placeNameTextView.text = name
         holder.placeDescTextView.text = desc
         photo?.let { url ->
@@ -62,6 +62,8 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
         holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
             intentDetail.putExtra(DetailActivity.PLACE_ID, id)
+            intentDetail.putExtra(DetailActivity.lat,lat)
+            intentDetail.putExtra(DetailActivity.long,long)
             holder.itemView.context.startActivity(intentDetail)
         }
     }
