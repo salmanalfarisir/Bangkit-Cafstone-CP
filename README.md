@@ -5,8 +5,10 @@ Fitur
 Pencarian Kafe: Cari kafe berdasarkan nama atau kata kunci menggunakan Google Maps API.
 ![search text ](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/30b3b4ac-f399-4756-b2f4-54ff3acc9ea2)
 ![WhatsApp Image 2024-06-15 at 15 57 26_e098dfc6](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/a6be121b-c548-4f13-88c6-66abf5716dfd)
+
 Lokasi Terdekat: Temukan kafe terdekat berdasarkan lokasi saat ini menggunakan Google Maps API.
 ![nearby](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/00fba54e-dc41-42f1-bdde-75d90b6b3ea4)
+
 Detail Lokasi: Lihat detail kafe, termasuk ulasan, rating, dan jam operasional menggunakan Google Maps API.
 
 Rekomendasi Kafe: Dapatkan rekomendasi kafe berdasarkan preferensi pengguna melalui API khusus yang menggunakan model machine learning.
