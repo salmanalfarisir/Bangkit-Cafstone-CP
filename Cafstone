@@ -1,0 +1,23 @@
+Aplikasi ini menyediakan rekomendasi kafe berdasarkan preferensi pengguna menggunakan model machine learning melalui API khusus. Aplikasi ini juga menyediakan fitur pencarian, lokasi terdekat, dan detail lokasi menggunakan Google Maps API.
+
+
+Fitur
+Pencarian Kafe: Cari kafe berdasarkan nama atau kata kunci.
+![WhatsApp Image 2024-06-15 at 15 57 26_e098dfc6](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/acff66b9-f68d-42b4-97c8-689c669c5943)
+![search text ](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/896cd2cb-d1ba-47e9-8647-0a4241cf9cf1)
+Lokasi Terdekat: Temukan kafe terdekat berdasarkan lokasi saat ini, di bagi beberapa kategori seperti terdekat,termurah, terbaik, indonesia food dan lain lain.
+![nearby](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/f1aa5576-c2b3-4aa3-b017-ac760fbc6516)
+Detail Lokasi: Lihat detail kafe, termasuk ulasan, rating, dan jam operasional.
+
+Rekomendasi Kafe: Dapatkan rekomendasi kafe berdasarkan preferensi pengguna melalui API khusus yang menggunakan model machine learning.
+![WhatsApp Image 2024-06-15 at 15 57 25_4805e89f](https://github.com/salmanalfarisir/Bangkit-Cafstone-CP/assets/119673022/815e5e5e-a88d-4bbd-8188-dc0cbf4614dc)
+
+Penggunaan
+Pencarian Kafe
+Masukkan nama atau kata kunci kafe pada kolom pencarian, kemudian tekan enter untuk melihat hasil pencarian dari Google Maps API.
+Lokasi Terdekat
+Klik tombol seperti "Lokasi Terdekat" untuk menemukan kafe terdekat dari lokasi saat ini. Aplikasi akan meminta izin untuk mengakses lokasi Anda.
+Detail Lokasi
+Klik pada kafe di hasil pencarian atau daftar lokasi terdekat untuk melihat detail lengkap, termasuk ulasan, rating, dan jam operasional.
+Rekomendasi Kafe
+Masukkan preferensi Anda pada kolom yang disediakan, kemudian klik tombol "Dapatkan Rekomendasi". Aplikasi akan mengirimkan permintaan ke API rekomendasi dan menampilkan kafe yang direkomendasikan berdasarkan preferensi Anda.
