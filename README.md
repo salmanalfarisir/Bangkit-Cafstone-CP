@@ -1,4 +1,4 @@
-#Cafstone
+# Cafstone
 
 Aplikasi ini menyediakan rekomendasi kafe berdasarkan preferensi pengguna menggunakan model machine learning melalui API khusus. 
 Aplikasi ini juga menyediakan fitur pencarian, lokasi terdekat, dan detail lokasi menggunakan Google Maps API.
