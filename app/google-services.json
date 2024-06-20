@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "514383224511",
-    "project_id": "cafstone",
-    "storage_bucket": "cafstone.appspot.com"
+    "project_number": "921591822742",
+    "firebase_url": "https://sonorous-stone-424203-a2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sonorous-stone-424203-a2",
+    "storage_bucket": "sonorous-stone-424203-a2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:514383224511:android:c0a22d6af524da93d4300a",
+        "mobilesdk_app_id": "1:921591822742:android:2cd1f42cb5f6febf3f45b7",
         "android_client_info": {
           "package_name": "com.cafstone.application"
         }
@@ -15,12 +16,17 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAed7kvXm1Mm0-_C_ZUQKE5ex_U1sg8sGM"
+          "current_key": "AIzaSyC8vMIvxVpAKc_6U_QVjlg5SwwAYWvBjOw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921591822742-5kat9sec6q75i83djavbvmflhsosaia9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
