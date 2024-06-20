@@ -1,6 +1,7 @@
 package com.cafstone.application.data.adapter
 
 import android.content.Intent
+import android.location.Location
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,7 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val (id, name, desc,total, photo,lat,long, rating) = placesList[position]
+        val (id, name, desc,total, photo,lat,long,destlat,destlong, rating) = placesList[position]
         holder.bind(name,desc,total)
         photo?.let { url ->
             val placesClient = PlacesClientSingleton.getInstance(holder.itemView.context)
@@ -55,11 +56,30 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
             ?: holder.binding.rekomendasiPhoto.setImageResource(R.drawable.no_media_selected)
         if (rating == null) {
             holder.binding.rekomendasiPhotoRating.visibility = View.GONE
-            holder.binding.ratingtextview.visibility = View.GONE
+            holder.binding.ratingTextView1.visibility = View.GONE
         } else {
-            holder.binding.ratingtextview.text = rating.toString()
+            holder.binding.ratingTextView1.text = rating.toString()
         }
 
+        if(destlat!=0.0 && destlong != 0.0)
+        {
+            val currentLocation = Location("currentLocation").apply {
+                latitude = lat
+                longitude = long
+            }
+
+            // Membuat objek Location untuk tujuan
+            val destinationLocation = Location("destinationLocation").apply {
+                latitude = destlat
+                longitude = destlong
+            }
+
+            val distanceInMeters = currentLocation.distanceTo(destinationLocation)
+
+            holder.binding.jarak.text = distanceInMeters.toInt().toString() + " M"
+        }else{
+            holder.binding.jarak.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
             intentDetail.putExtra(DetailActivity.PLACE_ID, id)
@@ -75,9 +95,9 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
 
     class PlaceViewHolder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(name : String,desc : String,total : String){
-            binding.rekomendasiplaceName.text = name
-            binding.rekomendasiplaceType.text = desc
-            binding.reviewtextview.text = "(${total})"
+            binding.rekomendasiPlaceName.text = name
+            binding.rekomendasiPlaceType.text = desc
+            binding.reviewTextView.text = "(${total})"
         }
     }
 }

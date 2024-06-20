@@ -19,6 +19,7 @@ import com.cafstone.application.di.PlacesClientSingleton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.model.Period
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.Review
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -37,6 +38,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var ringkasan : List<Any>
     var latt : Double = 0.0
     var longg : Double = 0.0
+    var review : List<Review>? = null
     var types = mutableListOf<String>()
 
 
@@ -187,8 +189,7 @@ class DetailActivity : AppCompatActivity() {
                     show()
                 }
             }
-
-            binding.ratingtextview.text = place.rating?.toString() ?: "0.0"
+            binding.ratingTextView1.text = place.rating?.toString() ?: "0.0"
             binding.reviewcounttextview.text = place.userRatingsTotal?.toString() ?: "0"
             binding.titleDestination.text = place.name?.toString() ?: ""
             val type = place.placeTypes
@@ -290,6 +291,7 @@ class DetailActivity : AppCompatActivity() {
                     }
                 }
             }
+            review = place.reviews
             val address = place.address ?: ""
             val nohp = place.phoneNumber?: ""
             val res = place.reservable ?: ""

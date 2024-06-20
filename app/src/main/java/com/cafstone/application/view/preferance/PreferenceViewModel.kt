@@ -51,6 +51,7 @@ class PreferenceViewModel(private val userRepository: UserRepository) : ViewMode
                         user.preferences.acceptsDebitCards,
                         user.preferences.acceptsCashOnly,
                         user.preferences.acceptsNfc,
+                        "Welcome",
                         true
                     )
                     saveSession(userModel)

@@ -126,6 +126,23 @@
                     card_view:layout_constraintStart_toEndOf="@+id/ratingTextView1"
                     card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
                     tools:ignore="SmallSp" />
+                <TextView
+                    android:id="@+id/jarak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/roboto"
+                    android:includeFontPadding="false"
+                    android:maxLines="2"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/reviewTextView2"
+                    card_view:layout_constraintVertical_bias="0.0"
+                    tools:text="@string/placeType" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

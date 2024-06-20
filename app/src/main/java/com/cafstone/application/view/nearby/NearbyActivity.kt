@@ -7,10 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.AdapterModel
@@ -31,7 +28,14 @@ class NearbyActivity : AppCompatActivity() {
     private val placesList = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
     private lateinit var placesClient: PlacesClient
-    private var includedTypes = listOf(
+    var pricelevel = mutableListOf<Int>()
+    var data : String? = null
+    var datafragment : String? = null
+    var lat : Double = 0.0
+    private var long : Double = 0.0
+    var att : NearbyModel? = null
+    var types = mutableListOf<String>()
+    var includedTypes = listOf(
         "restaurant",
         "american_restaurant",
         "bar",
@@ -69,7 +73,7 @@ class NearbyActivity : AppCompatActivity() {
         "italian_restaurant"
     )
 
-    private val nameType: List<String> = listOf(
+    val nameType: List<String> = listOf(
         "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
         "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
         "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
@@ -85,27 +89,28 @@ class NearbyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNearbyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        enableEdgeToEdge()
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         adapter = PlacesAdapter(placesList)
-        val lat = intent.getDoubleExtra(LATITUDE, 0.0)
-        val long = intent.getDoubleExtra(LONGITUDE, 0.0)
+        lat = intent.getDoubleExtra(LATITUDE, 0.0)
+        long = intent.getDoubleExtra(LONGITUDE, 0.0)
         binding.rvReview.layoutManager = LinearLayoutManager(this)
         binding.rvReview.adapter = adapter
         if (lat != 0.0 && long != 0.0) {
-            val data = intent.getStringExtra(EXTRA_DETAIL)
-            val att = if (Build.VERSION.SDK_INT >= 33) {
+            data = intent.getStringExtra(EXTRA_DETAIL)
+            att = if (Build.VERSION.SDK_INT >= 33) {
                 intent.getParcelableExtra(EXTRA_ATT, NearbyModel::class.java)
             } else {
                 @Suppress("DEPRECATION") intent.getParcelableExtra(EXTRA_ATT)
             }
+            if (att!=null)
+            {
+                types.add(att!!.value)
+            }
             nearby(data, att, lat, long)
+            binding.filterButton.setOnClickListener{
+                val a = FilterFragment()
+                a.show(supportFragmentManager,a.tag)
+            }
         } else {
             finish()
         }
@@ -123,9 +128,18 @@ class NearbyActivity : AppCompatActivity() {
         }
     }
 
+    fun searchagain(){
+        if (data != null)
+        {
+            nearby(data,att,lat,long)
+        }else{
+            nearby(datafragment,att,lat,long)
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun nearby(text: String?, att: NearbyModel?, lat: Double, long: Double) {
-
+        placesList.clear()
         placesClient = PlacesClientSingleton.getInstance(this)
 
         val placeFields = listOf(
@@ -137,40 +151,60 @@ class NearbyActivity : AppCompatActivity() {
             Place.Field.RATING,
             Place.Field.PRICE_LEVEL,
             Place.Field.USER_RATINGS_TOTAL,
-            Place.Field.PRIMARY_TYPE
+            Place.Field.PRIMARY_TYPE,
+            Place.Field.PRICE_LEVEL,
+            Place.Field.LAT_LNG
         )
         val searchCenter = LatLng(lat, long)
         val circle = CircularBounds.newInstance(searchCenter, 50000.0)
 
         if ((att != null)) {
-            includedTypes = listOf(att.value)
             binding.placeName.text = att.title
-            binding.countPlaceName.text = att.desc
             binding.ivItemPhoto.setBackgroundResource(att.image)
+        }
+        var inc = includedTypes
+        if (types.isNotEmpty()){
+            inc = types
         }
 
         if (text != null && text == "termurah") {
             binding.placeName.text = getString(R.string.place_termurah)
-            binding.countPlaceName.text =
-                getString(R.string.ini_rekomendasi_tempat_dengan_harga_termurah)
+            var judul = "Tempat Makan"
             val searchNearbyRequest =
-                searchNearby2(circle, placeFields, "Tempat makan dengan harga paling murah")
+                searchNearby2(circle, placeFields, "$judul dengan harga paling murah")
             placesClient.searchByText(searchNearbyRequest).addOnSuccessListener { response ->
                 val places = response.places
                 for (place in places) {
+                    if (types.isNotEmpty())
+                    {
+                        var t = false
+                        place.placeTypes?.forEach {
+                            if(includedTypes.contains(it))
+                            {
+                                t = true
+                            }
+                        }
+                        if (!t)
+                        {
+                            continue
+                        }
+                    }
                     if (place.placeTypes != null) {
                         var tipe = ""
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1) {
-                                if (tipe == "") {
+                            if (index != -1)
+                            {
+                                if (tipe == "")
+                                {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType ?: "")
-                        if (index != -1) {
+                        val index = includedTypes.indexOf(place.primaryType?:"")
+                        if (index != -1)
+                        {
                             tipe = nameType[index]
                         }
 
@@ -188,33 +222,52 @@ class NearbyActivity : AppCompatActivity() {
                                 photoUrl,
                                 lat,
                                 long,
+                                place.latLng?.latitude?:0.0,
+                                place.latLng?.longitude?:0.0,
                                 place.rating
                             )
                         )
                     }
                 }
                 adapter.notifyDataSetChanged()
+                binding.countPlaceName.text = placesList.size.toString() + " Restaurant"
             }.addOnFailureListener { exception: Exception ->
                 Log.e(TAG, "Place not found: ${exception.message}")
             }
         } else {
-            val searchNearbyRequest = searchNearby(circle, placeFields, includedTypes, text)
+            val searchNearbyRequest = searchNearby(circle, placeFields, inc, text)
             placesClient.searchNearby(searchNearbyRequest).addOnSuccessListener { response ->
                 val places = response.places
                 for (place in places) {
+                    if (pricelevel.isNotEmpty())
+                    {
+                        var stop = 0
+                        place.priceLevel?.let {
+                            if(!pricelevel.contains(it)){
+                                stop = 1
+                            }
+                        }
+                        if (stop == 1)
+                        {
+                            continue
+                        }
+                    }
                     if (place.placeTypes != null) {
                         var tipe = ""
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1) {
-                                if (tipe == "") {
+                            if (index != -1)
+                            {
+                                if (tipe == "")
+                                {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType ?: "")
-                        if (index != -1) {
+                        val index = includedTypes.indexOf(place.primaryType?:"")
+                        if (index != -1)
+                        {
                             tipe = nameType[index]
                         }
                         var photoUrl: PhotoMetadata? = null
@@ -229,13 +282,16 @@ class NearbyActivity : AppCompatActivity() {
                                 tipe,
                                 place.userRatingsTotal?.toString() ?: "0.0",
                                 photoUrl,
-                                lat, long,
+                                lat,long,
+                                place.latLng?.latitude?:0.0,
+                                place.latLng?.longitude?:0.0,
                                 place.rating
                             )
                         )
                     }
                 }
                 adapter.notifyDataSetChanged()
+                binding.countPlaceName.text = placesList.size.toString() + " Restaurant"
             }.addOnFailureListener { exception: Exception ->
                 Log.e(TAG, "Place not found: ${exception.message}")
             }
@@ -255,16 +311,13 @@ class NearbyActivity : AppCompatActivity() {
         if ((kriteria != null)) {
             if (kriteria == "terdekat") {
                 binding.placeName.text = getString(R.string.place_terdekat)
-                binding.textView.text =
-                    getString(R.string.berikut_adalah_tempat_terdekat_dari_lokasi_anda)
                 searchNearbyRequest =
                     SearchNearbyRequest.builder(circle, placeFields).setIncludedTypes(includedTypes)
                         .setMaxResultCount(20)
+
                         .setRankPreference(SearchNearbyRequest.RankPreference.DISTANCE).build()
             } else if (kriteria == "terbaik") {
                 binding.placeName.text = getString(R.string.rating_jempolan)
-                binding.textView.text =
-                    getString(R.string.tempat_dengan_rekomendasi_terbaik_ada_di_dekat_kamu_loh)
                 searchNearbyRequest =
                     SearchNearbyRequest.builder(circle, placeFields).setIncludedTypes(includedTypes)
                         .setMaxResultCount(20)
@@ -278,9 +331,20 @@ class NearbyActivity : AppCompatActivity() {
     private fun searchNearby2(
         circle: CircularBounds, placeFields: List<Place.Field>, text: String
     ): SearchByTextRequest {
-        val searchByTextRequest: SearchByTextRequest =
+        var searchByTextRequest: SearchByTextRequest =
             SearchByTextRequest.builder(text, placeFields).setPriceLevels(listOf(1, 2))
-                .setLocationBias(circle).setMaxResultCount(20).build()
+                .setLocationBias(circle)
+                .setMaxResultCount(20)
+                .build()
+        if(pricelevel.isNotEmpty())
+        {
+            searchByTextRequest =
+            SearchByTextRequest.builder(text, placeFields).setPriceLevels(listOf(1, 2))
+                .setLocationBias(circle)
+                .setMaxResultCount(20)
+                .setPriceLevels(pricelevel)
+                .build()
+        }
         return searchByTextRequest
     }
 

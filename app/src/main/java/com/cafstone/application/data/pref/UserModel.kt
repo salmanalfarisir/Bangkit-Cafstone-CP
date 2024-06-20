@@ -17,5 +17,6 @@ data class UserModel(
     val acceptsDebitCards: Boolean,
     val acceptsCashOnly: Boolean,
     val acceptsNfc: Boolean,
+    val welcome : String,
     val isLogin: Boolean = false
 )

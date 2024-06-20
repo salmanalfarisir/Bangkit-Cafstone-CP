@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.cafstone.application.data.adapter.AdapterModel
-import com.cafstone.application.data.adapter.PlacesAdapter2
+import com.cafstone.application.data.adapter.PlacesAdapter3
 import com.cafstone.application.data.pref.UserModel
 import com.cafstone.application.databinding.ActivityMainBinding
 import com.cafstone.application.di.PlacesClientSingleton
@@ -83,10 +83,10 @@ class MainActivity : AppCompatActivity() {
     private val placesList2 = mutableListOf<AdapterModel>()
     private val placesList3 = mutableListOf<AdapterModel>()
 
-    private lateinit var adapter: PlacesAdapter2
-    private lateinit var adapter1: PlacesAdapter2
-    private lateinit var adapter2: PlacesAdapter2
-    private lateinit var adapter3: PlacesAdapter2
+    private lateinit var adapter: PlacesAdapter3
+    private lateinit var adapter1: PlacesAdapter3
+    private lateinit var adapter2: PlacesAdapter3
+    private lateinit var adapter3: PlacesAdapter3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -224,7 +224,8 @@ class MainActivity : AppCompatActivity() {
             Place.Field.PHOTO_METADATAS,
             Place.Field.RATING,
             Place.Field.USER_RATINGS_TOTAL,
-            Place.Field.PRIMARY_TYPE
+            Place.Field.PRIMARY_TYPE,
+            Place.Field.LAT_LNG
         )
 
         // Define latitude and longitude coordinates of the search area
@@ -268,7 +269,6 @@ class MainActivity : AppCompatActivity() {
                             if (!place.photoMetadatas.isNullOrEmpty()) {
                                 photoUrl = place.photoMetadatas?.get(0)
                             }
-
                             when (p) {
                                 0 -> {
                                     placesList.add(
@@ -280,6 +280,8 @@ class MainActivity : AppCompatActivity() {
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
+                                            place.latLng?.latitude?:0.0,
+                                            place.latLng?.longitude?:0.0,
                                             place.rating
                                         )
                                     )
@@ -295,6 +297,8 @@ class MainActivity : AppCompatActivity() {
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
+                                            place.latLng?.latitude?:0.0,
+                                            place.latLng?.longitude?:0.0,
                                             place.rating
                                         )
                                     )
@@ -310,6 +314,8 @@ class MainActivity : AppCompatActivity() {
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
+                                            place.latLng?.latitude?:0.0,
+                                            place.latLng?.longitude?:0.0,
                                             place.rating
                                         )
                                     )
@@ -373,16 +379,18 @@ class MainActivity : AppCompatActivity() {
             binding.rvReview2.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
             binding.rvReview3.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
 
-            adapter = PlacesAdapter2(placesList)
+            adapter = PlacesAdapter3(placesList)
             binding.rvReview.adapter = adapter
-            adapter1 = PlacesAdapter2(placesList1)
+            adapter1 = PlacesAdapter3(placesList1)
             binding.rvReview1.adapter = adapter1
-            adapter2 = PlacesAdapter2(placesList2)
+            adapter2 = PlacesAdapter3(placesList2)
             binding.rvReview2.adapter = adapter2
-            adapter3 = PlacesAdapter2(placesList3)
+            adapter3 = PlacesAdapter3(placesList3)
             binding.rvReview3.adapter = adapter3
 
             val data = viewModel.getData()
+            binding.displayName.text = data.name
+            binding.displayGreeting.text = data.welcome
             getRecommendation(data)
             viewModel.isLoading.observe(this) { it ->
                 showLoading(it)
@@ -400,7 +408,8 @@ class MainActivity : AppCompatActivity() {
                                 Place.Field.PHOTO_METADATAS,
                                 Place.Field.TYPES,
                                 Place.Field.USER_RATINGS_TOTAL,
-                                Place.Field.PRIMARY_TYPE
+                                Place.Field.PRIMARY_TYPE,
+                                Place.Field.LAT_LNG
                             )
                             it.forEach { data ->
                                 val placeRequest = FetchPlaceRequest.newInstance(data.id, fields)
@@ -436,6 +445,8 @@ class MainActivity : AppCompatActivity() {
                                                 photoUrl,
                                                 location.latitude,
                                                 location.longitude,
+                                                place.latLng?.latitude?:0.0,
+                                                place.latLng?.longitude?:0.0,
                                                 place.rating
                                             )
                                         )
@@ -457,7 +468,6 @@ class MainActivity : AppCompatActivity() {
             searchText("Cafe Yang Sedang Banyak Dikunjungi", 1, 1)
             searchText("Cafe Fancy", 2, 2)
             searchText("Cafe Ternyaman", 0, 0)
-
         }
     }
 
