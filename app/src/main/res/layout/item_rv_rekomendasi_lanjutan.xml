@@ -4,7 +4,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    android:layout_width="210dp"
+    android:layout_width="165dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center|start"
     android:layout_marginStart="8dp"
@@ -20,81 +20,30 @@
         <ImageView
             android:id="@+id/rekomendasi_photo"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
             android:paddingTop="10dp"
-            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="12dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/iv_item_photo">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:padding="2dp"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintHorizontal_bias="0.0"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/rekomendasi_photo_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/rating"
-                    android:src="@drawable/emojione_star"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/ratingtextview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:minHeight="0dp"
-                    android:padding="0dp"
-                    android:text="@string/rating_4_5"
-                    android:textSize="13sp"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasi_photo_rating"
-                    card_view:layout_constraintStart_toEndOf="@+id/rekomendasi_photo_rating"
-                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasi_photo_rating"
-                    tools:ignore="SmallSp" />
-
-                <TextView
-                    android:id="@+id/reviewtextview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:minHeight="0dp"
-                    android:padding="0dp"
-                    android:text="@string/rating_4_5"
-                    android:textSize="13sp"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasi_photo_rating"
-                    card_view:layout_constraintStart_toEndOf="@+id/ratingtextview"
-                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasi_photo_rating"
-                    tools:ignore="SmallSp" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/rekomendasiplaceName"
-                android:layout_width="match_parent"
+                android:id="@+id/rekomendasiPlaceName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="3dp"
                 android:ellipsize="end"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_semibold"
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textColor="@color/black_text"
@@ -107,25 +56,80 @@
                 tools:text="@string/destination_title" />
 
             <TextView
-                android:id="@+id/rekomendasiplaceType"
-                android:layout_width="match_parent"
+                android:id="@+id/rekomendasiPlaceType"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/poppins"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/roboto"
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textColor="@color/black_text"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintEnd_toEndOf="@+id/rekomendasiplaceName"
-                card_view:layout_constraintStart_toStartOf="@+id/rekomendasiplaceName"
-                card_view:layout_constraintTop_toBottomOf="@+id/rekomendasiplaceName"
+                card_view:layout_constraintEnd_toEndOf="@+id/rekomendasiPlaceName"
+                card_view:layout_constraintStart_toStartOf="@+id/rekomendasiPlaceName"
+                card_view:layout_constraintTop_toBottomOf="@+id/rekomendasiPlaceName"
                 card_view:layout_constraintVertical_bias="0.0"
                 tools:text="@string/placeType" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/rekomendasiPhotoRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/rating"
+                    android:src="@drawable/emojione_star"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/ratingTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="@string/rating_4_5"
+                    android:textColor="@color/black_text"
+                    android:textSize="13sp"
+                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
+                    card_view:layout_constraintStart_toEndOf="@+id/rekomendasiPhotoRating"
+                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/reviewTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="@string/rating_4_5"
+                    android:textColor="@color/black_text"
+                    android:textSize="13sp"
+                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
+                    card_view:layout_constraintStart_toEndOf="@+id/ratingTextView1"
+                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
+                    tools:ignore="SmallSp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
 
 
     </LinearLayout>

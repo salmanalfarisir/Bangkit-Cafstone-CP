@@ -5,6 +5,7 @@
     android:id="@+id/scroll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:scrollbars="none"
     tools:context=".view.main.MainActivity">
 
@@ -16,10 +17,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
+            android:background="@drawable/bottom_radius_primary_color"
+            android:elevation="10dp"
             android:fitsSystemWindows="true"
+            android:paddingTop="25dp"
+            android:paddingBottom="15dp"
             app:layout_collapseMode="pin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,30 +43,73 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.button.MaterialButton
+                    <Button
                         android:id="@+id/btnLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#f5f5f5"
-                        android:fontFamily="@font/montserrat_medium"
+                        android:backgroundTint="#ffffff"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="start"
+                        android:includeFontPadding="false"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:paddingBottom="7dp"
-                        android:text="@string/lokasi"
+                        android:paddingStart="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="15dp"
+                        android:paddingBottom="8dp"
                         android:textAllCaps="false"
                         android:textColor="@color/black_text"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         app:icon="@drawable/ooui__map_pin"
                         app:iconGravity="start"
                         app:iconSize="11sp"
                         app:iconTint="@color/primary_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:strokeColor="@color/light_text"
                         app:strokeWidth="0.7dp"
-                        tools:ignore="SmallSp,TouchTargetSizeCheck" />
+                        tools:ignore="SmallSp,TouchTargetSizeCheck"
+                        tools:text="@string/lokasi" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@+id/profileCard"
+                        app:layout_constraintEnd_toStartOf="@+id/profileCard"
+                        app:layout_constraintTop_toTopOf="@+id/profileCard">
+
+                        <TextView
+                            android:id="@+id/displayName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:fontFamily="@font/poppins"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toStartOf="@+id/profileCard"
+                            tools:layout_editor_absoluteY="5dp"
+                            tools:text="Salman Alfarisi" />
+
+                        <TextView
+                            android:id="@+id/displayGreeting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="1dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            app:layout_constraintEnd_toEndOf="@+id/displayName"
+                            app:layout_constraintTop_toBottomOf="@+id/displayName"
+                            tools:text="Welcome Back!" />
+
+                    </LinearLayout>
+
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/profileCard"
@@ -79,19 +124,20 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            tools:src="@tools:sample/avatars"
-                            tools:ignore="ContentDescription" />
+                            android:elevation="5dp"
+                            tools:ignore="ContentDescription"
+                            tools:src="@tools:sample/avatars" />
 
                     </androidx.cardview.widget.CardView>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="43dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="5dp"
                     android:backgroundTint="#f5f5f5"
                     android:minHeight="0dp"
                     android:paddingStart="10dp"
@@ -118,7 +164,7 @@
             android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="18dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +172,7 @@
             tools:ignore="UselessLeaf">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -134,14 +180,14 @@
                     android:id="@+id/nearByCardView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/white"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="110dp"
@@ -181,18 +227,22 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ratingCardView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginStart="12dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/white"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="110dp"
@@ -231,19 +281,23 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/priceCardView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/white"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="110dp"
@@ -291,15 +345,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
-            android:text="@string/rekomendasi"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
+            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
+            tools:text="@string/rekomendasi" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -307,7 +361,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -318,15 +372,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
-            android:text="@string/rekomendasi_cafe_nyaman_untuk_anda"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvReview3" />
+            app:layout_constraintTop_toBottomOf="@id/rvReview3"
+            tools:text="@string/rekomendasi_cafe_nyaman_untuk_anda" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -334,7 +388,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -345,23 +399,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
-            android:text="@string/resto_yang_lagi_viral"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvReview" />
+            app:layout_constraintTop_toBottomOf="@id/rvReview"
+            tools:text="@string/resto_yang_lagi_viral" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReview1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -372,23 +426,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
-            android:text="@string/resto_mewah"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvReview1" />
+            app:layout_constraintTop_toBottomOf="@id/rvReview1"
+            tools:text="@string/resto_mewah" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReview2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
