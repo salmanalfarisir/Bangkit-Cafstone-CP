@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.cafstone.application.view.nearby
 
 import android.annotation.SuppressLint
@@ -7,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cafstone.application.R
@@ -29,13 +32,13 @@ class NearbyActivity : AppCompatActivity() {
     private lateinit var adapter: PlacesAdapter
     private lateinit var placesClient: PlacesClient
     var pricelevel = mutableListOf<Int>()
-    var data : String? = null
-    var datafragment : String? = null
-    var lat : Double = 0.0
-    private var long : Double = 0.0
-    var att : NearbyModel? = null
+    var data: String? = null
+    var datafragment: String? = null
+    var lat: Double = 0.0
+    private var long: Double = 0.0
+    var att: NearbyModel? = null
     var types = mutableListOf<String>()
-    var includedTypes = listOf(
+    private var includedTypes = listOf(
         "restaurant",
         "american_restaurant",
         "bar",
@@ -73,7 +76,7 @@ class NearbyActivity : AppCompatActivity() {
         "italian_restaurant"
     )
 
-    val nameType: List<String> = listOf(
+    private val nameType: List<String> = listOf(
         "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
         "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
         "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
@@ -90,6 +93,20 @@ class NearbyActivity : AppCompatActivity() {
         binding = ActivityNearbyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.apply {
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                statusBarColor = Color.TRANSPARENT
+            }
+        }
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         adapter = PlacesAdapter(placesList)
         lat = intent.getDoubleExtra(LATITUDE, 0.0)
         long = intent.getDoubleExtra(LONGITUDE, 0.0)
@@ -102,42 +119,29 @@ class NearbyActivity : AppCompatActivity() {
             } else {
                 @Suppress("DEPRECATION") intent.getParcelableExtra(EXTRA_ATT)
             }
-            if (att!=null)
-            {
+            if (att != null) {
                 types.add(att!!.value)
             }
             nearby(data, att, lat, long)
-            binding.filterButton.setOnClickListener{
+            binding.filterButton.setOnClickListener {
                 val a = FilterFragment()
-                a.show(supportFragmentManager,a.tag)
+                a.show(supportFragmentManager, a.tag)
             }
         } else {
             finish()
         }
 
-        // Toolbar Customize
-        binding.nearbyToolbar.backButton.setOnClickListener {
-            finish()
-        }
-        binding.nearbyToolbar.toolbar.setBackgroundColor(Color.TRANSPARENT)
-        binding.nearbyToolbar.buttonToolbar.visibility = View.GONE
-        binding.nearbyToolbar.title.visibility = View.GONE
-        binding.nearbyToolbar.toolbar.apply {
-            setSupportActionBar(this)
-            supportActionBar?.title = ""
+    }
+
+    fun searchAgain() {
+        if (data != null) {
+            nearby(data, att, lat, long)
+        } else {
+            nearby(datafragment, att, lat, long)
         }
     }
 
-    fun searchagain(){
-        if (data != null)
-        {
-            nearby(data,att,lat,long)
-        }else{
-            nearby(datafragment,att,lat,long)
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     fun nearby(text: String?, att: NearbyModel?, lat: Double, long: Double) {
         placesList.clear()
         placesClient = PlacesClientSingleton.getInstance(this)
@@ -163,29 +167,26 @@ class NearbyActivity : AppCompatActivity() {
             binding.ivItemPhoto.setBackgroundResource(att.image)
         }
         var inc = includedTypes
-        if (types.isNotEmpty()){
+        if (types.isNotEmpty()) {
             inc = types
         }
 
         if (text != null && text == "termurah") {
             binding.placeName.text = getString(R.string.place_termurah)
-            var judul = "Tempat Makan"
+            val judul = "Tempat Makan"
             val searchNearbyRequest =
                 searchNearby2(circle, placeFields, "$judul dengan harga paling murah")
             placesClient.searchByText(searchNearbyRequest).addOnSuccessListener { response ->
                 val places = response.places
                 for (place in places) {
-                    if (types.isNotEmpty())
-                    {
+                    if (types.isNotEmpty()) {
                         var t = false
                         place.placeTypes?.forEach {
-                            if(includedTypes.contains(it))
-                            {
+                            if (includedTypes.contains(it)) {
                                 t = true
                             }
                         }
-                        if (!t)
-                        {
+                        if (!t) {
                             continue
                         }
                     }
@@ -193,18 +194,15 @@ class NearbyActivity : AppCompatActivity() {
                         var tipe = ""
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1)
-                            {
-                                if (tipe == "")
-                                {
+                            if (index != -1) {
+                                if (tipe == "") {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType?:"")
-                        if (index != -1)
-                        {
+                        val index = includedTypes.indexOf(place.primaryType ?: "")
+                        if (index != -1) {
                             tipe = nameType[index]
                         }
 
@@ -222,8 +220,8 @@ class NearbyActivity : AppCompatActivity() {
                                 photoUrl,
                                 lat,
                                 long,
-                                place.latLng?.latitude?:0.0,
-                                place.latLng?.longitude?:0.0,
+                                place.latLng?.latitude ?: 0.0,
+                                place.latLng?.longitude ?: 0.0,
                                 place.rating
                             )
                         )
@@ -239,16 +237,14 @@ class NearbyActivity : AppCompatActivity() {
             placesClient.searchNearby(searchNearbyRequest).addOnSuccessListener { response ->
                 val places = response.places
                 for (place in places) {
-                    if (pricelevel.isNotEmpty())
-                    {
+                    if (pricelevel.isNotEmpty()) {
                         var stop = 0
                         place.priceLevel?.let {
-                            if(!pricelevel.contains(it)){
+                            if (!pricelevel.contains(it)) {
                                 stop = 1
                             }
                         }
-                        if (stop == 1)
-                        {
+                        if (stop == 1) {
                             continue
                         }
                     }
@@ -256,18 +252,15 @@ class NearbyActivity : AppCompatActivity() {
                         var tipe = ""
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1)
-                            {
-                                if (tipe == "")
-                                {
+                            if (index != -1) {
+                                if (tipe == "") {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType?:"")
-                        if (index != -1)
-                        {
+                        val index = includedTypes.indexOf(place.primaryType ?: "")
+                        if (index != -1) {
                             tipe = nameType[index]
                         }
                         var photoUrl: PhotoMetadata? = null
@@ -282,9 +275,9 @@ class NearbyActivity : AppCompatActivity() {
                                 tipe,
                                 place.userRatingsTotal?.toString() ?: "0.0",
                                 photoUrl,
-                                lat,long,
-                                place.latLng?.latitude?:0.0,
-                                place.latLng?.longitude?:0.0,
+                                lat, long,
+                                place.latLng?.latitude ?: 0.0,
+                                place.latLng?.longitude ?: 0.0,
                                 place.rating
                             )
                         )
@@ -336,14 +329,13 @@ class NearbyActivity : AppCompatActivity() {
                 .setLocationBias(circle)
                 .setMaxResultCount(20)
                 .build()
-        if(pricelevel.isNotEmpty())
-        {
+        if (pricelevel.isNotEmpty()) {
             searchByTextRequest =
-            SearchByTextRequest.builder(text, placeFields).setPriceLevels(listOf(1, 2))
-                .setLocationBias(circle)
-                .setMaxResultCount(20)
-                .setPriceLevels(pricelevel)
-                .build()
+                SearchByTextRequest.builder(text, placeFields).setPriceLevels(listOf(1, 2))
+                    .setLocationBias(circle)
+                    .setMaxResultCount(20)
+                    .setPriceLevels(pricelevel)
+                    .build()
         }
         return searchByTextRequest
     }

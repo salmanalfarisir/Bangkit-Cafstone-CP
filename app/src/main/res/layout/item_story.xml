@@ -11,7 +11,6 @@
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="20dp"
     android:backgroundTint="@android:color/transparent"
-    app:cardCornerRadius="10dp"
     app:cardElevation="0dp">
 
     <LinearLayout
@@ -28,7 +27,7 @@
             <ImageView
                 android:id="@+id/rekomendasi_photo"
                 android:layout_width="120dp"
-                android:layout_height="150dp"
+                android:layout_height="130dp"
                 android:scaleType="centerCrop"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -40,7 +39,6 @@
             android:background="@android:color/transparent"
             android:gravity="start|top"
             android:orientation="vertical"
-            android:paddingTop="10dp"
             android:paddingBottom="5dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
@@ -72,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto"
@@ -86,67 +84,85 @@
                 card_view:layout_constraintVertical_bias="0.0"
                 tools:text="@string/placeType" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:orientation="horizontal"
                 android:padding="2dp"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintHorizontal_bias="0.0"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/rekomendasiPhotoRating"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/rating"
-                    android:src="@drawable/emojione_star"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/ratingTextView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:minHeight="0dp"
-                    android:padding="0dp"
-                    android:text="@string/rating_4_5"
-                    android:textColor="@color/black_text"
-                    android:textSize="13sp"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
-                    card_view:layout_constraintStart_toEndOf="@+id/rekomendasiPhotoRating"
-                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
-                    tools:ignore="SmallSp" />
+                    <ImageView
+                        android:id="@+id/rekomendasiPhotoRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/rating"
+                        android:src="@drawable/emojione_star"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/reviewTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:minHeight="0dp"
-                    android:padding="0dp"
-                    android:text="@string/rating_4_5"
-                    android:textColor="@color/black_text"
-                    android:textSize="13sp"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
-                    card_view:layout_constraintStart_toEndOf="@+id/ratingTextView1"
-                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
-                    tools:ignore="SmallSp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/ratingTextView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="17dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:includeFontPadding="false"
+                            android:minHeight="0dp"
+                            android:padding="0dp"
+                            android:text="@string/rating_4_5"
+                            android:textColor="@color/black_text"
+                            android:textSize="13sp"
+                            card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
+                            card_view:layout_constraintStart_toEndOf="@+id/rekomendasiPhotoRating"
+                            card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/reviewTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="17dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:includeFontPadding="false"
+                            android:minHeight="0dp"
+                            android:padding="0dp"
+                            android:text="@string/rating_4_5"
+                            android:textColor="@color/black_text"
+                            android:textSize="13sp"
+                            card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
+                            card_view:layout_constraintStart_toEndOf="@+id/ratingTextView1"
+                            card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
+                            tools:ignore="SmallSp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
                 <TextView
                     android:id="@+id/jarak"
                     android:layout_width="wrap_content"
-                    android:layout_height="15dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/roboto"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
                     android:includeFontPadding="false"
                     android:maxLines="2"
                     android:textColor="@color/black_text"
@@ -157,7 +173,7 @@
                     card_view:layout_constraintTop_toBottomOf="@id/reviewTextView"
                     card_view:layout_constraintVertical_bias="0.0"
                     tools:text="@string/placeType" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
 
         </LinearLayout>

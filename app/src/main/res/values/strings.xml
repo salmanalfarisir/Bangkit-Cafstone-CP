@@ -163,4 +163,12 @@
     <string name="tipe_pembayaran">Tipe Pembayaran</string>
     <string name="opsi_layanan">Opsi Layanan</string>
     <string name="reservasi">Reservasi</string>
+    <string name="categoy">Kategori</string>
+    <string name="distance">Jarak</string>
+    <string name="distance2">jarak</string>
+    <string name="berdasarkan_harga">Berdasarkan Harga</string>
+    <string name="berdasarkan_makanan">Berdasarkan Makanan</string>
+    <string name="filter">Filter</string>
+    <string name="berdasarkan_lokasi">Berdasarkan Lokasi</string>
+    <string name="terdekat">Terdekat</string>
 </resources>

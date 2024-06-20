@@ -12,9 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/nearbyToolbar"
-            layout="@layout/toolbar" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/charm__arrow_left" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/placeName"
@@ -44,7 +64,7 @@
             <ImageView
                 android:id="@+id/iv_item_photo"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="280dp"
                 android:scaleType="centerCrop"
                 tools:ignore="ContentDescription"
                 tools:src="@drawable/indonesian_food" />
@@ -55,11 +75,11 @@
             android:id="@+id/linearLayout6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-13dp"
             android:background="@drawable/detail_fragment_background"
             android:elevation="4dp"
             android:orientation="vertical"
             android:paddingTop="16dp"
-            android:layout_marginTop="-13dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5">

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.cafstone.application.view.search
 
 import android.annotation.SuppressLint
@@ -8,9 +10,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
@@ -19,7 +20,6 @@ import com.cafstone.application.di.PlacesClientSingleton
 import com.google.android.libraries.places.api.net.PlacesClient
 import java.util.Locale
 
-@Suppress("DEPRECATION")
 class SearchViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchViewBinding
@@ -39,12 +39,21 @@ class SearchViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        enableEdgeToEdge()
+        supportActionBar?.hide()
+
+        Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.apply {
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                statusBarColor = Color.TRANSPARENT
+            }
         }
-        binding.progressBar.visibility = View.GONE
+
+        showLoading(false)
+
         lat = intent.getDoubleExtra(LATITUDE, 0.0)
         long = intent.getDoubleExtra(LONGITUDE, 0.0)
 
@@ -102,17 +111,6 @@ class SearchViewActivity : AppCompatActivity() {
         } else {
             finish()
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.apply {
-                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                statusBarColor = Color.TRANSPARENT
-            }
-        }
-        supportActionBar?.hide()
     }
 
     fun searchText2(text: String) {
@@ -134,15 +132,12 @@ class SearchViewActivity : AppCompatActivity() {
     }
 
     fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {
         const val LATITUDE = "lat"
         const val LONGITUDE = "long"
     }
+
 }

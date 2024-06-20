@@ -23,6 +23,7 @@
         android:text="@string/onboarding_text2"
         android:textColor="@color/light_text"
         android:textSize="16sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

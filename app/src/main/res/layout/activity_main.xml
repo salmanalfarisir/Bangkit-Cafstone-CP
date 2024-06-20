@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,7 +21,6 @@
             android:elevation="10dp"
             android:fitsSystemWindows="true"
             android:paddingTop="25dp"
-            android:paddingBottom="15dp"
             app:layout_collapseMode="pin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +67,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:strokeColor="@color/light_text"
-                        app:strokeWidth="0.7dp"
                         tools:ignore="SmallSp,TouchTargetSizeCheck"
                         tools:text="@string/lokasi" />
 
@@ -89,7 +87,7 @@
                             android:fontFamily="@font/poppins"
                             android:includeFontPadding="false"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             app:layout_constraintEnd_toStartOf="@+id/profileCard"
                             tools:layout_editor_absoluteY="5dp"
                             tools:text="Salman Alfarisi" />
@@ -143,16 +141,16 @@
                     android:minHeight="0dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:layout_marginBottom="15dp"
                     android:text="@string/mau_kemana_nih"
                     android:textAlignment="textStart"
                     android:textColor="@color/light_black_text"
                     app:icon="@drawable/material_symbols__search"
                     app:iconGravity="start"
                     app:iconTint="@color/black_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-                    app:strokeColor="@color/light_text"
-                    app:strokeWidth="0.7dp"
                     tools:ignore="TouchTargetSizeCheck" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -161,15 +159,31 @@
 
         <!-- Ini tampilkan untuk menampilkan sebuah button rekomendasi -->
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:includeFontPadding="false"
+            android:text="@string/categoy"
+            android:textColor="@color/black_text"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
         <LinearLayout
             android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/textView5"
             tools:ignore="UselessLeaf">
 
             <LinearLayout
@@ -346,15 +360,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_semibold"
             android:includeFontPadding="false"
+            android:text="@string/rekomendasi"
+            android:textColor="@color/black_text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
-            android:text="@string/rekomendasi" />
+            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -375,13 +390,14 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_semibold"
             android:includeFontPadding="false"
+            android:text="@string/rekomendasi_cafe_nyaman_untuk_anda"
+            android:textColor="@color/black_text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvReview3"
-            android:text="@string/rekomendasi_cafe_nyaman_untuk_anda" />
+            app:layout_constraintTop_toBottomOf="@id/rvReview3" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -402,14 +418,15 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_semibold"
             android:includeFontPadding="false"
+            android:text="@string/resto_yang_lagi_viral"
+            android:textColor="@color/black_text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvReview"
-            android:text="@string/resto_yang_lagi_viral" />
+            app:layout_constraintTop_toBottomOf="@id/rvReview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReview1"
@@ -429,14 +446,15 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_semibold"
             android:includeFontPadding="false"
+            android:text="@string/resto_mewah"
+            android:textColor="@color/black_text"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvReview1"
-            android:text="@string/resto_mewah" />
+            app:layout_constraintTop_toBottomOf="@id/rvReview1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReview2"

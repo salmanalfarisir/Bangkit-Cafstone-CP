@@ -46,4 +46,6 @@
     <string name="suasana">Suasana</string>
     <string name="opsi_layanan">Opsi Layanan</string>
     <string name="reservasi">Reservasi</string>
+    <string name="categoy">Kategori</string>
+    <string name="distance">Jarak Tempuh</string>
 </resources>

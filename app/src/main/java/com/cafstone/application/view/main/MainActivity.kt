@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.cafstone.application.view.main
 
 import android.Manifest
@@ -5,6 +7,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -12,7 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -46,12 +49,12 @@ import com.google.android.libraries.places.api.net.SearchByTextResponse
 import java.util.Locale
 
 
-@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    val includedTypes = listOf(
+
+    private val includedTypes = listOf(
         "restaurant", "american_restaurant", "bar", "sandwich_shop", "coffee_shop",
         "fast_food_restaurant", "seafood_restaurant", "steak_house", "sushi_restaurant",
         "vegetarian_restaurant", "ice_cream_shop", "japanese_restaurant", "korean_restaurant",
@@ -62,7 +65,8 @@ class MainActivity : AppCompatActivity() {
         "hamburger_restaurant", "thai_restaurant", "indian_restaurant", "turkish_restaurant",
         "indonesian_restaurant", "vegan_restaurant", "italian_restaurant"
     )
-    val nameType: List<String> = listOf(
+
+    private val nameType: List<String> = listOf(
         "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
         "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
         "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
@@ -73,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         "Hamburger Restaurant", "Thai Restaurant", "Indian Restaurant", "Turkish Restaurant",
         "Indonesian Restaurant", "Vegan Restaurant", "Italian Restaurant"
     )
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -93,6 +98,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
+
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.apply {
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                statusBarColor = Color.TRANSPARENT
+            }
+        }
 
         showLoading(false)
         binding.profileCard.setOnClickListener {
@@ -108,11 +124,9 @@ class MainActivity : AppCompatActivity() {
                 locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
                 fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                 getMyLastLocation()
-                setupView()
             }
         }
     }
-
 
     //LOKASI START
     private val requestPermissionLauncher =
@@ -160,7 +174,7 @@ class MainActivity : AppCompatActivity() {
             if (!isGpsEnabled) {
                 AlertDialog.Builder(this).apply {
                     setTitle(title)
-                    setMessage("Mohon Hidupkan GPS anda")
+                    setMessage("Mohon Nyalakan Lokasi Anda")
                     setPositiveButton("OK") { _, _ ->
                         getMyLastLocation()
                     }
@@ -176,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         AlertDialog.Builder(this).apply {
                             setTitle(title)
-                            setMessage("Gagal Mengambil Lokasi Coba Kembali")
+                            setMessage("Gagal Memuat Lokasi Coba Kembali")
                             setPositiveButton("OK") { _, _ ->
                                 val intent =
                                     Intent(this@MainActivity, SplashScreenActivity::class.java)
@@ -250,19 +264,16 @@ class MainActivity : AppCompatActivity() {
                         var i = 0
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1)
-                            {
+                            if (index != -1) {
                                 i += 1
-                                if (tipe == "")
-                                {
+                                if (tipe == "") {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType?:"")
-                        if (index != -1)
-                        {
+                        val index = includedTypes.indexOf(place.primaryType ?: "")
+                        if (index != -1) {
                             tipe = nameType[index]
                         }
                         if (i != 0) {
@@ -281,8 +292,8 @@ class MainActivity : AppCompatActivity() {
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
-                                            place.latLng?.latitude?:0.0,
-                                            place.latLng?.longitude?:0.0,
+                                            place.latLng?.latitude ?: 0.0,
+                                            place.latLng?.longitude ?: 0.0,
                                             place.rating
                                         )
                                     )
@@ -298,8 +309,8 @@ class MainActivity : AppCompatActivity() {
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
-                                            place.latLng?.latitude?:0.0,
-                                            place.latLng?.longitude?:0.0,
+                                            place.latLng?.latitude ?: 0.0,
+                                            place.latLng?.longitude ?: 0.0,
                                             place.rating
                                         )
                                     )
@@ -315,8 +326,8 @@ class MainActivity : AppCompatActivity() {
                                             photoUrl,
                                             currentLocation?.latitude ?: 3.5629935,
                                             currentLocation?.longitude ?: 98.6529746,
-                                            place.latLng?.latitude?:0.0,
-                                            place.latLng?.longitude?:0.0,
+                                            place.latLng?.latitude ?: 0.0,
+                                            place.latLng?.longitude ?: 0.0,
                                             place.rating
                                         )
                                     )
@@ -360,13 +371,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-    }
-
-    private fun setupView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.show(WindowInsets.Type.statusBars())
-            supportActionBar?.hide()
-        }
     }
 
 
@@ -418,19 +422,17 @@ class MainActivity : AppCompatActivity() {
                                     .addOnSuccessListener { response ->
                                         val place = response.place
                                         var tipe = ""
-                                        if (!place.placeTypes.isNullOrEmpty()){
-                                            for(p in place.placeTypes!!){
+                                        if (!place.placeTypes.isNullOrEmpty()) {
+                                            for (p in place.placeTypes!!) {
                                                 val index = includedTypes.indexOf(p)
-                                                if (index != -1)
-                                                {
+                                                if (index != -1) {
                                                     tipe = nameType[index]
                                                     break
                                                 }
                                             }
                                         }
-                                        val index = includedTypes.indexOf(place.primaryType?:"")
-                                        if (index != -1)
-                                        {
+                                        val index = includedTypes.indexOf(place.primaryType ?: "")
+                                        if (index != -1) {
                                             tipe = nameType[index]
                                         }
                                         var photoUrl: PhotoMetadata? = null
@@ -446,8 +448,8 @@ class MainActivity : AppCompatActivity() {
                                                 photoUrl,
                                                 location.latitude,
                                                 location.longitude,
-                                                place.latLng?.latitude?:0.0,
-                                                place.latLng?.longitude?:0.0,
+                                                place.latLng?.latitude ?: 0.0,
+                                                place.latLng?.longitude ?: 0.0,
                                                 place.rating
                                             )
                                         )
