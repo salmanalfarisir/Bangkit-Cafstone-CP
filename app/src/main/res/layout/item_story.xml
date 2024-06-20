@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,31 +7,84 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center|start"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="20dp"
+    android:backgroundTint="@android:color/transparent"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/rekomendasi_photo"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/rekomendasi_photo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="start|top"
+            android:orientation="vertical"
             android:paddingTop="10dp"
             android:paddingBottom="5dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/iv_item_photo">
+
+
+            <TextView
+                android:id="@+id/rekomendasiPlaceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_bold"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="-4dp"
+                android:maxLines="2"
+                android:textColor="@color/black_text"
+                android:textSize="20sp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                tools:ignore="UnusedAttribute"
+                tools:text="@string/destination_title" />
+
+            <TextView
+                android:id="@+id/rekomendasiPlaceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/roboto"
+                android:includeFontPadding="false"
+                android:textColor="@color/black_text"
+                android:textSize="14sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="@+id/rekomendasiPlaceName"
+                card_view:layout_constraintStart_toStartOf="@+id/rekomendasiPlaceName"
+                card_view:layout_constraintTop_toBottomOf="@+id/rekomendasiPlaceName"
+                card_view:layout_constraintVertical_bias="0.0"
+                tools:text="@string/placeType" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -45,7 +98,7 @@
                 card_view:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/rekomendasi_photo_rating"
+                    android:id="@+id/rekomendasiPhotoRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/rating"
@@ -55,7 +108,7 @@
                     card_view:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/ratingtextview"
+                    android:id="@+id/ratingTextView1"
                     android:layout_width="wrap_content"
                     android:layout_height="17dp"
                     android:layout_marginStart="5dp"
@@ -64,14 +117,15 @@
                     android:minHeight="0dp"
                     android:padding="0dp"
                     android:text="@string/rating_4_5"
+                    android:textColor="@color/black_text"
                     android:textSize="13sp"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasi_photo_rating"
-                    card_view:layout_constraintStart_toEndOf="@+id/rekomendasi_photo_rating"
-                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasi_photo_rating"
+                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
+                    card_view:layout_constraintStart_toEndOf="@+id/rekomendasiPhotoRating"
+                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
                     tools:ignore="SmallSp" />
 
                 <TextView
-                    android:id="@+id/reviewtextview"
+                    android:id="@+id/reviewTextView2"
                     android:layout_width="wrap_content"
                     android:layout_height="17dp"
                     android:layout_marginStart="5dp"
@@ -80,54 +134,18 @@
                     android:minHeight="0dp"
                     android:padding="0dp"
                     android:text="@string/rating_4_5"
+                    android:textColor="@color/black_text"
                     android:textSize="13sp"
-                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasi_photo_rating"
-                    card_view:layout_constraintStart_toEndOf="@+id/ratingtextview"
-                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasi_photo_rating"
+                    card_view:layout_constraintBottom_toBottomOf="@+id/rekomendasiPhotoRating"
+                    card_view:layout_constraintStart_toEndOf="@+id/ratingTextView1"
+                    card_view:layout_constraintTop_toTopOf="@+id/rekomendasiPhotoRating"
                     tools:ignore="SmallSp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/rekomendasiplaceName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/poppins_medium"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:textColor="@color/black_text"
-                android:textSize="14sp"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintHorizontal_bias="0.0"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-                tools:ignore="UnusedAttribute"
-                tools:text="@string/destination_title" />
 
-            <TextView
-                android:id="@+id/rekomendasiplaceType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/poppins"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:textColor="@color/black_text"
-                android:textSize="11sp"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintEnd_toEndOf="@+id/rekomendasiplaceName"
-                card_view:layout_constraintStart_toStartOf="@+id/rekomendasiplaceName"
-                card_view:layout_constraintTop_toBottomOf="@+id/rekomendasiplaceName"
-                card_view:layout_constraintVertical_bias="0.0"
-                tools:text="@string/placeType" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

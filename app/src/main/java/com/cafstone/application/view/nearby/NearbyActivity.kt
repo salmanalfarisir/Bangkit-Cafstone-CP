@@ -7,7 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.AdapterModel
@@ -28,7 +31,7 @@ class NearbyActivity : AppCompatActivity() {
     private val placesList = mutableListOf<AdapterModel>()
     private lateinit var adapter: PlacesAdapter
     private lateinit var placesClient: PlacesClient
-    var includedTypes = listOf(
+    private var includedTypes = listOf(
         "restaurant",
         "american_restaurant",
         "bar",
@@ -66,7 +69,7 @@ class NearbyActivity : AppCompatActivity() {
         "italian_restaurant"
     )
 
-    val nameType: List<String> = listOf(
+    private val nameType: List<String> = listOf(
         "Restaurant", "American Restaurant", "Bar", "Sandwich Shop", "Coffee Shop",
         "Fast Food Restaurant", "Seafood Restaurant", "Steak House", "Sushi Restaurant",
         "Vegetarian Restaurant", "Ice Cream Shop", "Japanese Restaurant", "Korean Restaurant",
@@ -82,6 +85,13 @@ class NearbyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNearbyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         adapter = PlacesAdapter(placesList)
         val lat = intent.getDoubleExtra(LATITUDE, 0.0)
@@ -135,13 +145,14 @@ class NearbyActivity : AppCompatActivity() {
         if ((att != null)) {
             includedTypes = listOf(att.value)
             binding.placeName.text = att.title
-            binding.textView.text = att.desc
+            binding.countPlaceName.text = att.desc
             binding.ivItemPhoto.setBackgroundResource(att.image)
         }
 
         if (text != null && text == "termurah") {
             binding.placeName.text = getString(R.string.place_termurah)
-            binding.textView.text = getString(R.string.ini_rekomendasi_tempat_dengan_harga_termurah)
+            binding.countPlaceName.text =
+                getString(R.string.ini_rekomendasi_tempat_dengan_harga_termurah)
             val searchNearbyRequest =
                 searchNearby2(circle, placeFields, "Tempat makan dengan harga paling murah")
             placesClient.searchByText(searchNearbyRequest).addOnSuccessListener { response ->
@@ -151,18 +162,15 @@ class NearbyActivity : AppCompatActivity() {
                         var tipe = ""
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1)
-                            {
-                                if (tipe == "")
-                                {
+                            if (index != -1) {
+                                if (tipe == "") {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType?:"")
-                        if (index != -1)
-                        {
+                        val index = includedTypes.indexOf(place.primaryType ?: "")
+                        if (index != -1) {
                             tipe = nameType[index]
                         }
 
@@ -198,18 +206,15 @@ class NearbyActivity : AppCompatActivity() {
                         var tipe = ""
                         place.placeTypes?.forEach {
                             val index = includedTypes.indexOf(it)
-                            if (index != -1)
-                            {
-                                if (tipe == "")
-                                {
+                            if (index != -1) {
+                                if (tipe == "") {
                                     tipe = nameType[index]
                                 }
                             }
                         }
 
-                        val index = includedTypes.indexOf(place.primaryType?:"")
-                        if (index != -1)
-                        {
+                        val index = includedTypes.indexOf(place.primaryType ?: "")
+                        if (index != -1) {
                             tipe = nameType[index]
                         }
                         var photoUrl: PhotoMetadata? = null
@@ -224,7 +229,7 @@ class NearbyActivity : AppCompatActivity() {
                                 tipe,
                                 place.userRatingsTotal?.toString() ?: "0.0",
                                 photoUrl,
-                                lat,long,
+                                lat, long,
                                 place.rating
                             )
                         )
