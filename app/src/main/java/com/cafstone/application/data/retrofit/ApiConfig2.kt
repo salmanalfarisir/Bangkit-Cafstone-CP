@@ -14,7 +14,7 @@ class ApiConfig2 {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://cafstone-xioudzbl4a-et.a.run.app/")
+                .baseUrl("https://cafstone-image-yfuvmgzhpq-et.a.run.app/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

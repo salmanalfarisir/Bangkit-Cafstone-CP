@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.cafstone.application.R
 import com.cafstone.application.databinding.ActivityProfileBinding
 import com.cafstone.application.view.ViewModelFactory
+import com.cafstone.application.view.main.MainActivity
 
 @Suppress("DEPRECATION")
 class ProfileActivity : AppCompatActivity() {
@@ -59,8 +60,11 @@ class ProfileActivity : AppCompatActivity() {
         binding.changePassword.setOnClickListener {
             startActivity(Intent(this, ProfilePasswordActivity::class.java))
         }
-        binding.btnLogout.setOnClickListener {
+        binding.logout.setOnClickListener {
             viewModel.logout()
+            val intent = Intent(this@ProfileActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
     }
 
