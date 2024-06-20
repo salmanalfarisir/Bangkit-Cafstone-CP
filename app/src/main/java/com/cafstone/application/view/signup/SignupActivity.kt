@@ -1,5 +1,7 @@
 package com.cafstone.application.view.signup
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +28,7 @@ class SignupActivity : AppCompatActivity() {
         showLoading(false)
         setupView()
         setupAction()
+        playAnimation()
     }
 
     private fun setupView() {
@@ -107,5 +110,49 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.title, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.subTitle, View.ALPHA, 1f).setDuration(100)
+        val nameTextView =
+            ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(100)
+        val nameEditTextLayout =
+            ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val emailTextView =
+            ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
+        val emailEditTextLayout =
+            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val passwordTextView =
+            ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
+        val passwordEditTextLayout =
+            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val passwordConfirmTextView =
+            ObjectAnimator.ofFloat(binding.passwordConfirmTextView, View.ALPHA, 1f).setDuration(100)
+        val passwordConfirmEditTextLayout =
+            ObjectAnimator.ofFloat(binding.passwordConfirmEditTextLayout, View.ALPHA, 1f)
+                .setDuration(100)
+        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(100)
+
+
+        AnimatorSet().apply {
+            playSequentially(
+                title,
+                nameTextView,
+                nameEditTextLayout,
+                emailTextView,
+                emailEditTextLayout,
+                passwordTextView,
+                passwordEditTextLayout,
+                passwordConfirmTextView,
+                passwordConfirmEditTextLayout,
+                signup
+            )
+            startDelay = 100
+        }.start()
+    }
 
 }
