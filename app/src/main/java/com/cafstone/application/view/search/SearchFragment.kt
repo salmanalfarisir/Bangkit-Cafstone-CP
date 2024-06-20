@@ -68,7 +68,8 @@ class SearchFragment : Fragment() {
             Place.Field.PHOTO_METADATAS,
             Place.Field.RATING,
             Place.Field.USER_RATINGS_TOTAL,
-            Place.Field.PRIMARY_TYPE
+            Place.Field.PRIMARY_TYPE,
+            Place.Field.LAT_LNG
         )
         // Define latitude and longitude coordinates of the search area
         val lat = activity.lat
@@ -145,6 +146,8 @@ class SearchFragment : Fragment() {
                                     photoUrl,
                                     activity.lat,
                                     activity.long,
+                                    place.latLng?.latitude?:0.0,
+                                    place.latLng?.longitude?:0.0,
                                     place.rating
                                 )
                             )

@@ -13,5 +13,7 @@ data class AdapterModel(
     val photo: PhotoMetadata?,
     val lat : Double,
     val lang : Double,
+    val destlat : Double,
+    val destlong : Double,
     val rating: Double?
 ) : Parcelable

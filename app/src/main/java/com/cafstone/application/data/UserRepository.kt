@@ -68,6 +68,7 @@ class UserRepository private constructor(
                 response.data.preferences.acceptsDebitCards,
                 response.data.preferences.acceptsCashOnly,
                 response.data.preferences.acceptsNfc,
+                "Welcome Back!",
                 true
             )
 

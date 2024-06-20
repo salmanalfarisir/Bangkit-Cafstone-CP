@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.cafstone.application.R
 import com.cafstone.application.databinding.ActivityProfileBinding
 import com.cafstone.application.view.ViewModelFactory
@@ -51,6 +52,9 @@ class ProfileActivity : AppCompatActivity() {
         val data = viewModel.getData()
         binding.profileName.text = data.name
         binding.profileEmail.text = data.email
+        Glide.with(this)
+            .load("https://cdn.idntimes.com/content-images/post/20240207/33bac083ba44f180c1435fc41975bf36-ca73ec342155d955387493c4eb78c8bb.jpg")
+            .into(binding.profileImage)
 
         binding.changePassword.setOnClickListener {
             startActivity(Intent(this, ProfilePasswordActivity::class.java))

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/transparent" />
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="2dp" android:color="@color/white_disable" /> <!-- Ganti dengan warna abu-abu atau warna yang Anda inginkan -->
+            <corners android:radius="2dp" />
+            <size android:width="20dp" android:height="20dp" />
+        </shape>
+    </item>
+</layer-list>

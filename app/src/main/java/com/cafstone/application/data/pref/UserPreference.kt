@@ -57,6 +57,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[acceptsDebitCards_key] ?: false,
                 preferences[acceptsCashOnly_key] ?: false,
                 preferences[acceptsNfc_key] ?: false,
+                preferences[welcome_key] ?:"Welcome",
                 preferences[IS_LOGIN_KEY] ?: false
             )
         }
@@ -81,6 +82,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[acceptsDebitCards_key] ?: false,
             preferences[acceptsCashOnly_key] ?: false,
             preferences[acceptsNfc_key] ?: false,
+            preferences[welcome_key] ?:"Welcome",
             preferences[IS_LOGIN_KEY] ?: false
         )
     }
@@ -111,6 +113,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val acceptsDebitCards_key = booleanPreferencesKey("acceptsDebitCards")
         private val acceptsCashOnly_key = booleanPreferencesKey("acceptsCashOnly")
         private val acceptsNfc_key = booleanPreferencesKey("acceptsNfc")
+        private val welcome_key = stringPreferencesKey("welcome")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {

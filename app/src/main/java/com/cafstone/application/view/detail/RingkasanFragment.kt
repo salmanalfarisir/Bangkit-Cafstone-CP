@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter2
 import com.cafstone.application.data.adapter.RingkasanJamAdapter
+import com.cafstone.application.data.adapter.UlasanAdapter
+import com.cafstone.application.data.adapter.UlasanModel
 import com.cafstone.application.databinding.FragmentRingkasanBinding
 import com.cafstone.application.view.main.NonSwipeableViewPager
 import com.google.android.gms.maps.model.LatLng
@@ -30,6 +32,7 @@ class RingkasanFragment : Fragment() {
     private lateinit var binding : FragmentRingkasanBinding
     private val list = mutableListOf<String>()
     private val list2 = mutableListOf<AdapterModel>()
+    private val list3 = mutableListOf<UlasanModel>()
     private lateinit var adapters : PlacesAdapter2
     private lateinit var view : View
 
@@ -113,6 +116,30 @@ class RingkasanFragment : Fragment() {
             }else{
                 binding.plusCode.text=it.ringkasan[4].toString()
             }
+
+            list3.clear()
+            if(it.review != null){
+                for(reviews in it.review!!)
+                {
+                    list3.add(
+                        UlasanModel(
+                        reviews.authorAttribution.photoUri,
+                        reviews.authorAttribution.name,
+                        reviews.rating,
+                        reviews.relativePublishTimeDescription,
+                        reviews.text
+                    ))
+                }
+                binding.ulasan.text = "Ringkasan Ulasan"
+                val adapter = UlasanAdapter(list3)
+                binding.rvUlasan.layoutManager = LinearLayoutManager(context)
+                binding.rvUlasan.adapter = adapter
+            }else{
+                binding.ulasan.visibility = View.GONE
+                binding.rvUlasan.visibility = View.GONE
+                binding.dividerulasan.visibility = View.GONE
+            }
+
             binding.recomended.text = "Tempat ini juga recommended loh"
             binding.rvPenelusuranOrang.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapters = PlacesAdapter2(list2)
@@ -165,6 +192,8 @@ class RingkasanFragment : Fragment() {
                                 place.userRatingsTotal?.toString() ?: "0",
                                 photoUrl,
                                 lat,long,
+                                place.latLng?.latitude?:0.0,
+                                place.latLng?.longitude?:0.0,
                                 place.rating
                             )
                         )

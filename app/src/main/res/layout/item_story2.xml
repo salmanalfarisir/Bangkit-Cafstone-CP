@@ -137,7 +137,23 @@
                     card_view:layout_constraintTop_toTopOf="@+id/imageView2"
                     tools:ignore="SmallSp" />
             </LinearLayout>
-
+            <TextView
+                android:id="@+id/jarak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/roboto"
+                android:includeFontPadding="false"
+                android:maxLines="2"
+                android:textColor="@color/black_text"
+                android:textSize="14sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="@+id/placeName"
+                card_view:layout_constraintStart_toStartOf="@+id/placeName"
+                card_view:layout_constraintTop_toBottomOf="@+id/placeName"
+                card_view:layout_constraintVertical_bias="0.0"
+                tools:text="@string/placeType" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,6 +75,7 @@ dependencies {
 
 
     implementation(libs.glide)
+    implementation(libs.circleimage)
     implementation(libs.coil)
     implementation(libs.androidx.viewpager2)
     annotationProcessor(libs.glide.compiler)

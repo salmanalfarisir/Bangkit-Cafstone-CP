@@ -122,6 +122,7 @@
                         tools:ignore="NotSibling">
 
                         <ImageView
+                            android:id="@+id/photoprofil"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:elevation="5dp"
@@ -353,7 +354,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
-            tools:text="@string/rekomendasi" />
+            android:text="@string/rekomendasi" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -380,7 +381,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvReview3"
-            tools:text="@string/rekomendasi_cafe_nyaman_untuk_anda" />
+            android:text="@string/rekomendasi_cafe_nyaman_untuk_anda" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -408,7 +409,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvReview"
-            tools:text="@string/resto_yang_lagi_viral" />
+            android:text="@string/resto_yang_lagi_viral" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReview1"
@@ -435,7 +436,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvReview1"
-            tools:text="@string/resto_mewah" />
+            android:text="@string/resto_mewah" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReview2"
