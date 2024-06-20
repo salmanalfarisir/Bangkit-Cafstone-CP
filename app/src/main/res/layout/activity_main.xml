@@ -122,6 +122,7 @@
                         tools:ignore="NotSibling">
 
                         <ImageView
+                            android:id="@+id/photoprofil"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:elevation="5dp"

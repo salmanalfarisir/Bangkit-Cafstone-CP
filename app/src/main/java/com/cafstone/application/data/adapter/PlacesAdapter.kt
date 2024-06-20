@@ -75,11 +75,17 @@ class PlacesAdapter(private val placesList: List<AdapterModel>) :
             }
 
             val distanceInMeters = currentLocation.distanceTo(destinationLocation)
-
-            holder.binding.jarak.text = distanceInMeters.toInt().toString() + " M"
+            val distanceText = if (distanceInMeters >= 1000) {
+                val distanceInKilometers = distanceInMeters / 1000
+                "%.2f KM".format(distanceInKilometers)
+            } else {
+                "${distanceInMeters.toInt()} M"
+            }
+            holder.binding.jarak.text = distanceText
         }else{
             holder.binding.jarak.visibility = View.GONE
         }
+
         holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
             intentDetail.putExtra(DetailActivity.PLACE_ID, id)

@@ -6,21 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.cafstone.application.R
-import com.cafstone.application.databinding.FragmentTentangBinding
 import com.cafstone.application.databinding.ItemRvRekomendasiLanjutanBinding
 import com.cafstone.application.di.PlacesClientSingleton
 import com.cafstone.application.view.detail.DetailActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
-import com.google.android.material.textview.MaterialTextView
 
 class PlacesAdapter2(private val placesList: List<AdapterModel>) :
     RecyclerView.Adapter<PlacesAdapter2.PlaceViewHolder>() {
@@ -77,8 +72,13 @@ class PlacesAdapter2(private val placesList: List<AdapterModel>) :
             }
 
             val distanceInMeters = currentLocation.distanceTo(destinationLocation)
-
-            holder.binding.jarak.text = distanceInMeters.toInt().toString() + " M"
+            val distanceText = if (distanceInMeters >= 1000) {
+                val distanceInKilometers = distanceInMeters / 1000
+                "%.2f KM".format(distanceInKilometers)
+            } else {
+                "${distanceInMeters.toInt()} M"
+            }
+            holder.binding.jarak.text = distanceText
         }else{
             holder.binding.jarak.visibility = View.GONE
         }

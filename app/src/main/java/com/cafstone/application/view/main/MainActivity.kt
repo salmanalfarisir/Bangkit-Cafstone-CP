@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import com.bumptech.glide.Glide
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter3
 import com.cafstone.application.data.pref.UserModel
@@ -468,6 +469,10 @@ class MainActivity : AppCompatActivity() {
             searchText("Cafe Yang Sedang Banyak Dikunjungi", 1, 1)
             searchText("Cafe Fancy", 2, 2)
             searchText("Cafe Ternyaman", 0, 0)
+
+            Glide.with(this)
+                .load("https://cdn.idntimes.com/content-images/post/20240207/33bac083ba44f180c1435fc41975bf36-ca73ec342155d955387493c4eb78c8bb.jpg")
+                .into(binding.photoprofil)
         }
     }
 
