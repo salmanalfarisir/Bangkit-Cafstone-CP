@@ -12,15 +12,20 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.cafstone.application.R
 import com.cafstone.application.data.adapter.AdapterModel
 import com.cafstone.application.data.adapter.PlacesAdapter
 import com.cafstone.application.databinding.ActivityNearbyBinding
 import com.cafstone.application.di.PlacesClientSingleton
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchResolvedPhotoUriRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.api.net.SearchByTextRequest
 import com.google.android.libraries.places.api.net.SearchNearbyRequest
@@ -178,6 +183,7 @@ class NearbyActivity : AppCompatActivity() {
                 searchNearby2(circle, placeFields, "$judul dengan harga paling murah")
             placesClient.searchByText(searchNearbyRequest).addOnSuccessListener { response ->
                 val places = response.places
+                var pht = 0
                 for (place in places) {
                     if (types.isNotEmpty()) {
                         var t = false
@@ -208,6 +214,31 @@ class NearbyActivity : AppCompatActivity() {
 
                         var photoUrl: PhotoMetadata? = null
                         if (!place.photoMetadatas.isNullOrEmpty()) {
+                            if (pht == 0)
+                            {
+                                place.photoMetadatas?.get(0)?.let {photo->
+                                    pht = 1
+                                    val photoRequest = FetchResolvedPhotoUriRequest.builder(photo)
+                                        .setMaxWidth(200)
+                                        .setMaxHeight(280)
+                                        .build()
+
+                                    placesClient.fetchResolvedPhotoUri(photoRequest)
+                                        .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
+                                            val uri = fetchResolvedPhotoUriResponse.uri
+                                            val req: RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
+                                            Glide.with(this)
+                                                .load(uri)
+                                                .apply(req)
+                                                .into(binding.ivItemPhoto)
+                                        }.addOnFailureListener { exception ->
+                                            if (exception is ApiException) {
+                                                Log.e("MainActivity", "Place not found: ${exception.message}")
+                                                binding.ivItemPhoto.setImageResource(R.drawable.no_image)
+                                            }
+                                        }
+                                }
+                            }
                             photoUrl = place.photoMetadatas?.get(0)
                         }
 
@@ -236,6 +267,7 @@ class NearbyActivity : AppCompatActivity() {
             val searchNearbyRequest = searchNearby(circle, placeFields, inc, text)
             placesClient.searchNearby(searchNearbyRequest).addOnSuccessListener { response ->
                 val places = response.places
+                var pht = 0
                 for (place in places) {
                     if (pricelevel.isNotEmpty()) {
                         var stop = 0
@@ -265,6 +297,31 @@ class NearbyActivity : AppCompatActivity() {
                         }
                         var photoUrl: PhotoMetadata? = null
                         if (!place.photoMetadatas.isNullOrEmpty()) {
+                            if (pht == 0 && (text != null) && (text == "terdekat" || text == "terbaik"))
+                            {
+                                place.photoMetadatas?.get(0)?.let {photo->
+                                    pht = 1
+                                    val photoRequest = FetchResolvedPhotoUriRequest.builder(photo)
+                                        .setMaxWidth(200)
+                                        .setMaxHeight(280)
+                                        .build()
+
+                                    placesClient.fetchResolvedPhotoUri(photoRequest)
+                                        .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
+                                            val uri = fetchResolvedPhotoUriResponse.uri
+                                            val req: RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
+                                            Glide.with(this)
+                                                .load(uri)
+                                                .apply(req)
+                                                .into(binding.ivItemPhoto)
+                                        }.addOnFailureListener { exception ->
+                                            if (exception is ApiException) {
+                                                Log.e("MainActivity", "Place not found: ${exception.message}")
+                                                binding.ivItemPhoto.setImageResource(R.drawable.no_image)
+                                            }
+                                        }
+                                }
+                            }
                             photoUrl = place.photoMetadatas?.get(0)
                         }
 

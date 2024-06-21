@@ -335,25 +335,26 @@ class DetailActivity : AppCompatActivity() {
             binding.tabs.setupWithViewPager(binding.viewPager)
             val metadata = place.photoMetadatas
             if (metadata.isNullOrEmpty()) {
-                Log.w("MainActivity", "No photo metadata.")
-                return@addOnSuccessListener
-            }
-            for (photoMetadata in metadata) {
-                val photoRequest = FetchResolvedPhotoUriRequest.builder(photoMetadata)
-                    .setMaxWidth(300)
-                    .setMaxHeight(280)
-                    .build()
+                photoUris.add(Uri.parse("https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"))
+                photoAdapter.notifyItemInserted(photoUris.size - 1)
+            }else{
+                for (photoMetadata in metadata) {
+                    val photoRequest = FetchResolvedPhotoUriRequest.builder(photoMetadata)
+                        .setMaxWidth(300)
+                        .setMaxHeight(280)
+                        .build()
 
-                placesClient.fetchResolvedPhotoUri(photoRequest)
-                    .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
-                        val uri = fetchResolvedPhotoUriResponse.uri
-                        uri?.let { photoUris.add(it) }
-                        photoAdapter.notifyItemInserted(photoUris.size - 1)
-                    }.addOnFailureListener { exception ->
-                        if (exception is ApiException) {
-                            Log.e("MainActivity", "Place not found: ${exception.message}")
+                    placesClient.fetchResolvedPhotoUri(photoRequest)
+                        .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
+                            val uri = fetchResolvedPhotoUriResponse.uri
+                            uri?.let { photoUris.add(it) }
+                            photoAdapter.notifyItemInserted(photoUris.size - 1)
+                        }.addOnFailureListener { exception ->
+                            if (exception is ApiException) {
+                                Log.e("MainActivity", "Place not found: ${exception.message}")
+                            }
                         }
-                    }
+                }
             }
         }.addOnFailureListener { exception ->
             if (exception is ApiException) {

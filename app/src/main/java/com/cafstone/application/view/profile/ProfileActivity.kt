@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.cafstone.application.R
@@ -61,10 +62,21 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfilePasswordActivity::class.java))
         }
         binding.logout.setOnClickListener {
-            viewModel.logout()
-            val intent = Intent(this@ProfileActivity, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+            AlertDialog.Builder(this).apply {
+                setTitle(title)
+                setMessage("Apakah Anda Ingin Logout?")
+                setPositiveButton("Iya") { _, _ ->
+                    viewModel.logout()
+                    val intent = Intent(this@ProfileActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
+                setNegativeButton("Cancel"){dialog,_->
+                    dialog.dismiss()
+                }
+                create()
+                show()
+            }
         }
     }
 
