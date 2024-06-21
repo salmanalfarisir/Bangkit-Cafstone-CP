@@ -297,29 +297,32 @@ class NearbyActivity : AppCompatActivity() {
                         }
                         var photoUrl: PhotoMetadata? = null
                         if (!place.photoMetadatas.isNullOrEmpty()) {
-                            if (pht == 0 && (text != null) && (text == "terdekat" || text == "terbaik"))
+                            if (pht == 0)
                             {
-                                place.photoMetadatas?.get(0)?.let {photo->
-                                    pht = 1
-                                    val photoRequest = FetchResolvedPhotoUriRequest.builder(photo)
-                                        .setMaxWidth(200)
-                                        .setMaxHeight(280)
-                                        .build()
+                                if (text != null && att == null)
+                                {
+                                    place.photoMetadatas?.get(0)?.let {photo->
+                                        pht = 1
+                                        val photoRequest = FetchResolvedPhotoUriRequest.builder(photo)
+                                            .setMaxWidth(200)
+                                            .setMaxHeight(280)
+                                            .build()
 
-                                    placesClient.fetchResolvedPhotoUri(photoRequest)
-                                        .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
-                                            val uri = fetchResolvedPhotoUriResponse.uri
-                                            val req: RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
-                                            Glide.with(this)
-                                                .load(uri)
-                                                .apply(req)
-                                                .into(binding.ivItemPhoto)
-                                        }.addOnFailureListener { exception ->
-                                            if (exception is ApiException) {
-                                                Log.e("MainActivity", "Place not found: ${exception.message}")
-                                                binding.ivItemPhoto.setImageResource(R.drawable.no_image)
+                                        placesClient.fetchResolvedPhotoUri(photoRequest)
+                                            .addOnSuccessListener { fetchResolvedPhotoUriResponse ->
+                                                val uri = fetchResolvedPhotoUriResponse.uri
+                                                val req: RequestOptions = RequestOptions().override(Target.SIZE_ORIGINAL)
+                                                Glide.with(this)
+                                                    .load(uri)
+                                                    .apply(req)
+                                                    .into(binding.ivItemPhoto)
+                                            }.addOnFailureListener { exception ->
+                                                if (exception is ApiException) {
+                                                    Log.e("MainActivity", "Place not found: ${exception.message}")
+                                                    binding.ivItemPhoto.setImageResource(R.drawable.no_image)
+                                                }
                                             }
-                                        }
+                                    }
                                 }
                             }
                             photoUrl = place.photoMetadatas?.get(0)
